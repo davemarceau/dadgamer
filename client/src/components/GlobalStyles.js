@@ -5,23 +5,19 @@ export default createGlobalStyle`
 // OUR COLOR PALETTE AND FONTS
     :root {
 
-    // USED IN MAIN NAVBAR, SECONDARY BUTTONS, HOVER MAIN BUTTONS 
-    --darkblue: #151F30;
-    // USED AS A BACKGROUND COLOR 
-    --lightbackground: #D9E4FD;
-    // USED IN THE SECONDARY NAVBAR DISPLAYING CATEGORY
-    --blue: #103778;
-    // USED IN ICONS // LOGO MAIN NAVBAR
-    --lightblue:  #d9e4fd;
-    --turquoise: #0593A2;
-    // USED TO HIGHLIGHT SMALL SPAN
-    --redbutton:  #E3371E;
-    // HIGHTLIGNT COLOR USED IN MAIN BUTTONS
-    --corail: #ff7a48;
-    // FONTS FOR LOGO
-    --logo: 'Besley', serif;
-    // FONT FOR EVERYTHING ELSE
-    --body: 'Arimo', sans-serif;
+    
+    --primaryblue: #0088ff;
+    --primaryhover: #36a1ff;
+    
+    --lightbackground: #deeefa;
+    --darkbackground: #2e3133;
+    
+    --lighttext: #deeefa;
+    --lighthover: #a2b0ba;
+
+    --darktext: #2e3133;
+    --darkhover: #81878f;
+    
     }
 
     /* http://meyerweb.com/eric/tools/css/reset/
@@ -57,6 +53,8 @@ export default createGlobalStyle`
     body {
     line-height: 1; 
         margin: 0px;
+        background-color: var(--darkbackground);
+        color: var(--lighttext)
     }
     ol, ul {
         list-style: none;
