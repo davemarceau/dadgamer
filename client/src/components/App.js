@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import GlobalStyles from "./GlobalStyles";
 import Header from "./Header";
@@ -11,7 +11,6 @@ import Profile from "./Profile";
 
 const App = () => {
 	const { user, isAuthenticated, isLoading } = useAuth0();
-	const [loaded, setLoaded] = useState(false);
 
 	if (!isLoading) {
 		if (isAuthenticated) {
