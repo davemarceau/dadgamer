@@ -1,4 +1,4 @@
-# dadgamer
+# Dad gamer
 
 This is a video game planner to avoid overbuying with your limited time.
 
