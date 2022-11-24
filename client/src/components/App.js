@@ -9,6 +9,7 @@ import Signin from "./Signin";
 import NotFound from "./NotFound";
 import Profile from "./Profile";
 import Collection from "./Collection";
+import AddNewGame from "./AddNewGame";
 
 // *****************************************************************
 // Generates the app
@@ -50,6 +51,7 @@ const App = () => {
 						<Route path="/" element={<Homepage />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/collection" element={<Collection />} />
+						<Route path="/addgame" element={<AddNewGame />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</BrowserRouter>

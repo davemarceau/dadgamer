@@ -12,7 +12,7 @@ const Collection = () => {
             <Wrapper>
                 <HeadWrapper>
                     <PageTitle>Your game collection</PageTitle>
-                    <AddGame>Add a game</AddGame>
+                    <Link href="/addgame" ><AddGame>Add a game</AddGame></Link>
                 </HeadWrapper>
                 
                 <CollectionGame game={collection[0]} />
@@ -22,7 +22,6 @@ const Collection = () => {
     } else {
         return "Loading..."
     }
-    
 }
 
 const Wrapper = styled.div`
@@ -51,8 +50,7 @@ const AddGame = styled.button`
     border-radius: 8px;
     border: none;
     color: var(--lighttext);
-    margin-top: auto;
-    margin-left: auto;
+    
 
     &:hover {
         background-color: var(--primaryhover);
@@ -60,6 +58,15 @@ const AddGame = styled.button`
 
     &:disabled {
         background-color: var(--darkhover);
+    }
+`
+
+const Link = styled.a`
+    margin-top: auto;
+    margin-left: auto;
+
+    &:hover {
+        color: var(--darkhover);
     }
 `
 
