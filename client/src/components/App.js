@@ -8,6 +8,7 @@ import Homepage from "./Homepage";
 import Signin from "./Signin";
 import NotFound from "./NotFound";
 import Profile from "./Profile";
+import Collection from "./Collection";
 
 // *****************************************************************
 // Generates the app
@@ -48,6 +49,7 @@ const App = () => {
 					<Routes>
 						<Route path="/" element={<Homepage />} />
 						<Route path="/profile" element={<Profile />} />
+						<Route path="/collection" element={<Collection />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</BrowserRouter>

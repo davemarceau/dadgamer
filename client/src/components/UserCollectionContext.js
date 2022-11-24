@@ -22,7 +22,7 @@ const reducer = (state, action) => {
 					"Accept": "application/json",
 					"Content-Type": "application/json"
 				},
-                body: action.game
+                body: JSON.stringify(action.game)
 			})
                 .then((data) => data.json())
 				.then((data) => {

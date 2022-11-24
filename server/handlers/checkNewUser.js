@@ -25,7 +25,7 @@ const checkNewUser = async (req, res) => {
 
         //if not, create contactInfo, game collection and calendar
         if (!foundUser) {
-            const contactCreated = await db.collection("userDetails").insertOne({_id: userId, preferredName: null, gender: null, availability: emptyDays});
+            const contactCreated = await db.collection("userDetails").insertOne({_id: userId, preferredName: null, gender: null, availability: emptyDays, firstName: null, lastName: null});
             const collectionCreated = await db.collection("gamesCollection").insertOne({_id: userId, games: []});
             return res.status(201).json({status: 201, message: "User added"});
         } else {

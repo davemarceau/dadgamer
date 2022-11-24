@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
-import { Auth0Context } from "@auth0/auth0-react";
 
 import { UserDetailsContext } from "./UserDetailsContext";
 import ProfileDetails from "./ProfileDetails";
@@ -9,16 +8,39 @@ import ProfileDetailsEditing from "./ProfileDetailsEditing";
 const Profile = () => {
     const [editMode, setEditMode] = useState(false);
     const { details, setDetails } = useContext(UserDetailsContext);
-    //const [tag, setTag] = useState(details.preferredName);
     
     const handleEdit = () => {
-        setEditMode(!editMode);
+        
+        // If in edit mode, attempt saving the changes
+        if (editMode === true) {
+            setEditMode("inProgress");
+            fetch("/updateUserDetails/" + details._id, {
+				method: "PATCH",
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+                body: JSON.stringify(details)
+			})
+				// remove later	
+				.then((data) => data.json())
+				.then((data) => {
+                    setEditMode(false);
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				})
+        
+        // If not in edit mode, enable editing
+        } else {
+            setEditMode(true);
+        }
     }
     
     // Checks if details are loaded to prevent crash
     if (details) {
         // While not editing
-        if (!editMode) {
+        if (editMode === false) {
             return (
                 <Wrapper>
                     <TopDiv>
@@ -31,7 +53,7 @@ const Profile = () => {
             )
     
         // While editing
-        } else {
+        } else if (editMode === true) {
             return (
                 <Wrapper>
                     <TopDiv>
@@ -40,6 +62,17 @@ const Profile = () => {
                         <ProfileImage src="niet" alt="Dev in progress" />
                     </TopDiv>
                     <ProfileDetailsEditing editMode={editMode} />
+                </Wrapper>
+            )
+        } else {
+            return (
+                <Wrapper>
+                    <TopDiv>
+                        <ProfileName>{details.preferredName ? details.preferredName : "Gamer tag TBD"}</ProfileName>
+                        <EditButton disabled >Updating...</EditButton>
+                        <ProfileImage src="niet" alt="Dev in progress" />
+                    </TopDiv>
+                    <ProfileDetails editMode={editMode} />
                 </Wrapper>
             )
         }
@@ -81,6 +114,10 @@ const EditButton = styled.button`
 
     &:hover {
         background-color: var(--primaryhover);
+    }
+
+    &:disabled {
+        background-color: var(--darkhover);
     }
 `
 
