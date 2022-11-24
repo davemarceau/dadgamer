@@ -15,6 +15,7 @@ const checkNewUser = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     const db = client.db("dadgamer");
     const userId = req.params.userid;
+    const emptyDays = [0, 0, 0, 0, 0, 0 ,0]
 
     try {
         await client.connect();
@@ -24,7 +25,7 @@ const checkNewUser = async (req, res) => {
 
         //if not, create contactInfo, game collection and calendar
         if (!foundUser) {
-            const contactCreated = await db.collection("userDetails").insertOne({_id: userId, preferredName: null, gender: null});
+            const contactCreated = await db.collection("userDetails").insertOne({_id: userId, preferredName: null, gender: null, availability: emptyDays});
             const collectionCreated = await db.collection("gamesCollection").insertOne({_id: userId, games: []});
             return res.status(201).json({status: 201, message: "User added"});
         } else {

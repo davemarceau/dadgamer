@@ -11,7 +11,7 @@ const options = {
     useUnifiedTopology: true,
 }
 
-const updateContactInfo = async (req, res) => {
+const updateUserDetails = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     const db = client.db("dadgamer");
 
@@ -26,4 +26,4 @@ const updateContactInfo = async (req, res) => {
     }
 }
 
-module.exports = { updateContactInfo }
+module.exports = { updateUserDetails }
