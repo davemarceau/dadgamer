@@ -11,7 +11,7 @@ const options = {
     useUnifiedTopology: true,
 }
 
-const getContactInfo = async (req, res) => {
+const newGameSearch = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     const db = client.db("dadgamer");
 
@@ -26,4 +26,4 @@ const getContactInfo = async (req, res) => {
     }
 }
 
-module.exports = { getContactInfo }
+module.exports = { newGameSearch }

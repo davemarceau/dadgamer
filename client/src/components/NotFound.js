@@ -50,9 +50,4 @@ const ReturnHome = styled.button`
     }
 `
 
-const Link = styled.a`
-    background-color: transparent;
-    color: var(--lighttext);
-`
-
 export default NotFound;

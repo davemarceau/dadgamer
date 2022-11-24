@@ -9,10 +9,37 @@ import Signin from "./Signin";
 import NotFound from "./NotFound";
 import Profile from "./Profile";
 
+// *****************************************************************
+// Generates the app
+// *****************************************************************
 const App = () => {
 	const { user, isAuthenticated, isLoading } = useAuth0();
 
+	// Checks if user already exists. If not, it creates it
+	useEffect(() => {
+		if (isAuthenticated) {
+			fetch("/checknewuser/" + user.email, {
+				method: "POST",
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				}
+			})
+				// remove later	
+				.then((data) => data.json())
+				.then((data) => {
+					console.log(data);
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				})
+		}
+	}, [user, isAuthenticated])
+
+	// Checks if user is still loading before chossing what routes to apply
 	if (!isLoading) {
+		
+		// If user is logged in, it will allow site navigation
 		if (isAuthenticated) {
 			return (
 				<BrowserRouter>
@@ -20,12 +47,13 @@ const App = () => {
 					<Header />
 					<Routes>
 						<Route path="/" element={<Homepage />} />
-						<Route path="/signin" element={<Signin />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</BrowserRouter>
 			)
+		
+		// If user is not logged in, it will ask for sign in
 		} else {
 			return (
 				<BrowserRouter>
@@ -37,6 +65,8 @@ const App = () => {
 				</BrowserRouter>
 			)
 		}
+
+	// Displays loading if user is still loading
 	} else {
 		return (
 			<BrowserRouter>
