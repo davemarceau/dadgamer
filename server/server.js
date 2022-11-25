@@ -13,8 +13,10 @@ const { checkNewUser } = require("./handlers/checkNewUser");
 const { getUserDetails } = require("./handlers/getUserDetails");
 const { updateUserDetails } = require("./handlers/updateUserDetails");
 const { gameDetails } = require("./handlers/gameDetails");
-const { newGameSearch } = require("./handlers/newGameSearch");
+const { newGameSearch } = require("./handlers/newGameSearch.js");
+
 const { updatePlannedGameTime } = require("./handlers/updatePlannedGameTime");
+//const { newGameSearch } = require('./handlers/newGameSearch.js');
 
 // Server port
 const port = 6000;

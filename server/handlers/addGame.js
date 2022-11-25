@@ -6,6 +6,12 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
+/*import { MongoClient } from "mongodb";
+
+import * as dotenv from "dotenv"
+dotenv.config();
+const { MONGO_URI } = process.env;*/
+
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -27,3 +33,5 @@ const addGame = async (req, res) => {
 }
 
 module.exports = { addGame }
+
+//export default addGame;
