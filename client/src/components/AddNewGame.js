@@ -14,7 +14,7 @@ const AddNewGame = () => {
     const search = async () => {
         console.log(searchTerms);
 
-        /*fetch("/newgamesearch?searchString=" + searchTerms, {
+        fetch("/newgamesearch?searchString=" + searchTerms, {
             headers: {
                 "Accept": "application/json",
             }
@@ -28,9 +28,9 @@ const AddNewGame = () => {
             })
             .catch((error) => {
                 console.error("Error:", error);
-            })*/
+            })
 
-            try {
+            /*try {
                 const token = await axios({
                     method: 'post',
                     url: "https://id.twitch.tv/oauth2/token",
@@ -58,7 +58,7 @@ const AddNewGame = () => {
                 })
             } catch (e) {
                 console.log(e);
-            }
+            }*/
             
     }
     

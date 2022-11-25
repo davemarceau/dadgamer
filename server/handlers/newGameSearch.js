@@ -43,18 +43,15 @@ const newGameSearch = async (req, res) => {
                 "Client-ID": IGDB_CLIENT_ID,
                 "Authorization": authorization,
                 'Accept': 'application/json',
+                //"Transfer-Encoding": "chunked"
             },
             data: {
-                fields: "name",
-                where: "limit 10"
+                "fields": "name",
+                "where": "name ~ " + searchString + "*"
             }
         })
 
-        let decoder = new TextDecoderStream("iso-8859-1");
         
-        let decodedResults = decoder(results.data);
-
-        console.log(decodedResults);
 
         
         // Returns the search results
