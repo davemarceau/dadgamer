@@ -14,11 +14,12 @@ const options = {
 const newGameSearch = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     const db = client.db("dadgamer");
+    const searchString = req.query.searchString;
 
     try {
         await client.connect();
 
-        return res.status(200).json({status: 200, message: "Hello"});
+        return res.status(200).json({status: 200, data: searchString, message: "Hello"});
     } catch (e) {
         return res.status(500).json({status: 500, message: "An error has occured"});
     } finally {
