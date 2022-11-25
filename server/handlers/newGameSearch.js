@@ -1,29 +1,35 @@
-// **********************************************
-// Preps the parameters for the Mongo connection
-// **********************************************
-const { MongoClient } = require("mongodb");
+const axios = require("axios");
 
 require("dotenv").config();
-const { MONGO_URI } = process.env;
-
-const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}
+const { IGDB_CLIENT_ID, IGDB_CLIENT_SECRET } = process.env;
 
 const newGameSearch = async (req, res) => {
-    const client = new MongoClient(MONGO_URI, options);
-    const db = client.db("dadgamer");
     const searchString = req.query.searchString;
+    let results = [];
 
     try {
-        await client.connect();
+        
+        if (searchString === "") {
+            return res.status(400).json({status: 400, data: [], message: "No search parameters entered"});
+        }
 
-        return res.status(200).json({status: 200, data: searchString, message: "Hello"});
-    } catch (e) {
+        const token = await axios({
+            method: 'post',
+            url: "https://id.twitch.tv/oauth2/token",
+            params: {
+                client_id: IGDB_CLIENT_ID,
+                client_secret: IGDB_CLIENT_SECRET,
+                grant_type: "client_credentials"
+            }
+        })
+
+        
+        const successMessage = results.length + " game(s) found";
+        return res.status(200).json({status: 200, data: token.data, message: successMessage});
+        
+    } catch (error) {
+        console.log(error);
         return res.status(500).json({status: 500, message: "An error has occured"});
-    } finally {
-        client.close();
     }
 }
 

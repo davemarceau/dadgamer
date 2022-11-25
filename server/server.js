@@ -36,7 +36,7 @@ app.get("/getcollection/:userid", getCollection);
 app.post("/checknewuser/:userid", checkNewUser);
 app.get("/getuserdetails/:userid", getUserDetails);
 app.patch("/updateUserDetails/:userid", updateUserDetails);
-app.get("/gamedetails", gameDetails);
+app.get("/gamedetails/:gameid", gameDetails);
 app.get("/newgamesearch", newGameSearch);
 app.patch("/updateplannedgametime", updatePlannedGameTime);
 

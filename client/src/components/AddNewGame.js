@@ -22,7 +22,9 @@ const AddNewGame = () => {
             .then((data) => data.json())
             .then((data) => {
                 console.log(data);
-                setSearchResults(data.data);
+                if (data.status = 200) {
+                    setSearchResults(data.data);
+                }
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -65,7 +67,7 @@ const AddNewGame = () => {
                 <SearchButton onClick={handleSearchClick} ><FaSearch /></SearchButton>
             </SearchHeader>
             <ResultsSection>
-                {giveResults()}
+                {searchResults ? giveResults() : ""}
             </ResultsSection>
         </Wrapper>
     );
