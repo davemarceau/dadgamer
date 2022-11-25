@@ -11,10 +11,10 @@ const AddNewGame = () => {
         setSearchTerms(e.target.value);
     }
 
-    const search = () => {
+    const search = async () => {
         console.log(searchTerms);
 
-        fetch("/newgamesearch?searchString=" + searchTerms, {
+        /*fetch("/newgamesearch?searchString=" + searchTerms, {
             headers: {
                 "Accept": "application/json",
             }
@@ -28,7 +28,38 @@ const AddNewGame = () => {
             })
             .catch((error) => {
                 console.error("Error:", error);
-            })
+            })*/
+
+            try {
+                const token = await axios({
+                    method: 'post',
+                    url: "https://id.twitch.tv/oauth2/token",
+                    params: {
+                        client_id: IGDB_CLIENT_ID,
+                        client_secret: IGDB_CLIENT_SECRET,
+                        grant_type: "client_credentials"
+                    }
+                })
+                const authorization = "Bearer " + token.data.access_token;
+        
+                // Sends the search
+                const results = await axios({
+                    method: 'post',
+                    url: "https://api.igdb.com/v4/games",
+                    headers: {
+                        "Client-ID": IGDB_CLIENT_ID,
+                        "Authorization": authorization,
+                        'Accept': 'application/json',
+                    },
+                    data: {
+                        fields: "name",
+                        where: "limit 10"
+                    }
+                })
+            } catch (e) {
+                console.log(e);
+            }
+            
     }
     
     const handleSearchClick = () => {
