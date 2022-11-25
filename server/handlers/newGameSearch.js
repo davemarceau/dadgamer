@@ -11,6 +11,8 @@ const requireModule = (modulePath, exportName) => {
 }
 
 //import * as name from moduleName
+//import * as apicalypse from apicalypse;
+const apicalypse = import("apicalypse");
 
 
 // **************************************************
@@ -24,7 +26,7 @@ const axios = require("axios");
 require("dotenv").config();
 /*import * as dotenv from "dotenv"
 dotenv.config();*/
-const { IGDB_CLIENT_ID, IGDB_CLIENT_SECRET } = process.env;
+const { IGDB_CLIENT_ID, IGDB_CLIENT_SECRET, TWITCH_AUTHENTICATION } = process.env;
 
 //import apicalypse from 'apicalypse';
 
@@ -62,6 +64,15 @@ const newGameSearch = async (req, res) => {
         /*const authentication = await apicalypse(authenticationOptions)
             .query( "client_id = IGDB_CLIENT_ID & client_secret = IGDB_CLIENT_SECRET & grant_type = client_credentials" )
             .request("/token");*/
+        /*apicalypse()
+            .request(TWITCH_AUTHENTICATION)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        console.log(apicalypse);*/
 
         //const test = await apicalypse(authenticationOptions);
 
@@ -86,15 +97,16 @@ const newGameSearch = async (req, res) => {
                 "Client-ID": IGDB_CLIENT_ID,
                 "Authorization": authorization,
                 'Accept': 'application/json',
-                //"Transfer-Encoding": "chunked"
+                "Accept-Encoding": "null",
             },
-            data: {
+            /*data: {
                 "fields": "name",
                 "where": "name ~ " + searchString + "*"
-            }
+            }*/
+            data: "fields involved_companies.*; where involved_companies != null;"
         })
         
-
+        console.log(results);
         
         // Returns the search results
         const successMessage = results.length + " game(s) found";

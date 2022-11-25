@@ -3,6 +3,12 @@ import { useContext, useState } from "react";
 import NewGameSearchResult from "./NewGameSearchResult";
 import { FaSearch } from "react-icons/fa";
 
+/*import * as dotenv from "dotenv"
+dotenv.config();
+const { IGDB_CLIENT_ID, IGDB_CLIENT_SECRET } = process.env;*/
+
+const TWITCH_AUTHENTICATION = process.env.REACT_APP_TWITCH_AUTHENTICATIONs;
+
 const AddNewGame = () => {
     const [searchTerms, setSearchTerms] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -29,6 +35,20 @@ const AddNewGame = () => {
             .catch((error) => {
                 console.error("Error:", error);
             })
+
+        /*fetch(TWITCH_AUTHENTICATION, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+            }
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                console.log(data.data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            })*/
 
             /*try {
                 const token = await axios({
