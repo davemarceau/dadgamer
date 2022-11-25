@@ -3,12 +3,6 @@ import { useContext, useState } from "react";
 import NewGameSearchResult from "./NewGameSearchResult";
 import { FaSearch } from "react-icons/fa";
 
-/*import * as dotenv from "dotenv"
-dotenv.config();
-const { IGDB_CLIENT_ID, IGDB_CLIENT_SECRET } = process.env;*/
-
-const TWITCH_AUTHENTICATION = process.env.REACT_APP_TWITCH_AUTHENTICATIONs;
-
 const AddNewGame = () => {
     const [searchTerms, setSearchTerms] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -27,59 +21,15 @@ const AddNewGame = () => {
         })
             .then((data) => data.json())
             .then((data) => {
-                console.log(data);
+                console.log(data.data);
                 if (data.status = 200) {
                     setSearchResults(data.data);
+                    console.log(data.data);
                 }
             })
             .catch((error) => {
                 console.error("Error:", error);
             })
-
-        /*fetch(TWITCH_AUTHENTICATION, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-            }
-        })
-            .then((data) => data.json())
-            .then((data) => {
-                console.log(data.data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            })*/
-
-            /*try {
-                const token = await axios({
-                    method: 'post',
-                    url: "https://id.twitch.tv/oauth2/token",
-                    params: {
-                        client_id: IGDB_CLIENT_ID,
-                        client_secret: IGDB_CLIENT_SECRET,
-                        grant_type: "client_credentials"
-                    }
-                })
-                const authorization = "Bearer " + token.data.access_token;
-        
-                // Sends the search
-                const results = await axios({
-                    method: 'post',
-                    url: "https://api.igdb.com/v4/games",
-                    headers: {
-                        "Client-ID": IGDB_CLIENT_ID,
-                        "Authorization": authorization,
-                        'Accept': 'application/json',
-                    },
-                    data: {
-                        fields: "name",
-                        where: "limit 10"
-                    }
-                })
-            } catch (e) {
-                console.log(e);
-            }*/
-            
     }
     
     const handleSearchClick = () => {
@@ -96,8 +46,9 @@ const AddNewGame = () => {
         if (searchResults.length > 0) {
             return (
                 <>
-                    <NewGameSearchResult />
-                    <NewGameSearchResult />
+                    {searchResults.map((result) => {
+                        return <NewGameSearchResult name={result.name} cover={result.cover} id={result.id} platforms={result.platforms} url={result.url} rating={result.rating} releaseDate={result.first_release_date} summary={result.summary} />
+                    })}
                 </>
             )
         } else {
@@ -141,25 +92,6 @@ const HeadWrapper = styled.div`
 
 const PageTitle = styled.h1`
     font-size: 30px;
-`
-
-const AddGame = styled.button`
-    background-color: var(--primaryblue);
-    width: 90px;
-    height: 35px;
-    border-radius: 8px;
-    border: none;
-    color: var(--lighttext);
-    margin-top: auto;
-    margin-left: auto;
-
-    &:hover {
-        background-color: var(--primaryhover);
-    }
-
-    &:disabled {
-        background-color: var(--darkhover);
-    }
 `
 
 const SearchHeader = styled.div`
