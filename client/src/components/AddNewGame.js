@@ -12,7 +12,6 @@ const AddNewGame = () => {
     }
 
     const search = async () => {
-        console.log(searchTerms);
 
         fetch("/newgamesearch?searchString=" + searchTerms, {
             headers: {
@@ -21,10 +20,8 @@ const AddNewGame = () => {
         })
             .then((data) => data.json())
             .then((data) => {
-                console.log(data.data);
                 if (data.status = 200) {
                     setSearchResults(data.data);
-                    console.log(data.data);
                 }
             })
             .catch((error) => {
@@ -47,7 +44,7 @@ const AddNewGame = () => {
             return (
                 <>
                     {searchResults.map((result) => {
-                        return <NewGameSearchResult name={result.name} cover={result.cover} id={result.id} platforms={result.platforms} url={result.url} rating={result.rating} releaseDate={result.first_release_date} summary={result.summary} />
+                        return <NewGameSearchResult key={result.id} name={result.name} cover={result.cover} id={result.id} platforms={result.platforms} url={result.url} rating={result.rating} releaseDate={result.first_release_date} summary={result.summary} />
                     })}
                 </>
             )

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { format } from "date-fns";
+import noImagePlaceholder from "./assets/No-Image-Placeholder.png";
 
 
 const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseDate, summary }) => {
@@ -19,21 +20,27 @@ const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseD
     // Updates the cover to the URL if there is one or 
     if (cover) {
         coverUrl = cover.url;
+    } else {
+        coverUrl = noImagePlaceholder;
     }
 
-    /*platforms.forEach((platform, index) => {
-        if (index === 0) {
-            platformsList = platform;
-        } else {
-            //platformsList = platformsList + ", " + platform;
-        }
-    });*/
+    if (platforms) {
+        platforms.forEach((platform, index) => {
+            if (index === 0) {
+                platformsList = platform.name;
+            } else {
+                platformsList = platformsList + ", " + platform.name;
+            }
+        });
+    } else {
+        platformsList = "N/A";
+    }
     
     return (
         <Wrapper>
-            <Link href={url} ><CoverArt src={coverUrl} alt="cover" /></Link>
+            <Link href={url} target="_blank" ><CoverArt src={coverUrl} alt="cover" /></Link>
             <Details>
-                <Link href={url} ><GameTitle>{name}</GameTitle></Link>
+                <Link href={url} target="_blank" ><GameTitle>{name}</GameTitle></Link>
                 <SmallerDetails>
                     <ReleaseDate>Release dates: {dateResults}</ReleaseDate>
                     <Platforms>Platforms: {platformsList}</Platforms>
@@ -92,12 +99,14 @@ const Link = styled.a`
 
 const SmallerDetails = styled.div`
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
 `
 
 const ReleaseDate = styled.div`
     font-size: 14px;
     padding: 4px;
+    width: 250px;
 `
 
 const Platforms = styled.div`
