@@ -6,13 +6,14 @@ import { FaSearch } from "react-icons/fa";
 const AddNewGame = () => {
     const [searchTerms, setSearchTerms] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+    const [searching, setSearching] = useState(false);
 
     const handleSearchChange = (e) => {
         setSearchTerms(e.target.value);
     }
 
     const search = async () => {
-
+        setSearching(true);
         fetch("/newgamesearch?searchString=" + searchTerms, {
             headers: {
                 "Accept": "application/json",
@@ -22,10 +23,12 @@ const AddNewGame = () => {
             .then((data) => {
                 if (data.status = 200) {
                     setSearchResults(data.data);
+                    setSearching(false);
                 }
             })
             .catch((error) => {
                 console.error("Error:", error);
+                setSearching(false);
             })
     }
     
@@ -63,7 +66,11 @@ const AddNewGame = () => {
             <SearchHeader>
                 <SearchTitle>Search here: </SearchTitle>
                 <SearchBar value={searchTerms} placeholder="Game name here" onChange={handleSearchChange} onKeyDown={handleSearchKeyDown} />
-                <SearchButton onClick={handleSearchClick} ><FaSearch /></SearchButton>
+                {searching
+                    ? <SearchButton disabled ><FaSearch /></SearchButton>
+                    : <SearchButton onClick={handleSearchClick} ><FaSearch /></SearchButton>
+                }
+                
             </SearchHeader>
             <ResultsSection>
                 {searchResults ? giveResults() : ""}
@@ -127,9 +134,15 @@ const SearchButton = styled.button`
     left: -39px;
     margin-top: auto;
     margin-bottom: auto;
+    cursor: pointer;
 
     &:hover {
         background-color: var(--primaryhover);
+    }
+
+    &:disabled {
+        background-color: var(--darkhover);
+        cursor: wait;
     }
 `
 

@@ -55,6 +55,7 @@ const ProfileIcon = styled(FaUserCircle)`
     width: 40px;
     height: 40px;
     color: var(--lighttext);
+    cursor: pointer;
 
     &:hover {
         color: var(--lighthover);

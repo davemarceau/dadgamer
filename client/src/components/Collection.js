@@ -50,7 +50,7 @@ const AddGame = styled.button`
     border-radius: 8px;
     border: none;
     color: var(--lighttext);
-    
+    cursor: pointer;
 
     &:hover {
         background-color: var(--primaryhover);

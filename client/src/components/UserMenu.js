@@ -24,6 +24,7 @@ const Menu = styled.div`
     background-color: var(--lightbackground);
     right: 10px;
     top: 80px;
+    z-index: 2;
 `
 
 const MiniBox = styled.div`
@@ -54,6 +55,7 @@ const LoginButton = styled.button`
     color: var(--lighttext);
     margin-top: 10px;
     margin-bottom: 10px;
+    cursor: pointer;
 
     &:hover {
         background-color: var(--primaryhover);

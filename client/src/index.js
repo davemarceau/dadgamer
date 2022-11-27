@@ -13,7 +13,6 @@ import UserCollectionProvider from "./components/UserCollectionContext";
 // ******************************************************
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-	<React.StrictMode>
 	<Auth0Provider
 		domain="dev-as5wjuc8jh0e5zt7.us.auth0.com"
 		clientId="Bb3GApW9LkFDKijeaRj6vR3wf2mlpjfw"
@@ -24,6 +23,5 @@ root.render(
 			</UserCollectionProvider>
 		</UserDetailsProvider>
 	</Auth0Provider>
-	</React.StrictMode>
 );
 

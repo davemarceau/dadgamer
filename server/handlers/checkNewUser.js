@@ -11,6 +11,9 @@ const options = {
     useUnifiedTopology: true,
 }
 
+// **********************************************
+// New user check handler
+// **********************************************
 const checkNewUser = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     const db = client.db("dadgamer");
@@ -39,4 +42,7 @@ const checkNewUser = async (req, res) => {
     }
 }
 
+// **********************************************
+// Exports the module
+// **********************************************
 module.exports = { checkNewUser }

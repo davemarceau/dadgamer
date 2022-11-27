@@ -1,9 +1,19 @@
+// General libraries
 import styled from "styled-components";
 import { format } from "date-fns";
+import { useContext } from "react";
+
+// Project specific libraries
 import noImagePlaceholder from "./assets/No-Image-Placeholder.png";
+import { UserCollectionContext } from "./UserCollectionContext";
+import { UserDetailsContext } from "./UserDetailsContext";
 
-
+// **********************************************************
+// Seasrch result component
+// **********************************************************
 const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseDate, summary }) => {
+    const { collection, actions: { addGame } } = useContext(UserCollectionContext);
+    const { details } = useContext(UserDetailsContext);
     let formattedReleaseDates = [];
     let dateResults = null;
     let coverUrl = "";
@@ -24,6 +34,7 @@ const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseD
         coverUrl = noImagePlaceholder;
     }
 
+    // Formats the platforms for display in a field
     if (platforms) {
         platforms.forEach((platform, index) => {
             if (index === 0) {
@@ -35,7 +46,21 @@ const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseD
     } else {
         platformsList = "N/A";
     }
+
+    // Formats the game information into an importable object
+    const gameObject = { id: id, name: name, cover: coverUrl, platforms: platformsList, releaseDate: dateResults, summary: summary, timeToBeat: 0, active: true, evergreen: false };
+
+    // Adds the game to the collection on the click of the button
+    const handleClickAddGame = () => {
+        addGame({ user: details._id, game: gameObject});
+    }
+
+    // validates if game already in collection
+    const alreadyinCollection = collection.findIndex((collectionGame) => {
+        return collectionGame.id == id;
+    })
     
+    // Generates the Component
     return (
         <Wrapper>
             <Link href={url} target="_blank" ><CoverArt src={coverUrl} alt="cover" /></Link>
@@ -46,12 +71,18 @@ const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseD
                     <Platforms>Platforms: {platformsList}</Platforms>
                 </SmallerDetails>
             </Details>
-            <AddToCollectionButton>Add to collection</AddToCollectionButton>
+            {alreadyinCollection === -1
+                ? <AddToCollectionButton onClick={handleClickAddGame} >Add to collection</AddToCollectionButton>
+                : <AddToCollectionButton disabled >Already in collection</AddToCollectionButton>
+            }
         </Wrapper>
         
     )
 }
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const Wrapper = styled.div`
     padding: 10px;
     display: flex;
@@ -124,6 +155,7 @@ const AddToCollectionButton = styled.button`
     margin-top: auto;
     margin-bottom: auto;
     margin-left: auto;
+    cursor: pointer;
 
     &:hover {
         background-color: var(--primaryhover);
@@ -131,7 +163,11 @@ const AddToCollectionButton = styled.button`
 
     &:disabled {
         background-color: var(--darkhover);
+        cursor: not-allowed;
     }
 `
 
+// **********************************************************
+// Export the component
+// **********************************************************
 export default NewGameSearchResult;

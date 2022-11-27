@@ -15,30 +15,43 @@ const reducer = (state, action) => {
         // Adding a game
         // ****************************
         case "addGame": 
-            // Updates the DB
-            fetch("/addgame", {
-				method: "POST",
-				headers: {
-					"Accept": "application/json",
-					"Content-Type": "application/json"
-				},
-                body: JSON.stringify(action.game)
-			})
-                .then((data) => data.json())
-				.then((data) => {
-					console.log(data);
-				})
-				.catch((error) => {
-					console.error("Error:", error);
-				})
+            
+            // validates if game already in collection
+            const alreadyinCollection = state.findIndex((collectionGame) => {
+                return collectionGame.id == action.game.id;
+            })
 
-            // Updates the Context
-            return [
-                ...state,
-                action.game,
-            ]
+            // if not adds it
+            if (alreadyinCollection === -1) {
+                // Updates the DB
+                fetch("/addgame", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({user: action.user, game: action.game})
+                })
+                    .then((data) => data.json())
+                    .then((data) => {
+                        //console.log(data);
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    })
+                    
+                // Updates the Context
+                return [
+                    ...state,
+                    action.game,
+                ]
+
+            // if it is, it does nothing
+            } else {
+                return state;
+            }
+            
         
-
         // ****************************
         // Removing a game
         // ****************************
@@ -55,11 +68,14 @@ const reducer = (state, action) => {
                 .then((data) => data.json())
 				.then((data) => {
 					console.log(data);
+
+                    
 				})
 				.catch((error) => {
 					console.error("Error:", error);
 				})
 
+            
             // Updates the Context
             let updatedGames = [...state];
             const gameToRemove = updatedGames.findIndex((game) => {
@@ -92,7 +108,8 @@ const UserCollectionProvider = ({ children }) => {
     const addGame = (data) => {
         dispatch({
             type: "addGame",
-            game: data
+            user: data.user,
+            game: data.game
         })
     }
 
@@ -100,7 +117,8 @@ const UserCollectionProvider = ({ children }) => {
     const removeGame = (data) => {
         dispatch({
             type: "removeGame",
-            game: data
+            user: data.user,
+            game: data.game
         })
     }
 
