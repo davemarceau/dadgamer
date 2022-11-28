@@ -6,7 +6,8 @@ import CollectionGame from "./CollectionGame";
 
 const Collection = () => {
     const { collection } = useContext(UserCollectionContext);
-    
+    console.log(collection);
+
     if (collection) {
         return (
             <Wrapper>
@@ -14,9 +15,11 @@ const Collection = () => {
                     <PageTitle>Your game collection</PageTitle>
                     <Link href="/addgame" ><AddGame>Add a game</AddGame></Link>
                 </HeadWrapper>
-                
-                <CollectionGame game={collection[0]} />
-                <CollectionGame game={collection[1]} />
+                {
+                    collection.map((game) => {
+                        return <CollectionGame game={game} key={game.id} />
+                    })
+                }
             </Wrapper>
         );
     } else {

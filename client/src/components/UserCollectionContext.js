@@ -18,7 +18,7 @@ const reducer = (state, action) => {
             
             // validates if game already in collection
             const alreadyinCollection = state.findIndex((collectionGame) => {
-                return collectionGame.id == action.game.id;
+                return collectionGame.id === action.game.id;
             })
 
             // if not adds it
@@ -40,7 +40,7 @@ const reducer = (state, action) => {
                         console.error("Error:", error);
                     })
                     
-                // Updates the Context
+                // Updates the Context without waiting for the DB for snappier interaction
                 return [
                     ...state,
                     action.game,
@@ -63,7 +63,7 @@ const reducer = (state, action) => {
 					"Accept": "application/json",
 					"Content-Type": "application/json"
 				},
-                body: action.game
+                body: JSON.stringify({user: action.user, game: action.game})
 			})
                 .then((data) => data.json())
 				.then((data) => {
@@ -75,12 +75,13 @@ const reducer = (state, action) => {
 					console.error("Error:", error);
 				})
 
-            
-            // Updates the Context
+            // Updates the Context without waiting for the DB for snappier interaction
             let updatedGames = [...state];
+
             const gameToRemove = updatedGames.findIndex((game) => {
-                return game.id = action.game.id;
+                return game.id === action.game.id;
             });
+
             updatedGames.splice(gameToRemove, 1);
             return [...updatedGames];
         

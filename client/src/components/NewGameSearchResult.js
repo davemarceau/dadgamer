@@ -48,7 +48,7 @@ const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseD
     }
 
     // Formats the game information into an importable object
-    const gameObject = { id: id, name: name, cover: coverUrl, platforms: platformsList, releaseDate: dateResults, summary: summary, timeToBeat: 0, active: true, evergreen: false };
+    const gameObject = { id: id, name: name, cover: coverUrl, platforms: platformsList, releaseDate: dateResults, summary: summary, timeToBeat: 0, active: true, evergreen: false, url: url };
 
     // Adds the game to the collection on the click of the button
     const handleClickAddGame = () => {
@@ -148,7 +148,7 @@ const Platforms = styled.div`
 const AddToCollectionButton = styled.button`
     background-color: var(--primaryblue);
     width: 80px;
-    height: 35px;
+    height: 40px;
     border-radius: 8px;
     border: none;
     color: var(--lighttext);

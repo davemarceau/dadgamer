@@ -3,6 +3,9 @@ import { useContext, useState } from "react";
 import NewGameSearchResult from "./NewGameSearchResult";
 import { FaSearch } from "react-icons/fa";
 
+// **********************************************************
+// Add new game component
+// **********************************************************
 const AddNewGame = () => {
     const [searchTerms, setSearchTerms] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -79,6 +82,9 @@ const AddNewGame = () => {
     );
 }
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -163,4 +169,7 @@ const ResultsSection = styled.div`
     padding: 20px;
 `
 
+// **********************************************************
+// Exporting component
+// **********************************************************
 export default AddNewGame
