@@ -36,26 +36,33 @@ const CollectionGame = ({ game }) => {
         }
     }
 
+    // Updates the time to beat field
     const handleTimeToBeatChange = (e) => {
         setTimeToBeatState(e.target.value);
     }
 
+    // Updates the Active status of the game
     const handleActiveChange = (e) => {
         setActiveState(!activeState);
     }
 
+    // Updates the Evergreen status of the game
     const handleEvergreenChange = (e) => {
         setEvergreenState(!evergreenState);
     }
 
+    // Fields at the bottom are editable depending on he editMode status
     const editSection = () => {
         switch (editMode) {
             case true:
                 return (
                     <PlayPlanning>
-                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle><TimeToBeatInput id="timetobeat" name="timetobeat" type="number" placeholder="hrs" value={timeToBeatState} onChange={handleTimeToBeatChange} /></PlanDetail>
-                        <PlanDetail><FieldTitle>Active: </FieldTitle>{activeState ? <input type="checkbox" id="active" name="active" checked onChange={handleActiveChange} /> : <input type="checkbox" id="active" name="active" onChange={handleActiveChange} />}</PlanDetail>
-                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreenState ? <input type="checkbox" id="evergreen" name="evergreen" checked onChange={handleEvergreenChange} /> : <input type="checkbox" id="evergreen" name="evergreen" onChange={handleEvergreenChange} />}</PlanDetail>
+                        <PlanDetails>
+                            <PlanDetail><FieldTitle>Time to beat: </FieldTitle><TimeToBeatInput id="timetobeat" name="timetobeat" type="number" placeholder="hrs" value={timeToBeatState} onChange={handleTimeToBeatChange} /></PlanDetail>
+                            <PlanDetail><FieldTitle>Active: </FieldTitle>{activeState ? <input type="checkbox" id="active" name="active" checked onChange={handleActiveChange} /> : <input type="checkbox" id="active" name="active" onChange={handleActiveChange} />}</PlanDetail>
+                            <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreenState ? <input type="checkbox" id="evergreen" name="evergreen" checked onChange={handleEvergreenChange} /> : <input type="checkbox" id="evergreen" name="evergreen" onChange={handleEvergreenChange} />}</PlanDetail>
+                            <PlanDetail><FieldTitle>Time left to beat: </FieldTitle>0h</PlanDetail>
+                        </PlanDetails>
                         <RemoveFromCollectionButton disabled >Remove from collection</RemoveFromCollectionButton>
                         <EditMode onClick={handleEditMode} >Save changes</EditMode>
                     </PlayPlanning>
@@ -63,9 +70,12 @@ const CollectionGame = ({ game }) => {
             case false:
                 return (
                     <PlayPlanning>
-                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
-                        <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
-                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                        <PlanDetails>
+                            <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
+                            <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
+                            <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                            <PlanDetail><FieldTitle>Time left to beat: </FieldTitle>0h</PlanDetail>
+                        </PlanDetails>
                         <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
                         <EditMode onClick={handleEditMode} >Edit details</EditMode>
                     </PlayPlanning>
@@ -73,9 +83,12 @@ const CollectionGame = ({ game }) => {
             case "inProgress":
                 return (
                     <PlayPlanning>
-                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
-                        <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
-                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                        <PlanDetails>
+                            <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
+                            <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
+                            <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                            <PlanDetail><FieldTitle>Time left to beat: </FieldTitle>0h</PlanDetail>
+                        </PlanDetails>
                         <RemoveFromCollectionButton disabled >Remove from collection</RemoveFromCollectionButton>
                         <EditMode disabled >In progress</EditMode>
                     </PlayPlanning>
@@ -83,6 +96,7 @@ const CollectionGame = ({ game }) => {
         }
     }
 
+    // Main render of the component
     if (game) {
         return (
             <Wrapper>
@@ -251,6 +265,13 @@ const RemoveFromCollectionButton = styled.button`
 
 const TimeToBeatInput = styled.input`
     width: 35px;
+`
+
+const PlanDetails = styled.div`
+    width: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 `
 
 // **********************************************************

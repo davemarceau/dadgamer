@@ -21,13 +21,13 @@ const ProfileDetails = ({ editMode }) => {
                 </Details>
                 <Availability>
                     <SectionTitle>Availability for each day (in hours)</SectionTitle>
-                    <Detail><FieldTitle>Monday: </FieldTitle>{details.availability[0] ? details.availability[0] + "h" : "None"}</Detail>
-                    <Detail><FieldTitle>Tuesday: </FieldTitle>{details.availability[1] ? details.availability[1] + "h" : "None"}</Detail>
-                    <Detail><FieldTitle>Wednesday: </FieldTitle>{details.availability[2] ? details.availability[2] + "h" : "None"}</Detail>
-                    <Detail><FieldTitle>Thusrday: </FieldTitle>{details.availability[3] ? details.availability[3] + "h" : "None"}</Detail>
-                    <Detail><FieldTitle>Friday: </FieldTitle>{details.availability[4] ? details.availability[4] + "h" : "None"}</Detail>
-                    <Detail><FieldTitle>Saturday: </FieldTitle>{details.availability[5] ? details.availability[5] + "h" : "None"}</Detail>
-                    <Detail><FieldTitle>Sunday: </FieldTitle>{details.availability[6] ? details.availability[6] + "h" : "None"}</Detail>
+                    <Detail><FieldTitle>Sunday: </FieldTitle>{details.availability[0] ? details.availability[0] + "h" : "None"}</Detail>
+                    <Detail><FieldTitle>Monday: </FieldTitle>{details.availability[1] ? details.availability[1] + "h" : "None"}</Detail>
+                    <Detail><FieldTitle>Tuesday: </FieldTitle>{details.availability[2] ? details.availability[2] + "h" : "None"}</Detail>
+                    <Detail><FieldTitle>Wednesday: </FieldTitle>{details.availability[3] ? details.availability[3] + "h" : "None"}</Detail>
+                    <Detail><FieldTitle>Thusrday: </FieldTitle>{details.availability[4] ? details.availability[4] + "h" : "None"}</Detail>
+                    <Detail><FieldTitle>Friday: </FieldTitle>{details.availability[5] ? details.availability[5] + "h" : "None"}</Detail>
+                    <Detail><FieldTitle>Saturday: </FieldTitle>{details.availability[6] ? details.availability[6] + "h" : "None"}</Detail>
                 </Availability>
             </Wrapper>
         );

@@ -6,7 +6,6 @@ import CollectionGame from "./CollectionGame";
 
 const Collection = () => {
     const { collection } = useContext(UserCollectionContext);
-    console.log(collection);
 
     if (collection) {
         return (

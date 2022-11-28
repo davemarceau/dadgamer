@@ -41,13 +41,13 @@ const ProfileDetailsEditing = ({ editMode }) => {
                 </Details>
                 <Availability>
                     <SectionTitle>Availability for each day (in hours)</SectionTitle>
-                    <Detail><FieldTitle>Monday: </FieldTitle><DayInput type="number" id="0" placeholder="Hours here" value={details.availability[0] ? details.availability[0] : ""} onChange={handleDayChange} /></Detail>
-                    <Detail><FieldTitle>Tuesday: </FieldTitle><DayInput type="number" id="1" placeholder="Hours here" value={details.availability[1] ? details.availability[1] : ""} onChange={handleDayChange} /></Detail>
-                    <Detail><FieldTitle>Wednesday: </FieldTitle><DayInput type="number" id="2" placeholder="Hours here" value={details.availability[2] ? details.availability[2] : ""} onChange={handleDayChange} /></Detail>
-                    <Detail><FieldTitle>Thusrday: </FieldTitle><DayInput type="number" id="3" placeholder="Hours here" value={details.availability[3] ? details.availability[3] : ""} onChange={handleDayChange} /></Detail>
-                    <Detail><FieldTitle>Friday: </FieldTitle><DayInput type="number" id="4" placeholder="Hours here" value={details.availability[4] ? details.availability[4] : ""} onChange={handleDayChange} /></Detail>
-                    <Detail><FieldTitle>Saturday: </FieldTitle><DayInput type="number" id="5" placeholder="Hours here" value={details.availability[5] ? details.availability[5] : ""} onChange={handleDayChange} /></Detail>
-                    <Detail><FieldTitle>Sunday: </FieldTitle><DayInput type="number" id="6" placeholder="Hours here" value={details.availability[6] ? details.availability[6] : ""} onChange={handleDayChange} /></Detail>
+                    <Detail><FieldTitle>Sunday: </FieldTitle><DayInput type="number" id="0" placeholder="Hours here" value={details.availability[0] ? details.availability[0] : ""} onChange={handleDayChange} /></Detail>
+                    <Detail><FieldTitle>Monday: </FieldTitle><DayInput type="number" id="1" placeholder="Hours here" value={details.availability[1] ? details.availability[1] : ""} onChange={handleDayChange} /></Detail>
+                    <Detail><FieldTitle>Tuesday: </FieldTitle><DayInput type="number" id="2" placeholder="Hours here" value={details.availability[2] ? details.availability[2] : ""} onChange={handleDayChange} /></Detail>
+                    <Detail><FieldTitle>Wednesday: </FieldTitle><DayInput type="number" id="3" placeholder="Hours here" value={details.availability[3] ? details.availability[3] : ""} onChange={handleDayChange} /></Detail>
+                    <Detail><FieldTitle>Thusrday: </FieldTitle><DayInput type="number" id="4" placeholder="Hours here" value={details.availability[4] ? details.availability[4] : ""} onChange={handleDayChange} /></Detail>
+                    <Detail><FieldTitle>Friday: </FieldTitle><DayInput type="number" id="5" placeholder="Hours here" value={details.availability[5] ? details.availability[5] : ""} onChange={handleDayChange} /></Detail>
+                    <Detail><FieldTitle>Saturday: </FieldTitle><DayInput type="number" id="6" placeholder="Hours here" value={details.availability[6] ? details.availability[6] : ""} onChange={handleDayChange} /></Detail>
                 </Availability>
             </Wrapper>
         );
