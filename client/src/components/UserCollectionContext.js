@@ -85,6 +85,36 @@ const reducer = (state, action) => {
             updatedGames.splice(gameToRemove, 1);
             return [...updatedGames];
         
+        // ****************************
+        // Removing a game
+        // ****************************
+        case "updateGame":
+            // Updates the db
+            fetch("/updateplannedgametime", {
+				method: "PATCH",
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+                body: JSON.stringify({ user: action.user, game: action.game })
+			})
+				// remove later	
+				.then((data) => data.json())
+				.then((data) => {
+                    console.log(data);
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				})
+
+            let updatingGames = [...state];
+
+            const gameToUpdate = updatingGames.findIndex((game) => {
+                return game.id === action.game.id;
+            });
+    
+            updatingGames[gameToUpdate] = action.game;
+            return [...updatingGames];
 
         // ****************************
         // Loading the user collection
@@ -123,6 +153,15 @@ const UserCollectionProvider = ({ children }) => {
         })
     }
 
+    // Updates a game from the collection with new information
+    const updateGame = (data) => {
+        dispatch({
+            type: "updateGame",
+            user: data.user,
+            game: data.game
+        })
+    }
+
     // Loads the collection when the user is logged im
     useEffect(() => {
         if (isAuthenticated) {
@@ -138,7 +177,7 @@ const UserCollectionProvider = ({ children }) => {
     }, [user, isAuthenticated])
     
     return (
-        <UserCollectionContext.Provider value={{ collection, actions: { addGame, removeGame } }}>
+        <UserCollectionContext.Provider value={{ collection, actions: { addGame, removeGame, updateGame } }}>
             {children}
         </UserCollectionContext.Provider>
     );

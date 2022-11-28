@@ -8,10 +8,13 @@ import { UserDetailsContext } from "./UserDetailsContext";
 // Collection game component
 // **********************************************************
 const CollectionGame = ({ game }) => {
-    const { actions: { removeGame } } = useContext(UserCollectionContext);
-    const { id, name, cover, platforms, releaseDate, summary, timeToBeat, active, evergreen, url } = game;
+    const { actions: { removeGame, updateGame } } = useContext(UserCollectionContext);
+    let { id, name, cover, platforms, releaseDate, summary, timeToBeat, active, evergreen, url } = game;
     const { details } = useContext(UserDetailsContext);
     const [editMode, setEditMode] = useState(false);
+    const [timeToBeatState, setTimeToBeatState] = useState(timeToBeat);
+    const [activeState, setActiveState] = useState(active);
+    const [evergreenState, setEvergreenState] = useState(evergreen);
     
     // Removes the game from the collection on the click of the button
     const handleClickRemoveGame = () => {
@@ -23,27 +26,26 @@ const CollectionGame = ({ game }) => {
         // If in edit mode, attempt saving the changes
         if (editMode === true) {
             setEditMode("inProgress");
-            fetch("/updateplannedgametime" + details._id, {
-				method: "PATCH",
-				headers: {
-					"Accept": "application/json",
-					"Content-Type": "application/json"
-				},
-                body: JSON.stringify({ user: details._id, game: game })
-			})
-				// remove later	
-				.then((data) => data.json())
-				.then((data) => {
-                    setEditMode(false);
-				})
-				.catch((error) => {
-					console.error("Error:", error);
-				})
-        
+            game = {...game, timeToBeat: timeToBeatState, active: activeState, evergreen: evergreenState};
+            updateGame({ user: details._id, game: game });
+            setEditMode(false);
+
         // If not in edit mode, enable editing
         } else {
             setEditMode(true);
         }
+    }
+
+    const handleTimeToBeatChange = (e) => {
+        setTimeToBeatState(e.target.value);
+    }
+
+    const handleActiveChange = (e) => {
+        setActiveState(!activeState);
+    }
+
+    const handleEvergreenChange = (e) => {
+        setEvergreenState(!evergreenState);
     }
 
     const editSection = () => {
@@ -51,10 +53,10 @@ const CollectionGame = ({ game }) => {
             case true:
                 return (
                     <PlayPlanning>
-                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
-                        <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
-                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
-                        <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
+                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle><TimeToBeatInput id="timetobeat" name="timetobeat" type="number" placeholder="hrs" value={timeToBeatState} onChange={handleTimeToBeatChange} /></PlanDetail>
+                        <PlanDetail><FieldTitle>Active: </FieldTitle>{activeState ? <input type="checkbox" id="active" name="active" checked onChange={handleActiveChange} /> : <input type="checkbox" id="active" name="active" onChange={handleActiveChange} />}</PlanDetail>
+                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreenState ? <input type="checkbox" id="evergreen" name="evergreen" checked onChange={handleEvergreenChange} /> : <input type="checkbox" id="evergreen" name="evergreen" onChange={handleEvergreenChange} />}</PlanDetail>
+                        <RemoveFromCollectionButton disabled >Remove from collection</RemoveFromCollectionButton>
                         <EditMode onClick={handleEditMode} >Save changes</EditMode>
                     </PlayPlanning>
                 );
@@ -74,8 +76,8 @@ const CollectionGame = ({ game }) => {
                         <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
                         <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
                         <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
-                        <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
-                        <EditMode onClick={handleEditMode} >In progress</EditMode>
+                        <RemoveFromCollectionButton disabled >Remove from collection</RemoveFromCollectionButton>
+                        <EditMode disabled >In progress</EditMode>
                     </PlayPlanning>
                 );
         }
@@ -85,7 +87,7 @@ const CollectionGame = ({ game }) => {
         return (
             <Wrapper>
                 <MainInfo>
-                    <Link href={url} target="_blank" ><CoverArt src={cover} alt="cover" /></Link>
+                    <Link href={url} target="_blank" ><CoverArt src={cover} alt="cover" className={active ? "activeImage" : "inactiveImage"} /></Link>
                     <Details>
                         <Link href={url} target="_blank" ><GameTitle>{name}</GameTitle></Link>
                         <SmallerDetails>
@@ -131,10 +133,14 @@ const CoverArt = styled.img`
     border: 2px solid var(--lightbackground);
     margin: 5px;
 
+    &.inactiveImage {
+        filter: grayscale(.9);
+    }
+
     &:hover {
         color: var(--lighthover);
         border: 2px solid var(--lighthover);
-        filter: grayscale(.7)
+        filter: grayscale(.7);
     }
 `
 
@@ -243,6 +249,9 @@ const RemoveFromCollectionButton = styled.button`
     }
 `
 
+const TimeToBeatInput = styled.input`
+    width: 35px;
+`
 
 // **********************************************************
 // Export the component
