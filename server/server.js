@@ -12,7 +12,7 @@ const { getCollection } = require("./handlers/getCollection");
 const { checkNewUser } = require("./handlers/checkNewUser");
 const { getUserDetails } = require("./handlers/getUserDetails");
 const { updateUserDetails } = require("./handlers/updateUserDetails");
-const { gameDetails } = require("./handlers/gameDetails");
+//const { gameDetails } = require("./handlers/gameDetails");
 const { newGameSearch } = require("./handlers/newGameSearch.js");
 
 const { updatePlannedGameTime } = require("./handlers/updatePlannedGameTime");
@@ -38,7 +38,7 @@ app.get("/getcollection/:userid", getCollection);
 app.post("/checknewuser/:userid", checkNewUser);
 app.get("/getuserdetails/:userid", getUserDetails);
 app.patch("/updateUserDetails/:userid", updateUserDetails);
-app.get("/gamedetails/:gameid", gameDetails);
+//app.get("/gamedetails/:gameid", gameDetails);
 app.get("/newgamesearch", newGameSearch);
 app.patch("/updateplannedgametime", updatePlannedGameTime);
 

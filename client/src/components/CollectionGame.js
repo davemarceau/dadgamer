@@ -4,16 +4,48 @@ import { useContext, useEffect, useState } from "react";
 import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
 
+// **********************************************************
+// Collection game component
+// **********************************************************
 const CollectionGame = ({ game }) => {
     const { actions: { removeGame } } = useContext(UserCollectionContext);
     const { id, name, cover, platforms, releaseDate, summary, timeToBeat, active, evergreen, url } = game;
     const { details } = useContext(UserDetailsContext);
+    const [editMode, setEditMode] = useState(false);
     
     // Removes the game from the collection on the click of the button
     const handleClickRemoveGame = () => {
-        removeGame({ user: details._id, game: game});
+        removeGame({ user: details._id, game: game });
     }
     
+    // Triggers either saving or edit mode on button click
+    const handleEditMode = () => {
+        // If in edit mode, attempt saving the changes
+        if (editMode === true) {
+            setEditMode("inProgress");
+            fetch("/updateplannedgametime" + details._id, {
+				method: "PATCH",
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+                body: JSON.stringify({ user: details._id, game: game })
+			})
+				// remove later	
+				.then((data) => data.json())
+				.then((data) => {
+                    setEditMode(false);
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				})
+        
+        // If not in edit mode, enable editing
+        } else {
+            setEditMode(true);
+        }
+    }
+
     if (game) {
         return (
             <Wrapper>
@@ -26,20 +58,22 @@ const CollectionGame = ({ game }) => {
                             <Platforms>Platforms: {platforms}</Platforms>
                         </SmallerDetails>
                     </Details>
-                    <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
+                    
                 </MainInfo>
                 <Summary><FieldTitle>Summary: </FieldTitle>{summary}</Summary>
                 <PlayPlanning>
                     <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
                     <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
                     <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                    <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
+                    <EditMode onClick={handleEditMode} >Edit details</EditMode>
+                    
                 </PlayPlanning>
             </Wrapper>
         );
     } else {
         return "Loading..."
     }
-    
 }
 
 // **********************************************************
@@ -59,6 +93,8 @@ const MainInfo = styled.div`
     padding: 10px;
     display: flex;
     flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
 `
 
 const CoverArt = styled.img`
@@ -113,16 +149,15 @@ const Platforms = styled.div`
     padding: 4px;
 `
 
-const RemoveFromCollectionButton = styled.button`
+const EditMode = styled.button`
     background-color: var(--primaryblue);
-    width: 110px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
     border-radius: 8px;
     border: none;
     color: var(--lighttext);
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: auto;
     cursor: pointer;
 
     &:hover {
@@ -150,13 +185,36 @@ const PlayPlanning = styled.div`
     justify-content: space-between;
     padding: 5px;
     font-size: 14px;
+    
 `
 
 const PlanDetail = styled.div`
     display: flex;
     flex-direction: row;
     padding: 3px;
+    margin-top: auto;
+    margin-bottom: auto;
 `
+
+const RemoveFromCollectionButton = styled.button`
+    color: var(--primaryblue);
+    width: 80px;
+    background-color: transparent;
+    border: none;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--primaryhover);
+    }
+
+    &:disabled {
+        color: var(--darkhover);
+        cursor: not-allowed;
+    }
+`
+
 
 // **********************************************************
 // Export the component
