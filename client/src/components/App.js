@@ -10,6 +10,8 @@ import NotFound from "./NotFound";
 import Profile from "./Profile";
 import Collection from "./Collection";
 import AddNewGame from "./AddNewGame";
+import Calendar from "./Calendar";
+import SubHeader from "./SubHeader";
 
 // *****************************************************************
 // Generates the app
@@ -47,11 +49,13 @@ const App = () => {
 				<BrowserRouter>
 					<GlobalStyles />
 					<Header />
+					<SubHeader />
 					<Routes>
 						<Route path="/" element={<Homepage />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/collection" element={<Collection />} />
 						<Route path="/addgame" element={<AddNewGame />} />
+						<Route path="/calendar" element={<Calendar />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</BrowserRouter>
@@ -63,6 +67,7 @@ const App = () => {
 				<BrowserRouter>
 					<GlobalStyles />
 					<Header />
+					<SubHeader />
 					<Routes>
 						<Route path="*" element={<Signin />} />
 					</Routes>
@@ -76,6 +81,7 @@ const App = () => {
 			<BrowserRouter>
 			<GlobalStyles />
 			<Header />
+			<SubHeader />
 				<p>Loading...</p>
 			</BrowserRouter>
 		);

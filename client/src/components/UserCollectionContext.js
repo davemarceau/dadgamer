@@ -86,7 +86,7 @@ const reducer = (state, action) => {
             return [...updatedGames];
         
         // ****************************
-        // Removing a game
+        // Updating a game
         // ****************************
         case "updateGame":
             // Updates the db

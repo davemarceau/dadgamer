@@ -8,6 +8,8 @@ export default createGlobalStyle`
     
     --primaryblue: #0088ff;
     --primaryhover: #36a1ff;
+
+    --secondaryblue: #004078;
     
     --lightbackground: #deeefa;
     --darkbackground: #2e3133;
