@@ -46,6 +46,41 @@ const CollectionGame = ({ game }) => {
         }
     }
 
+    const editSection = () => {
+        switch (editMode) {
+            case true:
+                return (
+                    <PlayPlanning>
+                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
+                        <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
+                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                        <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
+                        <EditMode onClick={handleEditMode} >Save changes</EditMode>
+                    </PlayPlanning>
+                );
+            case false:
+                return (
+                    <PlayPlanning>
+                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
+                        <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
+                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                        <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
+                        <EditMode onClick={handleEditMode} >Edit details</EditMode>
+                    </PlayPlanning>
+                );
+            case "inProgress":
+                return (
+                    <PlayPlanning>
+                        <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
+                        <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
+                        <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
+                        <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
+                        <EditMode onClick={handleEditMode} >In progress</EditMode>
+                    </PlayPlanning>
+                );
+        }
+    }
+
     if (game) {
         return (
             <Wrapper>
@@ -61,14 +96,7 @@ const CollectionGame = ({ game }) => {
                     
                 </MainInfo>
                 <Summary><FieldTitle>Summary: </FieldTitle>{summary}</Summary>
-                <PlayPlanning>
-                    <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
-                    <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
-                    <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
-                    <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
-                    <EditMode onClick={handleEditMode} >Edit details</EditMode>
-                    
-                </PlayPlanning>
+                {editSection()}
             </Wrapper>
         );
     } else {
@@ -151,7 +179,7 @@ const Platforms = styled.div`
 
 const EditMode = styled.button`
     background-color: var(--primaryblue);
-    width: 80px;
+    width: 95px;
     height: 30px;
     border-radius: 8px;
     border: none;
