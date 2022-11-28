@@ -4,7 +4,9 @@ const app = express();
 const helmet = require("helmet");
 const morgan = require("morgan");
 
+// **********************************************************
 // Handlers
+// **********************************************************
 const { addGame } = require("./handlers/addGame");
 const { removeGame } = require("./handlers/removeGame");
 const { findInCollection } = require("./handlers/findInCollection");
@@ -14,9 +16,7 @@ const { getUserDetails } = require("./handlers/getUserDetails");
 const { updateUserDetails } = require("./handlers/updateUserDetails");
 //const { gameDetails } = require("./handlers/gameDetails");
 const { newGameSearch } = require("./handlers/newGameSearch.js");
-
 const { updatePlannedGameTime } = require("./handlers/updatePlannedGameTime");
-//const { newGameSearch } = require('./handlers/newGameSearch.js');
 
 // Server port
 const port = 6000;
@@ -30,7 +30,9 @@ app.use(helmet());
 // Console info on express calls
 app.use(morgan("tiny"));
 
+// **********************************************************
 // Endpoints
+// **********************************************************
 app.post("/addgame", addGame);
 app.delete("/removegame", removeGame);
 app.get("/findincollection", findInCollection);
@@ -42,8 +44,9 @@ app.patch("/updateUserDetails/:userid", updateUserDetails);
 app.get("/newgamesearch", newGameSearch);
 app.patch("/updateplannedgametime", updatePlannedGameTime);
 
-
+// **********************************************************
 // Port listen
+// **********************************************************
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 });
