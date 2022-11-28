@@ -18,13 +18,30 @@ const Calendar = () => {
     const [timeToAdd, setTimeToAdd] = useState(0);
     const [triggerAddGame, setTriggerAddGame] = useState(false);
     
+    const handleAddGame = (day, game) => {
+        if (!day0.includes(game)) {
+            day0.push(game);
+        }
+    }
+
+    const handleRemoveGame = (day, game) => {
+        let updatedGames = [...day0];
+
+        const gameToRemove = updatedGames.findIndex((game) => {
+            return game.id === game.id;
+        });
+    
+        updatedGames.splice(gameToRemove, 1);
+        day0 = [...updatedGames]
+    }
+
     return (
         <Wrapper>
             <Week>
                 <Day key="0" >
                     {day0.map((game) => {
                         return (
-                            <Game>
+                            <Game onClick={handleRemoveGame} id={game.id} >
                                 <Cover src={game.cover} />
                                 <Title>{game.name}</Title>
                             </Game>
@@ -62,7 +79,7 @@ const Calendar = () => {
                 {collection.map((game) => {
                     if (game.active) {
                         return (
-                            <Game>
+                            <Game onClick={handleAddGame} >
                                 <Cover src={game.cover} />
                                 <Title>{game.name}</Title>
                             </Game>
