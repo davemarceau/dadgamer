@@ -29,13 +29,19 @@ const generateMongoCalendar = async () => {
 
     // Build the array based on parameters
     for (let i=0; i <= (daysPerYear * yearsToBuild); i++) {
+    //for (let i=0; i <= (33); i++) {
         const _id = Date.parse(initialDate);
         const dayOfWeek = initialDate.getUTCDay();
         if ( initialDate.getUTCDay() === 0) {
             initialWeek++;
         }
 
-        calendarArray.push({_id: _id, dateText: initialDate, week: initialWeek, playSession: []});
+        const monthDay = initialDate.getUTCDate();
+        const weekDay = initialDate.getUTCDay();
+        const month = initialDate.getUTCMonth();
+        const year = initialDate.getFullYear();
+
+        calendarArray.push({_id: _id, dateText: initialDate, week: initialWeek, weekDay: weekDay, monthDay: monthDay, month: month, year: year});
         
         initialDate = new Date(initialDate.getTime() + day);
     }
@@ -45,23 +51,14 @@ const generateMongoCalendar = async () => {
     try {
         await client.connect();
 
+        await db.collection("calendar").insertMany(calendarArray);
+
         console.log("success!");
     } catch (e) {
         console.log(e);
     } finally {
         client.close();
     }
-    /*// day of month
-    console.log(rightNow.getDate());
-
-    // day of week
-    console.log(rightNow.getDay());
-
-    // month
-    console.log(rightNow.getMonth());
-
-    // full year
-    console.log(rightNow.getFullYear());*/
 }
 
 // **********************************************

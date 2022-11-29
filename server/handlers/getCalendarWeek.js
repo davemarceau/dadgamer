@@ -14,20 +14,25 @@ const options = {
 // **********************************************
 // Returns the full game collection of the user
 // **********************************************
-const getCollection = async (req, res) => {
+const getCalendarWeek = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     const db = client.db("dadgamer");
-    const userId = req.params.userid;
+    const date = Number(req.params.date);
 
     try {
         await client.connect();
 
-        const userCollection = await db.collection("gamesCollection").findOne({_id: userId});
+        const calendarWeekIdentified = await db.collection("calendar").findOne({_id: date});
+        const week = calendarWeekIdentified.week;
 
-        if (userCollection) {
-            return res.status(200).json({status: 200, data: userCollection.games, message: "User collection recovered"});
+        if (calendarWeekIdentified) {
+            const calendarWeek = await db.collection("calendar").find({week: week}).toArray();
+
+            console.log(calendarWeek)
+
+            return res.status(200).json({status: 200, data: calendarWeek, message: "Calendar week recovered"});
         } else {
-            return res.status(404).json({status: 404, message: "User not found"});
+            return res.status(404).json({status: 404, message: "Date not in calendar"});
         }
 
     } catch (e) {
@@ -38,4 +43,4 @@ const getCollection = async (req, res) => {
     }
 }
 
-module.exports = { getCollection }
+module.exports = { getCalendarWeek }

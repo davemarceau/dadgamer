@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export const UserCollectionContext = createContext(null);
+export const UserCalendarContext = createContext(null);
 
 const initialCalendar = {sessions: [], hasLoaded: false};
 
@@ -174,9 +174,9 @@ const UserCalendarProvider = ({ children }) => {
     }, [user, isAuthenticated])
     
     return (
-        <UserCollectionContext.Provider value={{ calendar, actions: { addSession, removeSession, updatingSession } }}>
+        <UserCalendarContext.Provider value={{ calendar, actions: { addSession, removeSession, updatingSession } }}>
             {children}
-        </UserCollectionContext.Provider>
+        </UserCalendarContext.Provider>
     );
 }
 

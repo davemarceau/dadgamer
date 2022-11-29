@@ -4,25 +4,45 @@ import { useContext, useEffect, useState } from "react";
 import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
 import AddToCalendar from "./AddToCalendar";
+import { UserCalendarContext } from "./UserCalendarContext";
+
+const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+//const defaultDate= 
 
 const Calendar = () => {
     const { collection } = useContext(UserCollectionContext);
     const { details } = useContext(UserDetailsContext);
+    const { calendar, actions: { addSession, removeSession, updatingSession } } = useContext(UserCalendarContext);
     const [days, setDays] = useState([[],[],[],[],[],[],[]])
     const [addingGame, setAddingGame] = useState(false);
     const [whereToAdd, setWhereToAdd] = useState(0);
     const [timeToAdd, setTimeToAdd] = useState(0);
     const [gameToAdd, setGameToAdd] = useState(null);
+    const [datePicked, setDatePicked] = useState(Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
+    const [weekData, setWeekData] = useState(null);
 
+    // temp games loaded for testing
     useEffect(() => {
         setDays([[collection.games[0], collection.games[1]],[],[],[collection.games[0], collection.games[1]],[collection.games[1]],[],[]])
     }, [collection]);
 
+    // Loads the calendar based on week picked
+    useEffect(() => {
+        setWeekData([]);
+        if (datePicked) {
+            fetch("/getcalendarweek/" + datePicked)
+                .then((data) => data.json())
+                .then((data) => {
+                    setWeekData(data.data);
+                    console.log(data);
+                })
+        }
+    }, [datePicked]);
+
     // Add a game to the week
     const handleAddGame = (game) => {
-        /*if (!day0.includes(game)) {
-            day0.push(game);
-        }*/
+        
         console.log("modal here");
         setGameToAdd(game);
         console.log(game);
@@ -39,32 +59,48 @@ const Calendar = () => {
         console.log(days)
     }
 
-    if (details && days.length > 0 && collection.hasLoaded) {
+    // Browse to previous week
+    const handlePreviousWeek = () => {
+        setDatePicked(datePicked - (1000 * 60 * 60 * 24 * 7));
+    }
+
+    // Browse to next week
+    const handleNextWeek = () => {
+        setDatePicked(datePicked + (1000 * 60 * 60 * 24 * 7));
+    }
+
+    if (details && weekData.length > 0 && collection.hasLoaded && calendar.hasLoaded) {
         return (
             <Wrapper>
                 <WeekPicker>
-                    <PreviousNext>{"<<"}</PreviousNext>
+                    <PreviousNext onClick={handlePreviousWeek} >{"<<"}</PreviousNext>
                     Week dropdown here
-                    <PreviousNext>{">>"}</PreviousNext>
+                    <PreviousNext onClick={handleNextWeek} >{">>"}</PreviousNext>
                 </WeekPicker>
                 <Week>
-                    {days.map((day, i) => {
+                    {weekData.map((day, i) => {
+                        let sessionsOfTheDay = calendar.sessions.filter((session) => day._id === session.date);
+                        let dailyTotalOfSessions = 0;
+                        let timeLeft = details.availability[i] - dailyTotalOfSessions;
                         return (
-                            <Day key={day + i} >
-                                {days[i].map((game, j) => {
+                            <Day key={"day" + i} >
+                                <DayOfWeek>{weekDays[day.weekDay]}</DayOfWeek>
+                                <DateDay>{day.monthDay} of {monthNames[day.month]}, {day.year}</DateDay>
+                                {sessionsOfTheDay.map((session, j) => {
+                                    dailyTotalOfSessions = dailyTotalOfSessions + session.duration;
                                     return (
                                         <Game onClick={() => handleRemoveGame (i, j)} key={i + "_" + j} >
                                             
-                                            <Cover src={game.cover} />
+                                            <Cover src={"session.game.cover"} />
                                             <GameText>
-                                                <Title>{game.name}</Title>
-                                                <SessionHours>3h</SessionHours>
+                                                <Title>{"session.game.name"}</Title>
+                                                <SessionHours>{"session.duration"}</SessionHours>
                                             </GameText>
                                         </Game>
                                     )
                                 })}
                                 <AvailableTime>Total available time: {details.availability[i]}h</AvailableTime>
-                                <TimeLeft>Time left available: {0}h</TimeLeft>
+                                <TimeLeft>Time left available: {timeLeft}h</TimeLeft>
                             </Day>
                         )
                     })}
@@ -183,6 +219,19 @@ const SessionHours = styled.p`
     font-size: 11px;
     text-align: left;
     padding: 5px;
+`
+
+const DayOfWeek = styled.p`
+    margin-left: auto;
+    margin-right: auto;
+`
+
+const DateDay = styled.p`
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    border-bottom: 1px solid var(--lighttext);
+    margin-bottom: 3px;
 `
 
 export default Calendar;
