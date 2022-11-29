@@ -29,10 +29,10 @@ const removeSession = async (req, res) => {
 
         //if it does, update the collection
         if (foundUser) {
-            const currentCollection = foundUser.games;
+            const currentSessions = foundUser.sessions;
             
             // then checks if game indeed in collection
-            const inCalendar = currentCollection.findIndex((calendarSession) => {
+            const inCalendar = currentSessions.findIndex((calendarSession) => {
                 return calendarSession.date == session.date && calendarSession.game.id == session.game.id;
             })
 
@@ -40,7 +40,7 @@ const removeSession = async (req, res) => {
             if (inCalendar !== -1) {
                 let updatedSessions = [...foundUser.sessions];
 
-                const sessionToRemove = updatedGames.findIndex((calendarSession) => {
+                const sessionToRemove = updatedSessions.findIndex((calendarSession) => {
                     return calendarSession.date == session.date && calendarSession.game.id == session.game.id;
                 });
 

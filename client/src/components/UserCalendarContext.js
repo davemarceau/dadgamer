@@ -16,10 +16,14 @@ const reducer = (state, action) => {
         // ****************************
         case "addSession":
             
+            console.log(action.session.date);
+            console.log(action.session.game.id);
+            console.log(state.sessions);
             // validates if session already in calendar
             const alreadyinCalendar = state.sessions.findIndex((calendarSession) => {
-                return calendarSession.id === action.session.date && calendarSession.game.id === action.session.game.id;
+                return (calendarSession.date === action.session.date && calendarSession.game.id === action.session.game.id);
             })
+            console.log(alreadyinCalendar);
 
             // if not adds it
             if (alreadyinCalendar === -1) {
@@ -41,7 +45,8 @@ const reducer = (state, action) => {
                     })
                     
                 // Updates the Context without waiting for the DB for snappier interaction
-                const incrementedCalendar = [...state.session, action.session];
+                let incrementedCalendar = [...state.sessions];
+                incrementedCalendar = [...incrementedCalendar, action.session];
                 return {...state, sessions: [...incrementedCalendar]};
 
             // if it is, it does nothing
@@ -77,7 +82,7 @@ const reducer = (state, action) => {
             let updatedSessions = [...state.sessions];
 
             const sessionToRemove = updatedSessions.findIndex((calendarSession) => {
-                return calendarSession.id === action.session.date && calendarSession.game.id === action.session.game.id;
+                return calendarSession.date === action.session.date && calendarSession.game.id === action.session.game.id;
             });
 
             updatedSessions.splice(sessionToRemove, 1);
@@ -108,7 +113,7 @@ const reducer = (state, action) => {
             let updatingSessions = [...state.sessions];
 
             const sessionToUpdate = updatingSessions.findIndex((calendarSession) => {
-                return calendarSession.id === action.session.date && calendarSession.game.id === action.session.game.id;
+                return calendarSession.date === action.session.date && calendarSession.game.id === action.session.game.id;
             });
     
             updatingSessions[sessionToUpdate] = action.session;
@@ -118,7 +123,7 @@ const reducer = (state, action) => {
         // Loading the user sessions calendar
         // ****************************
         case "loadSessionsCalendar":
-            return {...state, hasLoaded: true, sessions: [action.sessions]};
+            return {...state, hasLoaded: true, sessions: [...action.sessions]};
 
         default:
             console.error("Unexpected action sent to the user calendar");

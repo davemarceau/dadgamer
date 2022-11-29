@@ -8,24 +8,20 @@ import { UserCalendarContext } from "./UserCalendarContext";
 
 const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-//const defaultDate= 
 
+// **********************************************************
+// Calendar component
+// **********************************************************
 const Calendar = () => {
     const { collection } = useContext(UserCollectionContext);
     const { details } = useContext(UserDetailsContext);
     const { calendar, actions: { addSession, removeSession, updatingSession } } = useContext(UserCalendarContext);
-    const [days, setDays] = useState([[],[],[],[],[],[],[]])
     const [addingGame, setAddingGame] = useState(false);
     const [whereToAdd, setWhereToAdd] = useState(0);
     const [timeToAdd, setTimeToAdd] = useState(0);
     const [gameToAdd, setGameToAdd] = useState(null);
     const [datePicked, setDatePicked] = useState(Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
     const [weekData, setWeekData] = useState(null);
-
-    // temp games loaded for testing
-    useEffect(() => {
-        setDays([[collection.games[0], collection.games[1]],[],[],[collection.games[0], collection.games[1]],[collection.games[1]],[],[]])
-    }, [collection]);
 
     // Loads the calendar based on week picked
     useEffect(() => {
@@ -42,21 +38,14 @@ const Calendar = () => {
 
     // Add a game to the week
     const handleAddGame = (game) => {
-        
-        console.log("modal here");
-        setGameToAdd(game);
-        console.log(game);
-        setAddingGame(true);
+        //setGameToAdd(game);
+        //setAddingGame(true);
+        addSession({user: details._id, session: {date: datePicked, game: game, duration: 2}});
     }
 
     // Remove a game from a day
-    const handleRemoveGame = (day, game) => {
-        let updatedGames = [...days];
-    
-        updatedGames[day].splice(game, 1);
-
-        setDays([...updatedGames]);
-        console.log(days)
+    const handleRemoveGame = (session) => {
+        removeSession({user: details._id, session: session});
     }
 
     // Browse to previous week
@@ -81,20 +70,21 @@ const Calendar = () => {
                     {weekData.map((day, i) => {
                         let sessionsOfTheDay = calendar.sessions.filter((session) => day._id === session.date);
                         let dailyTotalOfSessions = 0;
-                        let timeLeft = details.availability[i] - dailyTotalOfSessions;
+                        let timeLeft = details.availability[i];
                         return (
                             <Day key={"day" + i} >
                                 <DayOfWeek>{weekDays[day.weekDay]}</DayOfWeek>
                                 <DateDay>{day.monthDay} of {monthNames[day.month]}, {day.year}</DateDay>
                                 {sessionsOfTheDay.map((session, j) => {
-                                    dailyTotalOfSessions = dailyTotalOfSessions + session.duration;
+                                    timeLeft = timeLeft - session.duration;
+                                    //dailyTotalOfSessions = dailyTotalOfSessions + session.duration;
                                     return (
-                                        <Game onClick={() => handleRemoveGame (i, j)} key={i + "_" + j} >
+                                        <Game onClick={() => handleRemoveGame (session)} key={i + "_" + j} >
                                             
-                                            <Cover src={"session.game.cover"} />
+                                            <Cover src={session.game.cover} />
                                             <GameText>
-                                                <Title>{"session.game.name"}</Title>
-                                                <SessionHours>{"session.duration"}</SessionHours>
+                                                <Title>{session.game.name}</Title>
+                                                <SessionHours>{session.duration}h</SessionHours>
                                             </GameText>
                                         </Game>
                                     )
@@ -129,6 +119,9 @@ const Calendar = () => {
     
 };
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -234,4 +227,7 @@ const DateDay = styled.p`
     margin-bottom: 3px;
 `
 
+// **********************************************************
+// Export component
+// **********************************************************
 export default Calendar;

@@ -32,13 +32,13 @@ const addSession = async (req, res) => {
             const currentSessions = foundUser.sessions;
             
             // then checks if game already in calendar
-            const alreadyinCalendar = currentCollection.findIndex((calendarSession) => {
+            const alreadyinCalendar = currentSessions.findIndex((calendarSession) => {
                 return calendarSession.date == session.date && calendarSession.game.id == session.game.id;
             })
 
             // adds if not in calendar
             if (alreadyinCalendar === -1) {
-                const calendarUpdated = [...currentSessions, game];
+                const calendarUpdated = [...currentSessions, session];
                 const result = await db.collection("sessionsCalendar").updateOne( {_id: _id}, {$set: {sessions: calendarUpdated }});
                 return res.status(200).json({status: 200, message: "Session successfully added to calendar"});
             

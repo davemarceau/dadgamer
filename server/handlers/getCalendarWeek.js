@@ -28,8 +28,6 @@ const getCalendarWeek = async (req, res) => {
         if (calendarWeekIdentified) {
             const calendarWeek = await db.collection("calendar").find({week: week}).toArray();
 
-            console.log(calendarWeek)
-
             return res.status(200).json({status: 200, data: calendarWeek, message: "Calendar week recovered"});
         } else {
             return res.status(404).json({status: 404, message: "Date not in calendar"});
