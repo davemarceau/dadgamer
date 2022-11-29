@@ -7,6 +7,7 @@ import App from './components/App';
 // Contexts required for the application to work efficiently
 import UserDetailsProvider from "./components/UserDetailsContext";
 import UserCollectionProvider from "./components/UserCollectionContext";
+import CalendarProvider from "./components/CalendarContext";
 
 // ******************************************************
 // Application render
@@ -19,7 +20,9 @@ root.render(
 		redirectUri={window.location.origin}>
 		<UserDetailsProvider>
 			<UserCollectionProvider>
-				<App />
+				<CalendarProvider>
+					<App />
+				</CalendarProvider>
 			</UserCollectionProvider>
 		</UserDetailsProvider>
 	</Auth0Provider>

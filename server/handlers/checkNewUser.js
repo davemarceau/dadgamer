@@ -30,6 +30,7 @@ const checkNewUser = async (req, res) => {
         if (!foundUser) {
             const contactCreated = await db.collection("userDetails").insertOne({_id: userId, preferredName: null, gender: null, availability: emptyDays, firstName: null, lastName: null});
             const collectionCreated = await db.collection("gamesCollection").insertOne({_id: userId, games: []});
+            const sessionsCreated = await db.collection("sessionsCalendar").insertOne({_id: userId, sessions: []});
             return res.status(201).json({status: 201, message: "User added"});
         } else {
             return res.status(200).json({status: 200, message: "User already exists, nothing done."});

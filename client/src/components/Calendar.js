@@ -73,7 +73,7 @@ const Calendar = () => {
                     {collection.games.map((game) => {
                         if (game.active) {
                             return (
-                                <Game onClick={() => handleAddGame(game)} >
+                                <Game key={game.id} onClick={() => handleAddGame(game)} >
                                     <Cover src={game.cover} />
                                     <Title>{game.name}</Title>
                                 </Game>

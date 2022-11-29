@@ -14,9 +14,12 @@ const { getCollection } = require("./handlers/getCollection");
 const { checkNewUser } = require("./handlers/checkNewUser");
 const { getUserDetails } = require("./handlers/getUserDetails");
 const { updateUserDetails } = require("./handlers/updateUserDetails");
-//const { gameDetails } = require("./handlers/gameDetails");
-const { newGameSearch } = require("./handlers/newGameSearch.js");
+const { newGameSearch } = require("./handlers/newGameSearch");
 const { updatePlannedGameTime } = require("./handlers/updatePlannedGameTime");
+const { getSessionsCalendar } = require("./handlers/getSessionsCalendar");
+const { addSession } = require("./handlers/addSession");
+const { removeSession } = require("./handlers/removeSession");
+const { updateSessionDetails } = require("./handlers/updateSessionDetails");
 
 // Server port
 const port = 6000;
@@ -40,9 +43,12 @@ app.get("/getcollection/:userid", getCollection);
 app.post("/checknewuser/:userid", checkNewUser);
 app.get("/getuserdetails/:userid", getUserDetails);
 app.patch("/updateUserDetails/:userid", updateUserDetails);
-//app.get("/gamedetails/:gameid", gameDetails);
 app.get("/newgamesearch", newGameSearch);
 app.patch("/updateplannedgametime", updatePlannedGameTime);
+app.get("/getsessionscalendar/:userid", getSessionsCalendar);
+app.post("/addsession", addSession);
+app.delete("/removesession", removeSession);
+app.patch("/updatesessiondetails", updatePlannedGameTime);
 
 // **********************************************************
 // Port listen
