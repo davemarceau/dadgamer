@@ -3,93 +3,94 @@ import { useContext, useEffect, useState } from "react";
 
 import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
+import AddToCalendar from "./AddToCalendar";
 
 const Calendar = () => {
     const { collection } = useContext(UserCollectionContext);
     const { details } = useContext(UserDetailsContext);
-    const [day0, setDay0] = useState([collection[0]]);
-    const [day1, setDay1] = useState([]);
-    const [day2, setDay2] = useState([]);
-    const [day3, setDay3] = useState([]);
-    const [day4, setDay4] = useState([]);
-    const [day5, setDay5] = useState([]);
-    const [day6, setDay6] = useState([]);
+    const [days, setDays] = useState([[],[],[],[],[],[],[]])
+    const [addingGame, setAddingGame] = useState(false);
     const [whereToAdd, setWhereToAdd] = useState(0);
     const [timeToAdd, setTimeToAdd] = useState(0);
-    const [triggerAddGame, setTriggerAddGame] = useState(false);
-    
-    const handleAddGame = (day, game) => {
-        if (!day0.includes(game)) {
+    const [gameToAdd, setGameToAdd] = useState(null);
+
+    useEffect(() => {
+        setDays([[collection[0], collection[1]],[],[],[collection[0], collection[1]],[collection[1]],[],[]])
+    }, [collection]);
+
+    // Add a game to the week
+    const handleAddGame = (game) => {
+        /*if (!day0.includes(game)) {
             day0.push(game);
-        }
+        }*/
+        console.log("modal here");
+        setGameToAdd(game);
+        console.log(game);
+        setAddingGame(true);
     }
 
+    // Remove a game from a day
     const handleRemoveGame = (day, game) => {
-        let updatedGames = [...day0];
-
-        const gameToRemove = updatedGames.findIndex((game) => {
-            return game.id === game.id;
-        });
+        let updatedGames = [...days];
     
-        updatedGames.splice(gameToRemove, 1);
-        day0 = [...updatedGames]
+        updatedGames[day].splice(game, 1);
+
+        setDays([...updatedGames]);
+        console.log(days)
     }
 
-    return (
-        <Wrapper>
-            <Week>
-                <Day key="0" >
-                    {day0.map((game) => {
+    if (details && days.length > 0 && collection) {
+        return (
+            <Wrapper>
+                <WeekPicker>
+                    <PreviousNext>{"<<"}</PreviousNext>
+                    Week dropdown here
+                    <PreviousNext>{">>"}</PreviousNext>
+                </WeekPicker>
+                <Week>
+                    {days.map((day, i) => {
                         return (
-                            <Game onClick={handleRemoveGame} id={game.id} >
-                                <Cover src={game.cover} />
-                                <Title>{game.name}</Title>
-                            </Game>
+                            <Day key={day + i} >
+                                {days[i].map((game, j) => {
+                                    return (
+                                        <Game onClick={() => handleRemoveGame (i, j)} key={i + "_" + j} >
+                                            
+                                            <Cover src={game.cover} />
+                                            <GameText>
+                                                <Title>{game.name}</Title>
+                                                <SessionHours>3h</SessionHours>
+                                            </GameText>
+                                        </Game>
+                                    )
+                                })}
+                                <AvailableTime>Total available time: {details.availability[i]}h</AvailableTime>
+                                <TimeLeft>Time left available: {0}h</TimeLeft>
+                            </Day>
                         )
                     })}
-                    <AvailableTime>Total available time: {details.availability[0]}h</AvailableTime>
-                    <TimeLeft>Time left available: {0}h</TimeLeft>
-                </Day>
-                <Day key="1" >
-                    <AvailableTime>Total available time: {details.availability[1]}h</AvailableTime>
-                    <TimeLeft>Time left available: {0}h</TimeLeft>
-                </Day>
-                <Day key="2" >
-                    <AvailableTime>Total available time: {details.availability[2]}h</AvailableTime>
-                    <TimeLeft>Time left available: {0}h</TimeLeft>
-                </Day>
-                <Day key="3" >
-                    <AvailableTime>Total available time: {details.availability[3]}h</AvailableTime>
-                    <TimeLeft>Time left available: {0}h</TimeLeft>
-                </Day>
-                <Day key="4" >
-                    <AvailableTime>Total available time: {details.availability[4]}h</AvailableTime>
-                    <TimeLeft>Time left available: {0}h</TimeLeft>
-                </Day>
-                <Day key="5" >
-                    <AvailableTime>Total available time: {details.availability[5]}h</AvailableTime>
-                    <TimeLeft>Time left available: {0}h</TimeLeft>
-                </Day>
-                <Day key="6" >
-                    <AvailableTime>Total available time: {details.availability[6]}h</AvailableTime>
-                    <TimeLeft>Time left available: {0}h</TimeLeft>
-                </Day>
-            </Week>
-            <Collection>
-                {collection.map((game) => {
-                    if (game.active) {
-                        return (
-                            <Game onClick={handleAddGame} >
-                                <Cover src={game.cover} />
-                                <Title>{game.name}</Title>
-                            </Game>
-                        )
-                    }
-                })}
-                
-            </Collection>
-        </Wrapper>
-    );
+                </Week>
+                <Collection>
+                    {collection.map((game) => {
+                        if (game.active) {
+                            return (
+                                <Game onClick={() => handleAddGame(game)} >
+                                    <Cover src={game.cover} />
+                                    <Title>{game.name}</Title>
+                                </Game>
+                            )
+                        }
+                    })}
+                    
+                </Collection>
+                <AddToCalendar addingGame={addingGame} setAddingGame={setAddingGame} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} setGameToAdd={setGameToAdd} />
+            </Wrapper>
+        );
+    } else {
+        return (
+            "Loading..."
+        );
+    };
+    
 };
 
 const Wrapper = styled.div`
@@ -98,17 +99,33 @@ const Wrapper = styled.div`
     padding: 20px;
 `
 
+const WeekPicker = styled.div`
+    display: flex;
+    padding: 5px;
+    margin: 5px auto;
+`
+
+const PreviousNext = styled.button`
+    padding: 5px;
+    background-color: transparent;
+    color: var(--lighttext);
+    border: none;
+    margin: 5px;
+
+    &:hover {
+        color: var(--lighthover);
+    }
+`
+
 const Week = styled.div`
     display: flex;
     flex-direction: row;
-    /*border: 1px solid var(--lighttext);*/
 `
 
 const Day = styled.div`
     display: flex;
     flex-direction: column;
     border: 1px solid var(--lighttext);
-    /*min-height: 200px;*/
     padding: 5px;
 `
 
@@ -146,7 +163,7 @@ const Title = styled.p`
 `
 
 const AvailableTime = styled.p`
-    margin-top: 100px;
+    margin-top: 50px;
     font-size: 11px;
     width: 175px;
 `
@@ -155,6 +172,17 @@ const TimeLeft = styled.p`
     margin-top: 5px;
     font-size: 11px;
     width: 175px;
+`
+
+const GameText = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const SessionHours = styled.p`
+    font-size: 11px;
+    text-align: left;
+    padding: 5px;
 `
 
 export default Calendar;
