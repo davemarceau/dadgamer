@@ -67,4 +67,5 @@ const generateMongoCalendar = async () => {
 // **********************************************
 // Trigers the calendar generation
 // **********************************************
+
 generateMongoCalendar();

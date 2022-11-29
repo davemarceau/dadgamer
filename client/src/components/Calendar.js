@@ -15,7 +15,7 @@ const Calendar = () => {
     const [gameToAdd, setGameToAdd] = useState(null);
 
     useEffect(() => {
-        setDays([[collection[0], collection[1]],[],[],[collection[0], collection[1]],[collection[1]],[],[]])
+        setDays([[collection.games[0], collection.games[1]],[],[],[collection.games[0], collection.games[1]],[collection.games[1]],[],[]])
     }, [collection]);
 
     // Add a game to the week
@@ -39,7 +39,7 @@ const Calendar = () => {
         console.log(days)
     }
 
-    if (details && days.length > 0 && collection) {
+    if (details && days.length > 0 && collection.hasLoaded) {
         return (
             <Wrapper>
                 <WeekPicker>
@@ -70,7 +70,7 @@ const Calendar = () => {
                     })}
                 </Week>
                 <Collection>
-                    {collection.map((game) => {
+                    {collection.games.map((game) => {
                         if (game.active) {
                             return (
                                 <Game onClick={() => handleAddGame(game)} >

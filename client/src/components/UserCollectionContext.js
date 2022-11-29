@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export const UserCollectionContext = createContext(null);
 
-const initialCollection = [];
+const initialCollection = {games: [], hasLoaded: false};
 
 // **********************************************************
 // Reducer updating the collection
@@ -17,7 +17,7 @@ const reducer = (state, action) => {
         case "addGame": 
             
             // validates if game already in collection
-            const alreadyinCollection = state.findIndex((collectionGame) => {
+            const alreadyinCollection = state.games.findIndex((collectionGame) => {
                 return collectionGame.id === action.game.id;
             })
 
@@ -41,10 +41,8 @@ const reducer = (state, action) => {
                     })
                     
                 // Updates the Context without waiting for the DB for snappier interaction
-                return [
-                    ...state,
-                    action.game,
-                ]
+                const incrementedGames = [...state.games, action.game];
+                return {...state, games: [...incrementedGames]};
 
             // if it is, it does nothing
             } else {
@@ -76,14 +74,14 @@ const reducer = (state, action) => {
 				})
 
             // Updates the Context without waiting for the DB for snappier interaction
-            let updatedGames = [...state];
+            let updatedGames = [...state.games];
 
             const gameToRemove = updatedGames.findIndex((game) => {
                 return game.id === action.game.id;
             });
 
             updatedGames.splice(gameToRemove, 1);
-            return [...updatedGames];
+            return {...state, games: [...updatedGames]};
         
         // ****************************
         // Updating a game
@@ -107,20 +105,20 @@ const reducer = (state, action) => {
 					console.error("Error:", error);
 				})
 
-            let updatingGames = [...state];
+            let updatingGames = [...state.games];
 
             const gameToUpdate = updatingGames.findIndex((game) => {
                 return game.id === action.game.id;
             });
     
             updatingGames[gameToUpdate] = action.game;
-            return [...updatingGames];
+            return {...state, games: [...updatingGames]};
 
         // ****************************
         // Loading the user collection
         // ****************************
         case "loadCollection": 
-            return action.collection;
+            return {...state, hasLoaded: true, games: action.collection};
         
 
         default:

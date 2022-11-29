@@ -56,7 +56,7 @@ const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseD
     }
 
     // validates if game already in collection
-    const alreadyinCollection = collection.findIndex((collectionGame) => {
+    const alreadyinCollection = collection.games.findIndex((collectionGame) => {
         return collectionGame.id == id;
     })
     

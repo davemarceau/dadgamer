@@ -48,5 +48,5 @@ app.patch("/updateplannedgametime", updatePlannedGameTime);
 // Port listen
 // **********************************************************
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Dad Gamer Server listening on port ${port}`)
 });

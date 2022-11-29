@@ -7,7 +7,7 @@ import CollectionGame from "./CollectionGame";
 const Collection = () => {
     const { collection } = useContext(UserCollectionContext);
 
-    if (collection) {
+    if (collection.hasLoaded) {
         return (
             <Wrapper>
                 <HeadWrapper>
@@ -15,7 +15,7 @@ const Collection = () => {
                     <Link href="/addgame" ><AddGame>Add a game</AddGame></Link>
                 </HeadWrapper>
                 {
-                    collection.map((game) => {
+                    collection.games.map((game) => {
                         return <CollectionGame game={game} key={game.id} />
                     })
                 }
