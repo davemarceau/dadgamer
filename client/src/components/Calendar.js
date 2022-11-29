@@ -38,9 +38,9 @@ const Calendar = () => {
 
     // Add a game to the week
     const handleAddGame = (game) => {
-        //setGameToAdd(game);
-        //setAddingGame(true);
-        addSession({user: details._id, session: {date: datePicked, game: game, duration: 2}});
+        setGameToAdd(game);
+        setAddingGame(true);
+        //addSession({user: details._id, session: {date: datePicked, game: game, duration: 2}});
     }
 
     // Remove a game from a day
@@ -108,7 +108,7 @@ const Calendar = () => {
                     })}
                     
                 </Collection>
-                <AddToCalendar addingGame={addingGame} setAddingGame={setAddingGame} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} setGameToAdd={setGameToAdd} />
+                <AddToCalendar addingGame={addingGame} setAddingGame={() => setAddingGame(!addingGame)} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} />
             </Wrapper>
         );
     } else {
