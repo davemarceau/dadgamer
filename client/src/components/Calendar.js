@@ -36,11 +36,15 @@ const Calendar = () => {
         }
     }, [datePicked]);
 
+    const addSessionFromModal = ({user, session}) => {
+        console.log(user, session);
+        addSession({user: user, session: session});
+    }
+
     // Add a game to the week
     const handleAddGame = (game) => {
         setGameToAdd(game);
         setAddingGame(true);
-        //addSession({user: details._id, session: {date: datePicked, game: game, duration: 2}});
     }
 
     // Remove a game from a day
@@ -69,7 +73,6 @@ const Calendar = () => {
                 <Week>
                     {weekData.map((day, i) => {
                         let sessionsOfTheDay = calendar.sessions.filter((session) => day._id === session.date);
-                        let dailyTotalOfSessions = 0;
                         let timeLeft = details.availability[i];
                         return (
                             <Day key={"day" + i} >
@@ -108,7 +111,7 @@ const Calendar = () => {
                     })}
                     
                 </Collection>
-                <AddToCalendar addingGame={addingGame} setAddingGame={() => setAddingGame(!addingGame)} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} />
+                <AddToCalendar addingGame={addingGame} setAddingGame={() => setAddingGame(!addingGame)} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} addSessionFromModal={addSessionFromModal} />
             </Wrapper>
         );
     } else {

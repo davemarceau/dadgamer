@@ -1,22 +1,36 @@
 import { Dialog } from '@mui/material';
 import styled from "styled-components";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { UserCalendarContext } from "./UserCalendarContext";
 
-const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, timeToAdd, setTimeToAdd, gameToAdd, weekData, monthNames, weekDays, user }) => {
+// **********************************************************
+// Add to calendar component
+// **********************************************************
+const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, timeToAdd, setTimeToAdd, gameToAdd, weekData, monthNames, weekDays, user, addSessionFromModal }) => {
     const { actions: { addSession } } = useContext(UserCalendarContext);
 
+    // Loads a default value to avoid errors when submitting
+    useEffect(() => {
+        setWhereToAdd(weekData[0]._id);
+    }, [weekData]);
+    
+    // updates the duration in hours of the session
     const handleSessionLengthChange = (e) => {
-        setTimeToAdd(e.target.value);
+        setTimeToAdd(Number(e.target.value));
     }
 
+    // Updates the date of the session
     const handleSessionDateChange = (e) => {
-        setWhereToAdd(e.target.value);
+        setWhereToAdd(Number(e.target.value));
     }
 
+    // Generates the session record upon confirmation
     const handleConfirm = () => {
-        //addSession({user: user, session: {date: datePicked, game: game, duration: 2});
+        addSessionFromModal({user: user, session: {date: whereToAdd, game: gameToAdd, duration: timeToAdd}})
+        setTimeToAdd(0);
+        setWhereToAdd(undefined);
+        setAddingGame();
     }
 
     if (gameToAdd) {
@@ -37,7 +51,7 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
                         <DatePicked id="datepicked" name="datepicked" type="number" placeholder="Choose a date" value={whereToAdd} onChange={handleSessionDateChange} >
                             {weekData.map((day) => {
                                 return (
-                                    <option value={day._id}>{weekDays[day.weekDay]}, {day.monthDay} of {monthNames[day.month]}, {day.year}</option>
+                                    <option key={"add" + day._id} value={day._id}>{weekDays[day.weekDay]}, {day.monthDay} of {monthNames[day.month]}, {day.year}</option>
                                 )
                             })}
                         </DatePicked>
@@ -63,6 +77,9 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
     
 }
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const FormattedDialog = styled.div`
     display: flex;
     flex-direction: column;
@@ -150,5 +167,7 @@ const Buttons = styled.div`
     padding: 10px;
 `
 
-
+// **********************************************************
+// Component export
+// **********************************************************
 export default AddToCalendar;
