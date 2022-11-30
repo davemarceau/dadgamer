@@ -5,47 +5,47 @@ import { useEffect } from "react";
 // **********************************************************
 // Add to calendar component
 // **********************************************************
-const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, timeToAdd, setTimeToAdd, gameToAdd, weekData, monthNames, weekDays, user, addSessionFromModal }) => {
-
-    // Loads a default value to avoid errors when submitting
-    useEffect(() => {
-        setWhereToAdd(weekData[0]._id);
-    }, [weekData]);
+const EditRemoveInCalendar = ({editingGame, setEditingGame, sessionToEdit, setSessionToEdit, weekData, monthNames, weekDays, user, editSessionFromModal, removeSessionFromModal }) => {
     
     // updates the duration in hours of the session
     const handleSessionLengthChange = (e) => {
-        setTimeToAdd(Number(e.target.value));
+        setSessionToEdit({...sessionToEdit, duration: Number(e.target.value)});
     }
 
     // Updates the date of the session
     const handleSessionDateChange = (e) => {
-        setWhereToAdd(Number(e.target.value));
+        setSessionToEdit({...sessionToEdit, date: Number(e.target.value)});
     }
 
     // Generates the session record upon confirmation
     const handleConfirm = () => {
-        addSessionFromModal({user: user, session: {date: whereToAdd, game: gameToAdd, duration: timeToAdd}})
-        setTimeToAdd(0);
-        setWhereToAdd(undefined);
-        setAddingGame();
+        editSessionFromModal({user: user, session: sessionToEdit})
+        setSessionToEdit(null);
+        setEditingGame();
     }
 
-    if (gameToAdd) {
+    const handleRemove = () => {
+        removeSessionFromModal({user: user, session: sessionToEdit});
+        setSessionToEdit(null);
+        setEditingGame();
+    };
+
+    if (sessionToEdit) {
         return (
-            <Dialog open={addingGame} onClose={setAddingGame}>
+            <Dialog open={editingGame} onClose={setEditingGame}>
                 <FormattedDialog>
-                    <PopupTitle>Adding a play session</PopupTitle>
+                    <PopupTitle>Modifying a play session</PopupTitle>
                     <GameDetails>
-                        <Cover src={gameToAdd.cover}/>
-                        <GameTitle>{gameToAdd.name}</GameTitle>
+                        <Cover src={sessionToEdit.game.cover}/>
+                        <GameTitle>{sessionToEdit.game.name}</GameTitle>
                     </GameDetails>
                     <AddDetail>
                         <FieldTitle>Time of the session (in hours): </FieldTitle>
-                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" placeholder="hrs" value={timeToAdd} onChange={handleSessionLengthChange} />
+                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" placeholder="hrs" value={sessionToEdit.duration} onChange={handleSessionLengthChange} />
                     </AddDetail>
                     <AddDetail>
                         <FieldTitle>Date of play session: </FieldTitle>
-                        <DatePicked id="datepicked" name="datepicked" type="number" placeholder="Choose a date" value={whereToAdd} onChange={handleSessionDateChange} >
+                        <DatePicked id="datepicked" name="datepicked" type="number" placeholder="Choose a date" value={sessionToEdit.date} onChange={handleSessionDateChange} >
                             {weekData.map((day) => {
                                 return (
                                     <option key={"add" + day._id} value={day._id}>{weekDays[day.weekDay]}, {day.monthDay} of {monthNames[day.month]}, {day.year}</option>
@@ -55,14 +55,15 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
                     </AddDetail>
                     <Buttons>
                         <AddToCalendarButton onClick={handleConfirm} >Confirm</AddToCalendarButton>
-                        <AddToCalendarButton onClick={setAddingGame} >Cancel</AddToCalendarButton>
+                        <RemoveFromCalendarButton onClick={handleRemove} >Remove session</RemoveFromCalendarButton>
+                        <AddToCalendarButton onClick={setEditingGame} >Cancel</AddToCalendarButton>
                     </Buttons>
                 </FormattedDialog>
             </Dialog>
         )
     } else {
         return (
-            <Dialog open={addingGame} onClose={setAddingGame}>
+            <Dialog open={editingGame} onClose={setEditingGame}>
                 <FormattedDialog>
                     <p>Loading...</p>
                 </FormattedDialog>
@@ -164,7 +165,26 @@ const Buttons = styled.div`
     padding: 10px;
 `
 
+const RemoveFromCalendarButton = styled.button`
+    color: var(--primaryblue);
+    width: 80px;
+    background-color: transparent;
+    border: none;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--primaryhover);
+    }
+
+    &:disabled {
+        color: var(--darkhover);
+        cursor: not-allowed;
+    }
+`
+
 // **********************************************************
 // Component export
 // **********************************************************
-export default AddToCalendar;
+export default EditRemoveInCalendar;

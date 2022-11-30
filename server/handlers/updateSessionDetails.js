@@ -29,7 +29,7 @@ const updateSessionDetails = async (req, res) => {
 
         //if it does, update the collection
         if (foundUser) {
-            const currentCalendar = foundUser.games;
+            const currentCalendar = foundUser.sessions;
             
             // then checks if game indeed in collection
             const inCalendar = currentCalendar.findIndex((calendarSession) => {
@@ -40,14 +40,14 @@ const updateSessionDetails = async (req, res) => {
             if (inCalendar !== -1) {
                 let updatedSessions = [...foundUser.sessions];
 
-                const sessionToUpdate = updatedGames.findIndex((calendarSession) => {
+                const sessionToUpdate = updatedSessions.findIndex((calendarSession) => {
                     return calendarSession.date == session.date && calendarSession.game.id == session.game.id;
                 });
 
                 updatedSessions[sessionToUpdate] = session;
 
                 // Sending back the calendar in the DB with the updated values
-                const result = await db.collection("sessionsCalendar").updateOne( {_id: _id}, {$set: {sessions: updatedGames }});
+                const result = await db.collection("sessionsCalendar").updateOne( {_id: _id}, {$set: {sessions: updatedSessions }});
                 
                 return res.status(200).json({status: 200, message: "Session successfully updated"});
             

@@ -5,6 +5,7 @@ import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
 import AddToCalendar from "./AddToCalendar";
 import { UserCalendarContext } from "./UserCalendarContext";
+import EditRemoveInCalendar from "./EditRemoveInCalendar";
 
 const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -17,9 +18,14 @@ const Calendar = () => {
     const { details } = useContext(UserDetailsContext);
     const { calendar, actions: { addSession, removeSession, updatingSession } } = useContext(UserCalendarContext);
     const [addingGame, setAddingGame] = useState(false);
+    const [editingGame, setEditingGame] = useState(false);
     const [whereToAdd, setWhereToAdd] = useState(0);
     const [timeToAdd, setTimeToAdd] = useState(0);
     const [gameToAdd, setGameToAdd] = useState(null);
+    /*const [whereToEdit, setWhereToEdit] = useState(0);
+    const [timeToEdit, setTimeToEdit] = useState(0);
+    const [gameToEdit, setGameToEdit] = useState(null);*/
+    const [sessionToEdit, setSessionToEdit] = useState(null);
     const [datePicked, setDatePicked] = useState(Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
     const [weekData, setWeekData] = useState(null);
 
@@ -31,14 +37,20 @@ const Calendar = () => {
                 .then((data) => data.json())
                 .then((data) => {
                     setWeekData(data.data);
-                    console.log(data);
                 })
         }
     }, [datePicked]);
 
     const addSessionFromModal = ({user, session}) => {
-        console.log(user, session);
         addSession({user: user, session: session});
+    }
+
+    const editSessionFromModal = ({user, session}) => {
+        updatingSession({user: user, session: session});
+    }
+
+    const removeSessionFromModal = ({user, session}) => {
+        removeSession({user: user, session: session});
     }
 
     // Add a game to the week
@@ -48,8 +60,10 @@ const Calendar = () => {
     }
 
     // Remove a game from a day
-    const handleRemoveGame = (session) => {
-        removeSession({user: details._id, session: session});
+    const handleEditSession = (session) => {
+        //removeSession({user: details._id, session: session});
+        setSessionToEdit(session);
+        setEditingGame(true);
     }
 
     // Browse to previous week
@@ -82,7 +96,7 @@ const Calendar = () => {
                                     timeLeft = timeLeft - session.duration;
                                     //dailyTotalOfSessions = dailyTotalOfSessions + session.duration;
                                     return (
-                                        <Game onClick={() => handleRemoveGame (session)} key={i + "_" + j} >
+                                        <Game onClick={() => handleEditSession (session)} key={i + "_" + j} >
                                             
                                             <Cover src={session.game.cover} />
                                             <GameText>
@@ -112,6 +126,7 @@ const Calendar = () => {
                     
                 </Collection>
                 <AddToCalendar addingGame={addingGame} setAddingGame={() => setAddingGame(!addingGame)} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} addSessionFromModal={addSessionFromModal} />
+                <EditRemoveInCalendar editingGame={editingGame} setEditingGame={() => setEditingGame(!editingGame)} sessionToEdit={sessionToEdit} setSessionToEdit={setSessionToEdit} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} editSessionFromModal={editSessionFromModal} removeSessionFromModal={removeSessionFromModal} />
             </Wrapper>
         );
     } else {
