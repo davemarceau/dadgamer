@@ -12,6 +12,7 @@ import Collection from "./Collection";
 import AddNewGame from "./AddNewGame";
 import Calendar from "./Calendar";
 import SubHeader from "./SubHeader";
+import Loading from "./Loading";
 
 // *****************************************************************
 // Generates the app
@@ -56,6 +57,7 @@ const App = () => {
 						<Route path="/collection" element={<Collection />} />
 						<Route path="/addgame" element={<AddNewGame />} />
 						<Route path="/calendar" element={<Calendar />} />
+						<Route path="/loading" element={<Loading />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</BrowserRouter>
@@ -82,7 +84,7 @@ const App = () => {
 			<GlobalStyles />
 			<Header />
 			<SubHeader />
-				<p>Loading...</p>
+				<Loading />
 			</BrowserRouter>
 		);
 	}

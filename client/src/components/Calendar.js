@@ -10,6 +10,7 @@ import { UserCalendarContext } from "./UserCalendarContext";
 import EditRemoveInCalendar from "./EditRemoveInCalendar";
 import addAvailabilityImage from "./assets/add.png";
 import reduceAvailabilityImage from "./assets/remove.png";
+import Loading from "./Loading";
 
 // Display information to properly convert the week days and months into text
 const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -180,7 +181,7 @@ const Calendar = () => {
         );
     } else {
         return (
-            "Loading..."
+            <Loading />
         );
     };
     

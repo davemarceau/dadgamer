@@ -4,6 +4,7 @@ import { Auth0Context } from "@auth0/auth0-react";
 
 import UploadImage from "./UploadImage";
 import { UserDetailsContext } from "./UserDetailsContext";
+import Loading from "./Loading";
 
 const ProfileDetailsEditing = ({ editMode }) => {
     const { details, setDetails } = useContext(UserDetailsContext);
@@ -66,7 +67,7 @@ const ProfileDetailsEditing = ({ editMode }) => {
             </Wrapper>
         );
     } else {
-        return "Loading..."
+        return <Loading />
     }
     
 }

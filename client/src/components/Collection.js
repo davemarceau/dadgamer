@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { UserCollectionContext } from "./UserCollectionContext";
 import CollectionGame from "./CollectionGame";
+import Loading from "./Loading";
 
 const Collection = () => {
     const { collection } = useContext(UserCollectionContext);
@@ -22,7 +23,7 @@ const Collection = () => {
             </Wrapper>
         );
     } else {
-        return "Loading..."
+        return <Loading />
     }
 }
 

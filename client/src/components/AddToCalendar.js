@@ -1,6 +1,7 @@
 import { Dialog } from '@mui/material';
 import styled from "styled-components";
 import { useEffect } from "react";
+import Loading from './Loading';
 
 // **********************************************************
 // Add to calendar component
@@ -64,7 +65,7 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
         return (
             <Dialog open={addingGame} onClose={setAddingGame}>
                 <FormattedDialog>
-                    <p>Loading...</p>
+                    <Loading />
                 </FormattedDialog>
                 
             </Dialog>

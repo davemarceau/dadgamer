@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Auth0Context } from "@auth0/auth0-react";
 
 import { UserDetailsContext } from "./UserDetailsContext";
+import Loading from "./Loading";
 
 const ProfileDetails = ({ editMode }) => {
     const { details } = useContext(UserDetailsContext);
@@ -32,7 +33,7 @@ const ProfileDetails = ({ editMode }) => {
             </Wrapper>
         );
     } else {
-        return "Loading..."
+        return <Loading />
     }
     
 

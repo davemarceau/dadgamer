@@ -3,6 +3,10 @@ import { useContext, useEffect, useState } from "react";
 
 import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
+import { UserCalendarContext } from "./UserCalendarContext";
+import Loading from "./Loading";
+
+const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;
 
 // **********************************************************
 // Collection game component
@@ -15,7 +19,25 @@ const CollectionGame = ({ game }) => {
     const [timeToBeatState, setTimeToBeatState] = useState(timeToBeat);
     const [activeState, setActiveState] = useState(active);
     const [evergreenState, setEvergreenState] = useState(evergreen);
+    const { calendar } = useContext(UserCalendarContext);
     
+    // Calculates the time played so far for that game
+    const sessionsSoFar = calendar.sessions.filter((session) => session.game.id === id && session.date <= todaysDate);
+    let totalPlayedSoFar = 0;
+    sessionsSoFar.forEach(session => {
+        totalPlayedSoFar = totalPlayedSoFar + Number(session.duration);
+    });
+    
+    // Calculates the time in the already planned sessions
+    const futureSessions = calendar.sessions.filter((session) => session.game.id === id && session.date > todaysDate);
+    let futurePlay = 0;
+    futureSessions.forEach(session => {
+        futurePlay = futurePlay + Number(session.duration);
+    });
+    
+    // Calculates if there is any time left unnalocated compared to the time to beat
+    const timeLeftUnallocated = timeToBeat - totalPlayedSoFar - futurePlay;
+
     // Removes the game from the collection on the click of the button
     const handleClickRemoveGame = () => {
         removeGame({ user: details._id, game: game });
@@ -51,6 +73,8 @@ const CollectionGame = ({ game }) => {
         setEvergreenState(!evergreenState);
     }
 
+
+
     // Fields at the bottom are editable depending on he editMode status
     const editSection = () => {
         switch (editMode) {
@@ -61,7 +85,9 @@ const CollectionGame = ({ game }) => {
                             <PlanDetail><FieldTitle>Time to beat: </FieldTitle><TimeToBeatInput id="timetobeat" name="timetobeat" type="number" placeholder="hrs" value={timeToBeatState} onChange={handleTimeToBeatChange} /></PlanDetail>
                             <PlanDetail><FieldTitle>Active: </FieldTitle>{activeState ? <input type="checkbox" id="active" name="active" checked onChange={handleActiveChange} /> : <input type="checkbox" id="active" name="active" onChange={handleActiveChange} />}</PlanDetail>
                             <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreenState ? <input type="checkbox" id="evergreen" name="evergreen" checked onChange={handleEvergreenChange} /> : <input type="checkbox" id="evergreen" name="evergreen" onChange={handleEvergreenChange} />}</PlanDetail>
-                            <PlanDetail><FieldTitle>Time left to beat: </FieldTitle>0h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time played so far: </FieldTitle>{totalPlayedSoFar}h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time in comming sessions: </FieldTitle>{futurePlay}h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time left unallocated: </FieldTitle>{evergreenState ? "Unlimited" : timeLeftUnallocated + "h"}</PlanDetail>
                         </PlanDetails>
                         <RemoveFromCollectionButton disabled >Remove from collection</RemoveFromCollectionButton>
                         <EditMode onClick={handleEditMode} >Save changes</EditMode>
@@ -74,7 +100,9 @@ const CollectionGame = ({ game }) => {
                             <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
                             <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
                             <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
-                            <PlanDetail><FieldTitle>Time left to beat: </FieldTitle>0h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time played so far: </FieldTitle>{totalPlayedSoFar}h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time in comming sessions: </FieldTitle>{futurePlay}h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time left unallocated: </FieldTitle>{evergreenState ? "Unlimited" : timeLeftUnallocated + "h"}</PlanDetail>
                         </PlanDetails>
                         <RemoveFromCollectionButton onClick={handleClickRemoveGame} >Remove from collection</RemoveFromCollectionButton>
                         <EditMode onClick={handleEditMode} >Edit details</EditMode>
@@ -87,7 +115,9 @@ const CollectionGame = ({ game }) => {
                             <PlanDetail><FieldTitle>Time to beat: </FieldTitle>{timeToBeat}</PlanDetail>
                             <PlanDetail><FieldTitle>Active: </FieldTitle>{active ? "Yes" : "No"}</PlanDetail>
                             <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreen ? "Yes" : "No"}</PlanDetail>
-                            <PlanDetail><FieldTitle>Time left to beat: </FieldTitle>0h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time played so far: </FieldTitle>{totalPlayedSoFar}h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time in comming sessions: </FieldTitle>{futurePlay}h</PlanDetail>
+                            <PlanDetail><FieldTitle>Time left unallocated: </FieldTitle>{evergreenState ? "Unlimited" : timeLeftUnallocated + "h"}</PlanDetail>
                         </PlanDetails>
                         <RemoveFromCollectionButton disabled >Remove from collection</RemoveFromCollectionButton>
                         <EditMode disabled >In progress</EditMode>
@@ -116,7 +146,7 @@ const CollectionGame = ({ game }) => {
             </Wrapper>
         );
     } else {
-        return "Loading..."
+        return <Loading />
     }
 }
 

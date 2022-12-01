@@ -5,6 +5,7 @@ import { UserDetailsContext } from "./UserDetailsContext";
 import ProfileDetails from "./ProfileDetails";
 import ProfileDetailsEditing from "./ProfileDetailsEditing";
 import noImage from "./assets/No-Image-Placeholder.png"
+import Loading from "./Loading";
 
 // ***********************************************
 // Profile component here
@@ -94,7 +95,7 @@ const Profile = () => {
             )
         }
     } else {
-        return "Loading..."
+        return <Loading />
     }
     
 

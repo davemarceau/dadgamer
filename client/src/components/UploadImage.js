@@ -15,7 +15,7 @@ const UploadImage = () => {
             clientAllowedFormats: ["images"],
             maxImageFileSize: 2000000
         }, (error, result) => {
-            console.log(result);
+            console.log(result.info);
             /*if (!error && result && result.event === "success") {
                 //Step 2.4: Call the .close() method in order to close the widget
                 state.live_profile_pic = result.info.secure_url
