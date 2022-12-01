@@ -1,12 +1,17 @@
+// Generic libraries
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 
+// Project specific components
 import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
 import AddToCalendar from "./AddToCalendar";
 import { UserCalendarContext } from "./UserCalendarContext";
 import EditRemoveInCalendar from "./EditRemoveInCalendar";
+import addAvailabilityImage from "./assets/add.png";
+import reduceAvailabilityImage from "./assets/remove.png";
 
+// Display information to properly convert the week days and months into text
 const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -22,9 +27,6 @@ const Calendar = () => {
     const [whereToAdd, setWhereToAdd] = useState(0);
     const [timeToAdd, setTimeToAdd] = useState(0);
     const [gameToAdd, setGameToAdd] = useState(null);
-    /*const [whereToEdit, setWhereToEdit] = useState(0);
-    const [timeToEdit, setTimeToEdit] = useState(0);
-    const [gameToEdit, setGameToEdit] = useState(null);*/
     const [sessionToEdit, setSessionToEdit] = useState(null);
     const [datePicked, setDatePicked] = useState(Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
     const [weekData, setWeekData] = useState(null);
@@ -41,14 +43,17 @@ const Calendar = () => {
         }
     }, [datePicked]);
 
+    // Add a new session with info received from the modal
     const addSessionFromModal = ({user, session}) => {
         addSession({user: user, session: session});
     }
 
+    // Edit a session's details with info received from the modal
     const editSessionFromModal = ({user, session}) => {
         updatingSession({user: user, session: session});
     }
 
+    // Deletes a session after confirmation in the modal
     const removeSessionFromModal = ({user, session}) => {
         removeSession({user: user, session: session});
     }
@@ -76,6 +81,9 @@ const Calendar = () => {
         setDatePicked(datePicked + (1000 * 60 * 60 * 24 * 7));
     }
 
+    // **************************
+    // Main component render
+    // **************************
     if (details && weekData.length > 0 && collection.hasLoaded && calendar.hasLoaded) {
         return (
             <Wrapper>
@@ -87,13 +95,24 @@ const Calendar = () => {
                 <Week>
                     {weekData.map((day, i) => {
                         let sessionsOfTheDay = calendar.sessions.filter((session) => day._id === session.date);
+                        let totalAvailableTime = details.availability[i]
                         let timeLeft = details.availability[i];
                         return (
                             <Day key={"day" + i} >
                                 <DayOfWeek>{weekDays[day.weekDay]}</DayOfWeek>
                                 <DateDay>{day.monthDay} of {monthNames[day.month]}, {day.year}</DateDay>
                                 {sessionsOfTheDay.map((session, j) => {
-                                    timeLeft = timeLeft - session.duration;
+                                    // accounts for availability add when resolving the time left
+                                    if (session.game.id === "add") {
+                                        timeLeft = timeLeft + session.duration;
+                                        totalAvailableTime = totalAvailableTime + session.duration;
+                                    } else if (session.game.id === "reduce") {
+                                        timeLeft = timeLeft - session.duration;
+                                        totalAvailableTime = totalAvailableTime - session.duration;
+                                    } else {
+                                        timeLeft = timeLeft - session.duration;
+                                    }
+                                    
                                     //dailyTotalOfSessions = dailyTotalOfSessions + session.duration;
                                     return (
                                         <Game onClick={() => handleEditSession (session)} key={i + "_" + j} >
@@ -106,13 +125,22 @@ const Calendar = () => {
                                         </Game>
                                     )
                                 })}
-                                <AvailableTime>Total available time: {details.availability[i]}h</AvailableTime>
+                                <AvailableTime>Total available time: {totalAvailableTime}h</AvailableTime>
                                 <TimeLeft>Time left available: {timeLeft}h</TimeLeft>
                             </Day>
                         )
                     })}
                 </Week>
                 <Collection>
+                    <Game key="addAvailability" onClick={() => handleAddGame({id: "add", name: "Add availability", cover: addAvailabilityImage, platforms: "none", releaseDate: "2022-12-05", summary: "Only exists to add availability", timeToBeat: "0", active: true, evergreen: true, url: "/calendar"})} >
+                        <Cover src={addAvailabilityImage} />
+                        <Title>Add availability</Title>
+                    </Game>
+                    <Game key="reduceAvailability" onClick={() => handleAddGame({id: "reduce", name: "Reduce availability", cover: reduceAvailabilityImage, platforms: "none", releaseDate: "2022-12-05", summary: "Only exists to reduce availability", timeToBeat: "0", active: true, evergreen: true, url: "/calendar"})} >
+                        <Cover src={reduceAvailabilityImage} />
+                        <Title>Reduce availability</Title>
+                    </Game>
+                    
                     {collection.games.map((game) => {
                         if (game.active) {
                             return (
@@ -167,13 +195,16 @@ const PreviousNext = styled.button`
 const Week = styled.div`
     display: flex;
     flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
 `
 
 const Day = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--lighttext);
+    border: 2px solid var(--lighttext);
     padding: 5px;
+    background-color: var(--darkbackground);
 `
 
 const Collection = styled.div`
@@ -181,16 +212,19 @@ const Collection = styled.div`
     flex-wrap: wrap;
     flex-direction: row;
     padding: 15px;
+    margin-left: auto;
+    margin-right: auto;
 `
 
 const Game = styled.button`
     display: flex;
     flex-direction: row;
-    border: 1px solid var(--lighttext);
+    border: 1px solid var(--darkhover);
     margin: 5px;
     width: 175px;
-    background-color: transparent;
-    color: var(--lighttext);
+    background-color: var(--lightbackground);
+    color: var(--darktext);
+    padding: 2px;
 
     &:hover {
         border: 1px solid var(--lighthover);
@@ -204,7 +238,7 @@ const Cover = styled.img`
 `
 
 const Title = styled.p`
-    font-size: 14px;
+    font-size: 12px;
     text-align: left;
     padding: 5px;
 `
