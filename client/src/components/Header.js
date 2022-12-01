@@ -7,7 +7,7 @@ import UserMenu from "./UserMenu";
 
 
 const Header = () => {
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { isAuthenticated } = useAuth0();
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => {

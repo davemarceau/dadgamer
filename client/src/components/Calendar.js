@@ -113,7 +113,6 @@ const Calendar = () => {
                                         timeLeft = timeLeft - session.duration;
                                     }
                                     
-                                    //dailyTotalOfSessions = dailyTotalOfSessions + session.duration;
                                     return (
                                         <Game onClick={() => handleEditSession (session)} key={i + "_" + j} >
                                             
@@ -126,7 +125,11 @@ const Calendar = () => {
                                     )
                                 })}
                                 <AvailableTime>Total available time: {totalAvailableTime}h</AvailableTime>
-                                <TimeLeft>Time left available: {timeLeft}h</TimeLeft>
+                                {timeLeft < 0 
+                                ? <TimeLeft className="overbooked" >Time left available: {timeLeft}h</TimeLeft>
+                                : <TimeLeft>Time left available: {timeLeft}h</TimeLeft>
+                                }
+                                
                             </Day>
                         )
                     })}
@@ -134,19 +137,37 @@ const Calendar = () => {
                 <Collection>
                     <Game key="addAvailability" onClick={() => handleAddGame({id: "add", name: "Add availability", cover: addAvailabilityImage, platforms: "none", releaseDate: "2022-12-05", summary: "Only exists to add availability", timeToBeat: "0", active: true, evergreen: true, url: "/calendar"})} >
                         <Cover src={addAvailabilityImage} />
-                        <Title>Add availability</Title>
+                        <GameText>
+                            <Title>Add availability</Title>
+                        </GameText>
                     </Game>
                     <Game key="reduceAvailability" onClick={() => handleAddGame({id: "reduce", name: "Reduce availability", cover: reduceAvailabilityImage, platforms: "none", releaseDate: "2022-12-05", summary: "Only exists to reduce availability", timeToBeat: "0", active: true, evergreen: true, url: "/calendar"})} >
                         <Cover src={reduceAvailabilityImage} />
-                        <Title>Reduce availability</Title>
+                        <GameText>
+                            <Title>Reduce availability</Title>
+                        </GameText>
                     </Game>
                     
                     {collection.games.map((game) => {
+                        const sessionsSoFar = calendar.sessions.filter((session) => session.game.id === game.id && session.date <= weekData[6]._id);
+                        let totalPlayedSoFar = 0;
+                        sessionsSoFar.forEach(session => {
+                            totalPlayedSoFar = totalPlayedSoFar + Number(session.duration);
+                        });
+                        const timeLeftToPlay = game.timeToBeat - totalPlayedSoFar;
+                        
                         if (game.active) {
                             return (
                                 <Game key={game.id} onClick={() => handleAddGame(game)} >
                                     <Cover src={game.cover} />
-                                    <Title>{game.name}</Title>
+                                    <GameText>
+                                        <Title>{game.name}</Title>
+                                        {game.evergreen
+                                        ? <LeftToPlay>No time limit</LeftToPlay>
+                                        : <LeftToPlay>Time left to play: {timeLeftToPlay}h</LeftToPlay>
+                                        }
+                                    </GameText>
+                                    
                                 </Game>
                             )
                         }
@@ -211,9 +232,9 @@ const Collection = styled.div`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    padding: 15px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 15px;
 `
 
 const Game = styled.button`
@@ -235,9 +256,12 @@ const Game = styled.button`
 const Cover = styled.img`
     width: 50px;
     height: 60px;
+    margin-top: auto;
+    margin-bottom: auto;
 `
 
 const Title = styled.p`
+    font-weight: bold;
     font-size: 12px;
     text-align: left;
     padding: 5px;
@@ -253,11 +277,17 @@ const TimeLeft = styled.p`
     margin-top: 5px;
     font-size: 11px;
     width: 175px;
+
+    &.overbooked {
+        color: red;
+    }
 `
 
 const GameText = styled.div`
     display: flex;
     flex-direction: column;
+    margin-top: auto;
+    margin-bottom: auto;
 `
 
 const SessionHours = styled.p`
@@ -277,6 +307,12 @@ const DateDay = styled.p`
     padding: 3px;
     border-bottom: 1px solid var(--lighttext);
     margin-bottom: 3px;
+`
+
+const LeftToPlay = styled.p`
+    font-size: 12px;
+    text-align: left;
+    padding: 5px;
 `
 
 // **********************************************************

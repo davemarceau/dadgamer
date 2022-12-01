@@ -5,6 +5,8 @@
   "proxy": "http://localhost:6000",
   "dependencies": {
     "@auth0/auth0-react": "^1.12.0",
+    "@cloudinary/react": "^1.6.0",
+    "@cloudinary/url-gen": "^1.8.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.10.16",
@@ -13,6 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "auth0": "^2.44.0",
     "auth0-react": "^3.1.0",
+    "cloudinary": "^1.32.0",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "react": "^18.2.0",

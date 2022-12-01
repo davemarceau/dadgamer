@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Auth0Context } from "@auth0/auth0-react";
 
+import UploadImage from "./UploadImage";
 import { UserDetailsContext } from "./UserDetailsContext";
 
 const ProfileDetailsEditing = ({ editMode }) => {
@@ -28,6 +29,10 @@ const ProfileDetailsEditing = ({ editMode }) => {
         setDetails({...details, availability: tempAvailability});
     }
 
+    const handleImageChange = (e) => {
+        setDetails({...details, imageChanged: true, profileImage: e.target.files[0]});
+    }
+
     // Checks if details are loaded to prevent crash
     if (details) {
         return (
@@ -37,7 +42,16 @@ const ProfileDetailsEditing = ({ editMode }) => {
                     <Detail><FieldTitle>First Name: </FieldTitle><DetailInput id="firstName" placeholder="Enter first name here" value={details.firstName ? details.firstName : ""} onChange={handleDetailChange} /></Detail>
                     <Detail><FieldTitle>Last Name: </FieldTitle><DetailInput id="lastName" placeholder="Enter last name here" value={details.lastName ? details.lastName : ""} onChange={handleDetailChange} /></Detail>
                     <Detail><FieldTitle>Email: </FieldTitle>{user.email}</Detail>
-                    <Detail><FieldTitle>Gender: </FieldTitle><DetailInput id="gender" placeholder="Enter gender here" value={details.gender ? details.gender : ""} onChange={handleDetailChange} /></Detail>
+                    <Detail>
+                        <FieldTitle>Gender: </FieldTitle>
+                        <GenderInput id="gender" placeholder="Enter gender here" value={details.gender ? details.gender : ""} onChange={handleDetailChange}>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other/prefer not to say</option>
+                        </GenderInput>
+                    </Detail>
+                    {/* <Detail><FieldTitle>Profile image change: </FieldTitle><UploadButton type="file" id="uploadimage" name="uploadimage" accept="image/*"  onChange={handleImageChange} /></Detail> */ }
+                    <Detail><FieldTitle>Profile image change: </FieldTitle><UploadImage /></Detail>
                 </Details>
                 <Availability>
                     <SectionTitle>Availability for each day (in hours)</SectionTitle>
@@ -94,8 +108,16 @@ const DetailInput = styled.input`
     width: 200px;
 `
 
+const GenderInput = styled.select`
+    width: 170px;
+`
+
 const DayInput = styled.input`
     width: 67px;
+`
+
+const UploadButton = styled.button`
+    
 `
 
 export default ProfileDetailsEditing;

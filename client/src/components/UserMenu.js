@@ -8,7 +8,6 @@ const UserMenu = ({menuStatus}) => {
         return (
             <Menu>
                 <MiniBox><Link href="/profile" >Profile</Link></MiniBox>
-                <MiniBox><Link href="/collection" >Collection</Link></MiniBox>
                 <LoginButton onClick={() => logout({ returnTo: window.location.origin })} >Logout</LoginButton>
             </Menu>
         );

@@ -1,14 +1,19 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { UserDetailsContext } from "./UserDetailsContext";
 import ProfileDetails from "./ProfileDetails";
 import ProfileDetailsEditing from "./ProfileDetailsEditing";
+import noImage from "./assets/No-Image-Placeholder.png"
 
+// ***********************************************
+// Profile component here
+// ***********************************************
 const Profile = () => {
     const [editMode, setEditMode] = useState(false);
     const { details, setDetails } = useContext(UserDetailsContext);
     
+    // Triggers either the saving of the info or enables the edit mode
     const handleEdit = () => {
         
         // If in edit mode, attempt saving the changes
@@ -26,6 +31,9 @@ const Profile = () => {
 				.then((data) => data.json())
 				.then((data) => {
                     setEditMode(false);
+                    if (details.imageChanged) {
+                        delete details.imageChanged;
+                    }
 				})
 				.catch((error) => {
 					console.error("Error:", error);
@@ -46,7 +54,10 @@ const Profile = () => {
                     <TopDiv>
                         <ProfileName>{details.preferredName ? details.preferredName : "Gamer tag TBD"}</ProfileName>
                         <EditButton onClick={handleEdit} >Edit</EditButton>
-                        <ProfileImage src="niet" alt="Dev in progress" />
+                        {details.profileImage && !details.imageChanged
+                        ? <ProfileImage src={details.profileImage} alt="Profile Image" />
+                        : <ProfileImage src={noImage} alt="Profile Image" />
+                        }
                     </TopDiv>
                     <ProfileDetails editMode={editMode} />
                 </Wrapper>
@@ -59,7 +70,10 @@ const Profile = () => {
                     <TopDiv>
                         <Detail><FieldTitle>Gamer tag: </FieldTitle><DetailInput id="preferredName" placeholder="Enter gamer tag here" value={details.preferredName ? details.preferredName : ""} onChange={(e) => setDetails({...details, preferredName: e.target.value})} /></Detail>
                         <EditButton onClick={handleEdit} >Save</EditButton>
-                        <ProfileImage src="niet" alt="Dev in progress" />
+                        {details.profileImage
+                        ? <ProfileImage src={details.profileImage} alt="Profile Image" />
+                        : <ProfileImage src={noImage} alt="Profile Image" />
+                        }
                     </TopDiv>
                     <ProfileDetailsEditing editMode={editMode} />
                 </Wrapper>
@@ -70,7 +84,10 @@ const Profile = () => {
                     <TopDiv>
                         <ProfileName>{details.preferredName ? details.preferredName : "Gamer tag TBD"}</ProfileName>
                         <EditButton disabled >Updating...</EditButton>
-                        <ProfileImage src="niet" alt="Dev in progress" />
+                        {details.profileImage
+                        ? <ProfileImage src={details.profileImage} alt="Profile Image" />
+                        : <ProfileImage src={noImage} alt="Profile Image" />
+                        }
                     </TopDiv>
                     <ProfileDetails editMode={editMode} />
                 </Wrapper>
