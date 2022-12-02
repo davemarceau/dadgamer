@@ -30,10 +30,6 @@ const ProfileDetailsEditing = ({ editMode }) => {
         setDetails({...details, availability: tempAvailability});
     }
 
-    const handleImageChange = (e) => {
-        setDetails({...details, imageChanged: true, profileImage: e.target.files[0]});
-    }
-
     // Checks if details are loaded to prevent crash
     if (details) {
         return (
@@ -51,8 +47,6 @@ const ProfileDetailsEditing = ({ editMode }) => {
                             <option value="Other">Other/prefer not to say</option>
                         </GenderInput>
                     </Detail>
-                    {/* <Detail><FieldTitle>Profile image change: </FieldTitle><UploadButton type="file" id="uploadimage" name="uploadimage" accept="image/*"  onChange={handleImageChange} /></Detail> */ }
-                    <Detail><FieldTitle>Profile image change: </FieldTitle><UploadImage /></Detail>
                 </Details>
                 <Availability>
                     <SectionTitle>Availability for each day (in hours)</SectionTitle>
@@ -117,7 +111,7 @@ const DayInput = styled.input`
     width: 67px;
 `
 
-const UploadButton = styled.button`
+const UploadButton = styled.input`
     
 `
 

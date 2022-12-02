@@ -14,11 +14,6 @@ const mongoOptions = {
     useUnifiedTopology: true,
 }
 
-const cloudinaryOptions = {
-    use_filename: true,
-    unique_filename: true,
-    overwrite: false
-}
 
 const updateUserDetails = async (req, res) => {
     const client = new MongoClient(MONGO_URI, mongoOptions);
@@ -38,13 +33,6 @@ const updateUserDetails = async (req, res) => {
         const foundUser = await db.collection("userDetails").findOne({_id: userId})
 
         if (foundUser) {
-            //first uploads the image to cloudinary to get the URL for the details after
-            let uploadedImage = null;
-            if (newDetails.imageChanged) {
-                uploadedImage = await cloudinary.uploader.upload(newDetails.profileImage, cloudinaryOptions);
-                newDetails.profileImage = uploadedImage.secure_url;
-                delete newDetails.imageChanged;
-            }
             
             const updated = await db.collection("userDetails").updateOne({_id: userId}, {$set: newDetails});
             return res.status(200).json({status: 200, message: "User details updated successfully"});

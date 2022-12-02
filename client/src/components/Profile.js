@@ -17,9 +17,11 @@ const Profile = () => {
     // Triggers either the saving of the info or enables the edit mode
     const handleEdit = () => {
         
+        console.log(details.profileImage);
         // If in edit mode, attempt saving the changes
         if (editMode === true) {
             setEditMode("inProgress");
+
             fetch("/updateUserDetails/" + details._id, {
 				method: "PATCH",
 				headers: {
@@ -32,9 +34,6 @@ const Profile = () => {
 				.then((data) => data.json())
 				.then((data) => {
                     setEditMode(false);
-                    if (details.imageChanged) {
-                        delete details.imageChanged;
-                    }
 				})
 				.catch((error) => {
 					console.error("Error:", error);
@@ -55,10 +54,6 @@ const Profile = () => {
                     <TopDiv>
                         <ProfileName>{details.preferredName ? details.preferredName : "Gamer tag TBD"}</ProfileName>
                         <EditButton onClick={handleEdit} >Edit</EditButton>
-                        {details.profileImage && !details.imageChanged
-                        ? <ProfileImage src={details.profileImage} alt="Profile Image" />
-                        : <ProfileImage src={noImage} alt="Profile Image" />
-                        }
                     </TopDiv>
                     <ProfileDetails editMode={editMode} />
                 </Wrapper>
@@ -71,10 +66,6 @@ const Profile = () => {
                     <TopDiv>
                         <Detail><FieldTitle>Gamer tag: </FieldTitle><DetailInput id="preferredName" placeholder="Enter gamer tag here" value={details.preferredName ? details.preferredName : ""} onChange={(e) => setDetails({...details, preferredName: e.target.value})} /></Detail>
                         <EditButton onClick={handleEdit} >Save</EditButton>
-                        {details.profileImage
-                        ? <ProfileImage src={details.profileImage} alt="Profile Image" />
-                        : <ProfileImage src={noImage} alt="Profile Image" />
-                        }
                     </TopDiv>
                     <ProfileDetailsEditing editMode={editMode} />
                 </Wrapper>
@@ -85,10 +76,6 @@ const Profile = () => {
                     <TopDiv>
                         <ProfileName>{details.preferredName ? details.preferredName : "Gamer tag TBD"}</ProfileName>
                         <EditButton disabled >Updating...</EditButton>
-                        {details.profileImage
-                        ? <ProfileImage src={details.profileImage} alt="Profile Image" />
-                        : <ProfileImage src={noImage} alt="Profile Image" />
-                        }
                     </TopDiv>
                     <ProfileDetails editMode={editMode} />
                 </Wrapper>
