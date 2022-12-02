@@ -57,7 +57,6 @@ const App = () => {
 						<Route path="/collection" element={<Collection />} />
 						<Route path="/addgame" element={<AddNewGame />} />
 						<Route path="/calendar" element={<Calendar />} />
-						<Route path="/loading" element={<Loading />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</BrowserRouter>
