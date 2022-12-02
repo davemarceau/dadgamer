@@ -2,19 +2,18 @@
 // Preps the parameters for the Mongo connection
 // **********************************************
 const { MongoClient } = require("mongodb");
-const cloudinary = require("cloudinary").v2;
 
 require("dotenv").config();
-const { MONGO_URI, CLOUDINARY_URL } = process.env;
-
-cloudinary.config({secure: true});
+const { MONGO_URI } = process.env;
 
 const mongoOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }
 
-
+// **********************************************
+// Handler to update user details
+// **********************************************
 const updateUserDetails = async (req, res) => {
     const client = new MongoClient(MONGO_URI, mongoOptions);
     const db = client.db("dadgamer");
@@ -48,4 +47,7 @@ const updateUserDetails = async (req, res) => {
     }
 }
 
+// **********************************************
+// Export the module
+// **********************************************
 module.exports = { updateUserDetails }
