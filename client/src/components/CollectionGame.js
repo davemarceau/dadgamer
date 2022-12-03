@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
@@ -82,7 +82,7 @@ const CollectionGame = ({ game }) => {
                 return (
                     <PlayPlanning>
                         <PlanDetails>
-                            <PlanDetail><FieldTitle>Time to beat: </FieldTitle><TimeToBeatInput id="timetobeat" name="timetobeat" type="number" placeholder="hrs" value={timeToBeatState} onChange={handleTimeToBeatChange} /></PlanDetail>
+                            <PlanDetail><FieldTitle>Time to beat: </FieldTitle><TimeToBeatInput id="timetobeat" name="timetobeat" type="number" min="0" placeholder="hrs" value={timeToBeatState} onChange={handleTimeToBeatChange} /></PlanDetail>
                             <PlanDetail><FieldTitle>Active: </FieldTitle>{activeState ? <input type="checkbox" id="active" name="active" checked onChange={handleActiveChange} /> : <input type="checkbox" id="active" name="active" onChange={handleActiveChange} />}</PlanDetail>
                             <PlanDetail><FieldTitle>Evergreen title: </FieldTitle>{evergreenState ? <input type="checkbox" id="evergreen" name="evergreen" checked onChange={handleEvergreenChange} /> : <input type="checkbox" id="evergreen" name="evergreen" onChange={handleEvergreenChange} />}</PlanDetail>
                             <PlanDetail><FieldTitle>Time played so far: </FieldTitle>{totalPlayedSoFar}h</PlanDetail>

@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import { UserCalendarContext } from "./UserCalendarContext";
+import { UserCollectionContext } from "./UserCollectionContext";
 import Loading from "./Loading";
 
 const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;
@@ -11,31 +12,52 @@ const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60
 // **********************************************
 const TopPlayedGames = () => {
     const { calendar } = useContext(UserCalendarContext);
+    const { collection } = useContext(UserCollectionContext);
 
+    // identifies all past sessions
     const pastSessions = calendar.sessions.filter((session) => {
         return session.date < todaysDate;
     })
 
-    if (calendar) {
+    // compile the duration of sessions played for each game in the collection 
+    const eachGameCompiled = collection.games.map((game) => {
+        game = {...game, totalTimePlayed: 0};
+        pastSessions.forEach((session) => {
+            if (session.game.id === game.id) {
+                game.totalTimePlayed = game.totalTimePlayed + Number(session.duration);
+            }
+        })
+        return game;
+    });
+
+    // sort them in descending order
+    eachGameCompiled.sort((a, b) => {
+        return b.totalTimePlayed - a.totalTimePlayed;
+    });
+
+    // keep only the first 3
+    const top3 = eachGameCompiled.slice(0, 3);
+
+    // render only if calendar and collections are loaded
+    if (calendar.hasLoaded && collection.hasLoaded) {
         return (
             <Wrapper>
-                <SectionTitle>Your top 3 played games</SectionTitle>
-                {pastSessions.map((session) => {
-                    
-                    // must exclude the add or reduce availability!!!
-
+                <SectionTitle>Your top 3 played games so far</SectionTitle>
+                {top3.map((game) => {
                     return (
-                        <Game key={session.game.id} >
-                            <Cover src={session.game.cover} />
+                        <Game key={game.id} >
+                            <Link href={game.url} target="_blank" ><Cover src={game.cover} /></Link>
                             <GameText>
-                                <Title>{session.game.name}</Title>
-                                <TotalTime>Total time played: {0}h</TotalTime>
+                            <Link href={game.url} target="_blank" ><Title>{game.name}</Title></Link>
+                                <TotalTime>Total time played: {game.totalTimePlayed}h</TotalTime>
                             </GameText>
                         </Game>
                     )
                 })}
+                <Link href="/collection"><CollectionButton>See more in your collection</CollectionButton></Link>
             </Wrapper>
         )
+    // otherwise display loading
     } else {
         <Loading />
     }
@@ -50,6 +72,8 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 5px;
+    padding-left: 10px;
+    border-left: 1px solid var(--lighthover);
 `
 
 const SectionTitle = styled.h1`
@@ -73,6 +97,18 @@ const GameText = styled.div`
 const Cover = styled.img`
     width: 100px;
     height: 125px;
+    border: 2px solid var(--lightbackground);
+    margin: 5px;
+
+    &.inactiveImage {
+        filter: grayscale(.9);
+    }
+
+    &:hover {
+        color: var(--lighthover);
+        border: 2px solid var(--lighthover);
+        filter: grayscale(.7);
+    }
 `
 
 const Title = styled.p`
@@ -86,8 +122,36 @@ const Title = styled.p`
 const TotalTime = styled.p`
     font-size: 14px;
     padding: 5px;
+    margin-bottom: auto;
 `
 
+const CollectionButton = styled.button`
+    background-color: var(--primaryblue);
+    width: 95px;
+    height: 37px;
+    border-radius: 8px;
+    border: none;
+    color: var(--lighttext);
+    margin-left: 100px;
+    margin-top: 15px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--primaryhover);
+    }
+
+    &:disabled {
+        background-color: var(--darkhover);
+        cursor: not-allowed;
+    }
+`
+
+const Link = styled.a`
+    color: var(--lighttext);
+    &:hover {
+        color: var(--lighthover);
+    }
+`
 
 // **********************************************
 // Export the component

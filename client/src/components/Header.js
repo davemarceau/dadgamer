@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FaUserCircle } from "react-icons/fa";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
+import { BsJoystick } from "react-icons/bs"
 
 import UserMenu from "./UserMenu";
 
@@ -17,7 +18,7 @@ const Header = () => {
     if (isAuthenticated) {
         return (
             <HeaderWrapper>
-                <SiteTitle href="/" >DadGamer</SiteTitle>
+                <SiteLogo href="/" ><LogoDiv><Joystick /><SiteTitle>DadGamer</SiteTitle></LogoDiv></SiteLogo>
                 <InvisibleButton onClick={toggleMenu} ><ProfileIcon /></InvisibleButton>
                 <UserMenu menuStatus={menuOpen} />
             </HeaderWrapper>
@@ -25,7 +26,7 @@ const Header = () => {
     } else {
         return (
             <HeaderWrapper>
-                <SiteTitle href="/" >DadGamer</SiteTitle>
+                <SiteLogo href="/" ><LogoDiv><Joystick /><SiteTitle>DadGamer</SiteTitle></LogoDiv></SiteLogo>
             </HeaderWrapper>
         );
     }
@@ -37,18 +38,36 @@ const HeaderWrapper = styled.div`
     height: 80px;
     display: flex;
     padding: 15px;
+    border-bottom: 1px solid var(--lighttext);
 `;
 
-const SiteTitle = styled.a`
+const SiteLogo = styled.a`
     color: var(--lighttext);
+    &:hover {
+        color: var(--lighthover);
+    }
+`
+
+const LogoDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+const Joystick = styled(BsJoystick)`
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+`
+
+const SiteTitle = styled.p`
     margin-top: auto;
     margin-bottom: auto;
     font-size: 30px;
     background-color: var(--primaryblue);
     font-weight: bold;
-    &:hover {
-        color: var(--lighthover);
-    }
 `
 
 const ProfileIcon = styled(FaUserCircle)`
