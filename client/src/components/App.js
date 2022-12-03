@@ -10,7 +10,7 @@ import NotFound from "./NotFound";
 import Profile from "./Profile";
 import Collection from "./Collection";
 import AddNewGame from "./AddNewGame";
-import Calendar from "./Calendar";
+import GameCalendar from "./GameCalendar";
 import SubHeader from "./SubHeader";
 import Loading from "./Loading";
 
@@ -56,7 +56,7 @@ const App = () => {
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/collection" element={<Collection />} />
 						<Route path="/addgame" element={<AddNewGame />} />
-						<Route path="/calendar" element={<Calendar />} />
+						<Route path="/calendar" element={<GameCalendar />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</BrowserRouter>

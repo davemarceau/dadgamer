@@ -1,6 +1,9 @@
 // Generic libraries
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
+import Calendar from "react-calendar";
+	
+import 'react-calendar/dist/Calendar.css';
 
 // Project specific components
 import { UserCollectionContext } from "./UserCollectionContext";
@@ -19,7 +22,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 // **********************************************************
 // Calendar component
 // **********************************************************
-const Calendar = () => {
+const GameCalendar = () => {
     const { collection } = useContext(UserCollectionContext);
     const { details } = useContext(UserDetailsContext);
     const { calendar, actions: { addSession, removeSession, updatingSession } } = useContext(UserCalendarContext);
@@ -31,6 +34,8 @@ const Calendar = () => {
     const [sessionToEdit, setSessionToEdit] = useState(null);
     const [datePicked, setDatePicked] = useState(Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
     const [weekData, setWeekData] = useState(null);
+    const [calendarTrigger, setCalendarTrigger] = useState(false);
+    const [calendarDate, setCalendarDate] = useState(new Date());
 
     // Loads the calendar based on week picked
     useEffect(() => {
@@ -82,6 +87,18 @@ const Calendar = () => {
         setDatePicked(datePicked + (1000 * 60 * 60 * 24 * 7));
     }
 
+    // Trigger calendar
+    const handlePickDate = () => {
+        setCalendarTrigger(!calendarTrigger);
+    }
+
+    // Triggers the date change when picking from the calendar
+    const handleCalendarDayPick = (e) => {
+        setCalendarDate(e);
+        setDatePicked(Math.floor(Date.parse(e) / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
+        handlePickDate();
+    }
+
     // **************************
     // Main component render
     // **************************
@@ -90,9 +107,14 @@ const Calendar = () => {
             <Wrapper>
                 <WeekPicker>
                     <PreviousNext onClick={handlePreviousWeek} >{"<<"}</PreviousNext>
-                    Week dropdown here
+                    <PreviousNext onClick={handlePickDate} >Pick a date</PreviousNext>
                     <PreviousNext onClick={handleNextWeek} >{">>"}</PreviousNext>
                 </WeekPicker>
+                {calendarTrigger
+                    ? <MyCalendar onClickDay={handleCalendarDayPick} calendarType="US" value={calendarDate} minDate={new Date("2022-01-02")} minDetail="year" />
+                    : ""
+                }
+                
                 <Week>
                     {weekData.map((day, i) => {
                         let sessionsOfTheDay = calendar.sessions.filter((session) => day._id === session.date);
@@ -194,6 +216,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 20px;
+    align-items: center;
 `
 
 const WeekPicker = styled.div`
@@ -212,6 +235,12 @@ const PreviousNext = styled.button`
     &:hover {
         color: var(--lighthover);
     }
+`
+
+const MyCalendar = styled(Calendar)`
+    position: absolute;
+    left: calc(50% - 175px);
+    top: 170px;
 `
 
 const Week = styled.div`
@@ -319,4 +348,4 @@ const LeftToPlay = styled.p`
 // **********************************************************
 // Export component
 // **********************************************************
-export default Calendar;
+export default GameCalendar;
