@@ -42,7 +42,7 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
                     </GameDetails>
                     <AddDetail>
                         <FieldTitle>Time of the session (in hours): </FieldTitle>
-                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" placeholder="hrs" value={timeToAdd} onChange={handleSessionLengthChange} />
+                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" min="0" max="24" placeholder="hrs" value={timeToAdd} onChange={handleSessionLengthChange} />
                     </AddDetail>
                     <AddDetail>
                         <FieldTitle>Date of play session: </FieldTitle>

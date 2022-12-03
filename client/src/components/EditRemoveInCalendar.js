@@ -41,7 +41,7 @@ const EditRemoveInCalendar = ({editingGame, setEditingGame, sessionToEdit, setSe
                     </GameDetails>
                     <AddDetail>
                         <FieldTitle>Time of the session (in hours): </FieldTitle>
-                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" placeholder="hrs" value={sessionToEdit.duration} onChange={handleSessionLengthChange} />
+                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" min="0" max="24" placeholder="hrs" value={sessionToEdit.duration} onChange={handleSessionLengthChange} />
                     </AddDetail>
                     <AddDetail>
                         <FieldTitle>Date of play session: </FieldTitle>
