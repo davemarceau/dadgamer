@@ -5,6 +5,7 @@ import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
 import { UserCalendarContext } from "./UserCalendarContext";
 import Loading from "./Loading";
+import RemoveFromCollection from "./RemoveFromCollection";
 
 const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;
 
@@ -19,7 +20,8 @@ const CollectionGame = ({ game }) => {
     const [timeToBeatState, setTimeToBeatState] = useState(timeToBeat);
     const [activeState, setActiveState] = useState(active);
     const [evergreenState, setEvergreenState] = useState(evergreen);
-    const { calendar } = useContext(UserCalendarContext);
+    const { calendar, actions: { removeGameFromCollection } } = useContext(UserCalendarContext);
+    const [deleteGame, setDeleteGame] = useState(false);
     
     // Calculates the time played so far for that game
     const sessionsSoFar = calendar.sessions.filter((session) => session.game.id === id && session.date <= todaysDate);
@@ -38,9 +40,19 @@ const CollectionGame = ({ game }) => {
     // Calculates if there is any time left unnalocated compared to the time to beat
     const timeLeftUnallocated = timeToBeat - totalPlayedSoFar - futurePlay;
 
-    // Removes the game from the collection on the click of the button
-    const handleClickRemoveGame = () => {
+    // Delete game from collection and calendar
+    const deleteGameConfirmed = () => {
+
+        // From calendar
+        removeGameFromCollection({ user: details._id, game: game })
+
+        // From collection
         removeGame({ user: details._id, game: game });
+    }
+
+    // Opens dialog to confirm deletion on click
+    const handleClickRemoveGame = () => {
+        setDeleteGame(!deleteGame);
     }
     
     // Triggers either saving or edit mode on button click
@@ -143,6 +155,7 @@ const CollectionGame = ({ game }) => {
                 </MainInfo>
                 <Summary><FieldTitle>Summary: </FieldTitle>{summary}</Summary>
                 {editSection()}
+                <RemoveFromCollection deleteGame={deleteGame} setDeleteGame={() => setDeleteGame(!deleteGame)} game={game} deleteGameConfirmed={deleteGameConfirmed} totalPlayedSoFar={totalPlayedSoFar} />
             </Wrapper>
         );
     } else {

@@ -1,6 +1,5 @@
 import { Dialog } from '@mui/material';
 import styled from "styled-components";
-import { useEffect } from "react";
 
 // **********************************************************
 // Add to calendar component

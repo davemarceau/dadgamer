@@ -120,6 +120,37 @@ const reducer = (state, action) => {
             return {...state, sessions: [...updatingSessions]};
 
         // ****************************
+        // Removing all sessions of a game removed from the collection
+        // ****************************
+        case "removeGameFromCollection":
+
+            // Updates the DB
+            /*fetch("/removesession", {
+				method: "DELETE",
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+                body: JSON.stringify({user: action.user, session: action.session})
+			})
+                .then((data) => data.json())
+				.then((data) => {
+					console.log(data);
+
+                    
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				})*/
+
+            // Updates the Context without waiting for the DB for snappier interaction
+            let sessionsAfterRemoval = state.sessions.filter((session) => {
+                return session.game.id != action.game.id
+            });
+
+            return {...state, sessions: [...sessionsAfterRemoval]};
+
+        // ****************************
         // Loading the user sessions calendar
         // ****************************
         case "loadSessionsCalendar":
@@ -164,6 +195,15 @@ const UserCalendarProvider = ({ children }) => {
         })
     }
 
+    // Remove all sessions with a game when it is removed from the collection
+    const removeGameFromCollection = (data) => {
+        dispatch({
+            type: "removeGameFromCollection",
+            user: data.user,
+            game: data.game
+        })
+    }
+
     // Loads the collection when the user is logged im
     useEffect(() => {
         if (isAuthenticated) {
@@ -179,7 +219,7 @@ const UserCalendarProvider = ({ children }) => {
     }, [user, isAuthenticated])
     
     return (
-        <UserCalendarContext.Provider value={{ calendar, actions: { addSession, removeSession, updatingSession } }}>
+        <UserCalendarContext.Provider value={{ calendar, actions: { addSession, removeSession, updatingSession, removeGameFromCollection } }}>
             {children}
         </UserCalendarContext.Provider>
     );
