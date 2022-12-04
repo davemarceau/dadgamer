@@ -60,7 +60,9 @@ const NewGameSearchResult = ({ name, cover, id, platforms, url, rating, releaseD
         return collectionGame.id == id;
     })
     
+    // *****************
     // Generates the Component
+    // *****************
     return (
         <Wrapper>
             <Link href={url} target="_blank" ><CoverArt src={coverUrl} alt="cover" /></Link>

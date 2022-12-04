@@ -1,6 +1,9 @@
+// generic libraries
 import styled from "styled-components";
 
-
+// **********************************************************
+// Subheader menu for simple navigation
+// **********************************************************
 const SubHeader = () => {
     return (
         <Wrapper>
@@ -11,6 +14,9 @@ const SubHeader = () => {
     );
 };
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
@@ -27,4 +33,7 @@ const Link = styled.a`
     }
 `
 
+// **********************************************************
+// Default component export
+// **********************************************************
 export default SubHeader;

@@ -1,14 +1,20 @@
+// generic libraries
 import styled from "styled-components";
 import { useContext } from "react";
 import { Auth0Context } from "@auth0/auth0-react";
 
+// project specific components
 import { UserDetailsContext } from "./UserDetailsContext";
 import Loading from "./Loading";
 
+// ***********************************************
+// Profile details in edit mode
+// ***********************************************
 const ProfileDetailsEditing = ({ editMode }) => {
     const { details, setDetails } = useContext(UserDetailsContext);
     const { user } = useContext(Auth0Context);
 
+    // Function handling the context changes for core profile info
     const handleDetailChange = (e) => {
         switch (e.target.id) {
             case "firstName":
@@ -23,13 +29,16 @@ const ProfileDetailsEditing = ({ editMode }) => {
         }
     }
 
+    // Updates the availability in the context
     const handleDayChange = (e) => {
         const tempAvailability = [...details.availability];
         tempAvailability[e.target.id] = e.target.value;
         setDetails({...details, availability: tempAvailability});
     }
 
-    // Checks if details are loaded to prevent crash
+    // *******************
+    // Main component render
+    // *******************
     if (details) {
         return (
             <Wrapper>
@@ -59,12 +68,17 @@ const ProfileDetailsEditing = ({ editMode }) => {
                 </Availability>
             </Wrapper>
         );
+
+    // Shows as loading if data not ready
     } else {
         return <Loading />
     }
     
 }
 
+// ***********************************************
+// Styled components
+// ***********************************************
 const Wrapper = styled.div`
     display: flex;
     padding: 5px;
@@ -110,4 +124,7 @@ const DayInput = styled.input`
     width: 67px;
 `
 
+// ***********************************************
+// Default export of the components
+// ***********************************************
 export default ProfileDetailsEditing;

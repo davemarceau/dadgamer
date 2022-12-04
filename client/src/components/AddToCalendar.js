@@ -1,6 +1,9 @@
+// generic libraries
 import { Dialog } from '@mui/material';
 import styled from "styled-components";
 import { useEffect } from "react";
+
+// project specific components
 import Loading from './Loading';
 
 // **********************************************************
@@ -31,6 +34,9 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
         setAddingGame();
     }
 
+    // ******************
+    // Main component render
+    // ******************
     if (gameToAdd) {
         return (
             <Dialog open={addingGame} onClose={setAddingGame}>
@@ -61,6 +67,8 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
                 </FormattedDialog>
             </Dialog>
         )
+        
+    // loading of data is not ready
     } else {
         return (
             <Dialog open={addingGame} onClose={setAddingGame}>

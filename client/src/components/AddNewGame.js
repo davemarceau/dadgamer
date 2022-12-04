@@ -1,7 +1,10 @@
+// generic libraries
 import styled from "styled-components";
-import { useContext, useState } from "react";
-import NewGameSearchResult from "./NewGameSearchResult";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+
+// project specific components
+import NewGameSearchResult from "./NewGameSearchResult";
 
 // **********************************************************
 // Add new game component
@@ -15,6 +18,7 @@ const AddNewGame = () => {
         setSearchTerms(e.target.value);
     }
 
+    // Reaches to the IGBD API through the backend to return search results
     const search = async () => {
         setSearching(true);
         fetch("/newgamesearch?searchString=" + searchTerms, {
@@ -35,16 +39,19 @@ const AddNewGame = () => {
             })
     }
     
+    // Triggers the search on click
     const handleSearchClick = () => {
         search();
     }
 
+    // Triggers the search on pressing enter
     const handleSearchKeyDown = (e) => {
         if (e.key === "Enter") {
             search();
         }
     }
 
+    // Renders the results depending on what is found. Called in the main render
     const giveResults = () => {
         if (searchResults.length > 0) {
             return (
@@ -61,6 +68,9 @@ const AddNewGame = () => {
         }
     }
     
+    // ************************
+    // Main render of the component
+    // ************************
     return (
         <Wrapper>
             <HeadWrapper>

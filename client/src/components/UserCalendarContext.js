@@ -1,6 +1,8 @@
+// generic libraries
 import { createContext, useEffect, useReducer } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
+// context prep
 export const UserCalendarContext = createContext(null);
 
 const initialCalendar = {sessions: [], hasLoaded: false};
@@ -212,6 +214,9 @@ const UserCalendarProvider = ({ children }) => {
         }
     }, [user, isAuthenticated])
     
+    // **********
+    // Main render
+    // **********
     return (
         <UserCalendarContext.Provider value={{ calendar, actions: { addSession, removeSession, updatingSession, removeGameFromCollection } }}>
             {children}
@@ -219,4 +224,7 @@ const UserCalendarProvider = ({ children }) => {
     );
 }
 
+// **********************************************************
+// Default export of provider
+// **********************************************************
 export default UserCalendarProvider;

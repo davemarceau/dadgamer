@@ -1,7 +1,9 @@
+// generic libraries
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 
+// project specific components
 import GlobalStyles from "./GlobalStyles";
 import Header from "./Header";
 import Homepage from "./Homepage";
@@ -30,7 +32,6 @@ const App = () => {
 					"Content-Type": "application/json"
 				}
 			})
-				// remove later	
 				.then((data) => data.json())
 				.then((data) => {
 					console.log(data.message);
@@ -89,4 +90,7 @@ const App = () => {
 	}
 }
 
+// *****************************************************************
+// Default export
+// *****************************************************************
 export default App;

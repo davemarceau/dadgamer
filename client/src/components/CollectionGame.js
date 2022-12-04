@@ -1,12 +1,15 @@
+// generic libraries
 import styled from "styled-components";
 import { useContext, useState } from "react";
 
+// project specific components
 import { UserCollectionContext } from "./UserCollectionContext";
 import { UserDetailsContext } from "./UserDetailsContext";
 import { UserCalendarContext } from "./UserCalendarContext";
 import Loading from "./Loading";
 import RemoveFromCollection from "./RemoveFromCollection";
 
+// generates today's date in a usable format compared to the DB
 const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;
 
 // **********************************************************
@@ -141,7 +144,9 @@ const CollectionGame = ({ game }) => {
         }
     }
 
+    // ********************
     // Main render of the component
+    // ********************
     if (game) {
         return (
             <Wrapper>
@@ -161,6 +166,8 @@ const CollectionGame = ({ game }) => {
                 <RemoveFromCollection deleteGame={deleteGame} setDeleteGame={() => setDeleteGame(!deleteGame)} game={game} deleteGameConfirmed={deleteGameConfirmed} totalPlayedSoFar={totalPlayedSoFar} />
             </Wrapper>
         );
+    
+    // loading if data not ready
     } else {
         return <Loading />
     }

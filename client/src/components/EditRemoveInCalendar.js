@@ -1,5 +1,9 @@
+// generic libraries
 import { Dialog } from '@mui/material';
 import styled from "styled-components";
+
+// project specific components
+import Loading from './Loading';
 
 // **********************************************************
 // Add to calendar component
@@ -23,12 +27,16 @@ const EditRemoveInCalendar = ({editingGame, setEditingGame, sessionToEdit, setSe
         setEditingGame();
     }
 
+    // Triggers the removal of the session and removes uneeded data from memory
     const handleRemove = () => {
         removeSessionFromModal({user: user, session: sessionToEdit});
         setSessionToEdit(null);
         setEditingGame();
     };
 
+    // ***********************
+    // Main render of the component
+    // ***********************
     if (sessionToEdit) {
         return (
             <Dialog open={editingGame} onClose={setEditingGame}>
@@ -60,11 +68,12 @@ const EditRemoveInCalendar = ({editingGame, setEditingGame, sessionToEdit, setSe
                 </FormattedDialog>
             </Dialog>
         )
+    // Loading if data not ready
     } else {
         return (
             <Dialog open={editingGame} onClose={setEditingGame}>
                 <FormattedDialog>
-                    <p>Loading...</p>
+                    <Loading />
                 </FormattedDialog>
                 
             </Dialog>

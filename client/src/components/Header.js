@@ -1,20 +1,28 @@
+// generic libraries
 import styled from "styled-components";
 import { FaUserCircle } from "react-icons/fa";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { BsJoystick } from "react-icons/bs"
 
+// project specific components
 import UserMenu from "./UserMenu";
 
-
+// **********************************************************
+// Site header component
+// **********************************************************
 const Header = () => {
     const { isAuthenticated } = useAuth0();
     const [menuOpen, setMenuOpen] = useState(false);
 
+    // Opens/closes the profile dropdown menu on profile icon click
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     }
 
+    // **************************
+    // Main component render
+    // **************************
     if (isAuthenticated) {
         return (
             <HeaderWrapper>
@@ -23,6 +31,8 @@ const Header = () => {
                 <UserMenu menuStatus={menuOpen} />
             </HeaderWrapper>
         );
+
+    // Won't display the profile options if not logged in (can also take a second to show on load)
     } else {
         return (
             <HeaderWrapper>
@@ -32,6 +42,9 @@ const Header = () => {
     }
 }
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const HeaderWrapper = styled.div`
     background-color: var(--primaryblue);
     width: 100vw;
@@ -90,4 +103,7 @@ const InvisibleButton = styled.button`
     margin-left: auto;
 `
 
+// **********************************************************
+// Default export of component
+// **********************************************************
 export default Header;

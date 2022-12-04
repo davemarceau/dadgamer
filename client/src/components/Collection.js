@@ -1,10 +1,15 @@
+// generic libraries
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
+// project specific components
 import { UserCollectionContext } from "./UserCollectionContext";
 import CollectionGame from "./CollectionGame";
 import Loading from "./Loading";
 
+// *****************************************************************
+// Component rendering the collection list
+// *****************************************************************
 const Collection = () => {
     const { collection } = useContext(UserCollectionContext);
 
@@ -27,6 +32,9 @@ const Collection = () => {
     }
 }
 
+// *****************************************************************
+// Styled components
+// *****************************************************************
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -73,4 +81,7 @@ const Link = styled.a`
     }
 `
 
+// *****************************************************************
+// Default export
+// *****************************************************************
 export default Collection;

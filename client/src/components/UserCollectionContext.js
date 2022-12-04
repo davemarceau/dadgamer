@@ -1,6 +1,8 @@
+// generic libraries
 import { createContext, useEffect, useReducer } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
+// preps the context
 export const UserCollectionContext = createContext(null);
 
 const initialCollection = {games: [], hasLoaded: false};
@@ -34,7 +36,7 @@ const reducer = (state, action) => {
                 })
                     .then((data) => data.json())
                     .then((data) => {
-                        //console.log(data);
+                        console.log(data.message);
                     })
                     .catch((error) => {
                         console.error("Error:", error);
@@ -65,7 +67,7 @@ const reducer = (state, action) => {
 			})
                 .then((data) => data.json())
 				.then((data) => {
-					console.log(data);
+					console.log(data.message);
 
                     
 				})
@@ -99,7 +101,7 @@ const reducer = (state, action) => {
 				// remove later	
 				.then((data) => data.json())
 				.then((data) => {
-                    console.log(data);
+                    console.log(data.message);
 				})
 				.catch((error) => {
 					console.error("Error:", error);
@@ -174,6 +176,9 @@ const UserCollectionProvider = ({ children }) => {
         }
     }, [user, isAuthenticated])
     
+    // ************
+    // Main render
+    // ************
     return (
         <UserCollectionContext.Provider value={{ collection, actions: { addGame, removeGame, updateGame } }}>
             {children}
@@ -181,4 +186,7 @@ const UserCollectionProvider = ({ children }) => {
     );
 }
 
+// **********************************************************
+// Default export of the provider
+// **********************************************************
 export default UserCollectionProvider;

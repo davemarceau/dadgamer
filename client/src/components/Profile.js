@@ -1,14 +1,15 @@
+// generic libraries
 import styled from "styled-components";
 import { useContext, useState } from "react";
 
+// project specific components
 import { UserDetailsContext } from "./UserDetailsContext";
 import ProfileDetails from "./ProfileDetails";
 import ProfileDetailsEditing from "./ProfileDetailsEditing";
-import noImage from "./assets/No-Image-Placeholder.png"
 import Loading from "./Loading";
 
 // ***********************************************
-// Profile component here
+// Profile component
 // ***********************************************
 const Profile = () => {
     const [editMode, setEditMode] = useState(false);
@@ -17,8 +18,7 @@ const Profile = () => {
     // Triggers either the saving of the info or enables the edit mode
     const handleEdit = () => {
         
-        console.log(details.profileImage);
-        // If in edit mode, attempt saving the changes
+        // If in edit mode, attempt saving the changes that happened in the context, where applicable
         if (editMode === true) {
             setEditMode("inProgress");
 
@@ -30,10 +30,10 @@ const Profile = () => {
 				},
                 body: JSON.stringify(details)
 			})
-				// remove later	
 				.then((data) => data.json())
 				.then((data) => {
                     setEditMode(false);
+                    console.log(data.message);
 				})
 				.catch((error) => {
 					console.error("Error:", error);
@@ -45,7 +45,9 @@ const Profile = () => {
         }
     }
     
-    // Checks if details are loaded to prevent crash
+    // *****************
+    // Main component render
+    // *****************
     if (details) {
         // While not editing
         if (editMode === false) {
@@ -81,6 +83,8 @@ const Profile = () => {
                 </Wrapper>
             )
         }
+
+    // Loading if data not ready
     } else {
         return <Loading />
     }
@@ -88,6 +92,9 @@ const Profile = () => {
 
 }
 
+// ***********************************************
+// Styled components
+// ***********************************************
 const Wrapper = styled.div`
     display: flex;
     padding: 25px;
@@ -126,15 +133,6 @@ const EditButton = styled.button`
     }
 `
 
-const ProfileImage = styled.img`
-    width: 100px;
-    height: 100px;
-    border: 3px solid var(--lightbackground);
-    margin-left: 25px;
-    margin-right: 10px;
-    display: inline-block;
-`
-
 const Detail = styled.p`
     padding: 5px;
 `
@@ -149,7 +147,7 @@ const DetailInput = styled.input`
     margin-top: 45px;
 `
 
-
-
-
+// ***********************************************
+// Component default export
+// ***********************************************
 export default Profile;

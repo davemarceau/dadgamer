@@ -1,10 +1,13 @@
+// generic libraries
 import styled from "styled-components";
 import { useContext } from "react";
 
+// project specific components
 import { UserCalendarContext } from "./UserCalendarContext";
 import { UserCollectionContext } from "./UserCollectionContext";
 import Loading from "./Loading";
 
+// Generates today'S date in a format compatible with the db
 const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;
 
 // **********************************************

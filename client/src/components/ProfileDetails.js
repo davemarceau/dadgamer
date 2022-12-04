@@ -1,15 +1,20 @@
+// generic libraries
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Auth0Context } from "@auth0/auth0-react";
 
+// project specific components
 import { UserDetailsContext } from "./UserDetailsContext";
 import Loading from "./Loading";
 
+// ***********************************************
+// Profile details in read mode
+// ***********************************************
 const ProfileDetails = ({ editMode }) => {
     const { details } = useContext(UserDetailsContext);
     const { user } = useContext(Auth0Context);
     
-    // Checks if details are loaded to prevent crash
+    // Checks if details are loaded first then renders if they are
     if (details) {
         return (
             <Wrapper>
@@ -39,6 +44,9 @@ const ProfileDetails = ({ editMode }) => {
 
 }
 
+// ***********************************************
+// Styled components
+// ***********************************************
 const Wrapper = styled.div`
     display: flex;
     padding: 5px;
@@ -72,4 +80,7 @@ const Availability = styled.div`
     flex-direction: column;
 `
 
+// ***********************************************
+// Component default export
+// ***********************************************
 export default ProfileDetails;

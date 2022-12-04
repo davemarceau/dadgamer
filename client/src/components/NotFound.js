@@ -1,7 +1,10 @@
+// generic libraries
 import { BiErrorAlt } from "react-icons/bi";
 import styled from "styled-components";
 
-
+// **********************************************
+// 404 page
+// **********************************************
 const NotFound = () => {
     return (
         <Wrapper>
@@ -13,6 +16,9 @@ const NotFound = () => {
     );
 }
 
+// **********************************************
+// Styled components
+// **********************************************
 const Wrapper = styled.div`
     background-color: var(--darkbackground);
     color: var(--lighttext);
@@ -50,4 +56,7 @@ const ReturnHome = styled.button`
     }
 `
 
+// **********************************************
+// Default export of component
+// **********************************************
 export default NotFound;

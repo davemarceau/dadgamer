@@ -1,3 +1,4 @@
+// generic libraries
 import { Dialog } from '@mui/material';
 import styled from "styled-components";
 
@@ -26,6 +27,9 @@ const RemoveFromCollection = ({ deleteGame, setDeleteGame, game, deleteGameConfi
     )
 }
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const FormattedDialog = styled.div`
     display: flex;
     flex-direction: column;
@@ -127,4 +131,7 @@ const Buttons = styled.div`
     padding: 10px;
 `
 
+// **********************************************************
+// Default component export
+// **********************************************************
 export default RemoveFromCollection;

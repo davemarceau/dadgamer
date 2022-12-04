@@ -1,6 +1,10 @@
+// generic libraries
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 
+// **********************************************************
+// Simple sign in welcome page when not logged in
+// **********************************************************
 const Signin = () => {
     const { loginWithRedirect } = useAuth0();
 
@@ -15,6 +19,9 @@ const Signin = () => {
     );
 }
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const Wrapper = styled.div`
     height: 80vh;
     width: 100vw;
@@ -53,4 +60,7 @@ const LoginButton = styled.button`
     }
 `
 
+// **********************************************************
+// Default component export
+// **********************************************************
 export default Signin;

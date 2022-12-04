@@ -114,7 +114,6 @@ const GameCalendar = () => {
                     ? <MyCalendar onClickDay={handleCalendarDayPick} calendarType="US" value={calendarDate} minDate={new Date("2022-01-02")} minDetail="year" />
                     : ""
                 }
-                
                 <Week>
                     {weekData.map((day, i) => {
                         let sessionsOfTheDay = calendar.sessions.filter((session) => day._id === session.date);
@@ -172,6 +171,7 @@ const GameCalendar = () => {
                     </Game>
                     
                     {collection.games.map((game) => {
+                        // Calculates time played so far for the game
                         const sessionsSoFar = calendar.sessions.filter((session) => session.game.id === game.id && session.date <= weekData[6]._id);
                         let totalPlayedSoFar = 0;
                         sessionsSoFar.forEach(session => {

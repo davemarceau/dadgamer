@@ -1,10 +1,12 @@
+// generic libraries
 import styled from "styled-components";
 
+// project specific components
 import NextSessions from "./NextSessions";
 import TopPlayedGames from "./TopPlayedGames";
 
 // **********************************************
-// Finds the next 3 sessions to display on the homepage
+// Finds the next 3 sessions and top 3 games to display on the homepage
 // **********************************************
 const Homepage = () => {
     return (

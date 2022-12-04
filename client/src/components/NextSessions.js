@@ -1,9 +1,12 @@
+// generic libraries
 import styled from "styled-components";
 import { useContext } from "react";
 
+// Project specific components
 import { UserCalendarContext } from "./UserCalendarContext";
 import Loading from "./Loading";
 
+// Generates today's date in a format usable by DB
 const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;
 
 // Display information to properly convert the week days and months into text
@@ -32,7 +35,9 @@ const NextSessions = () => {
     // keep the next 3
     const next3 = upcomingSessionsClean.slice(0, 3);
 
+    // *******************
     // render if calendar has loaded
+    // *******************
     if (calendar.hasLoaded) {
         return (
             <Wrapper>

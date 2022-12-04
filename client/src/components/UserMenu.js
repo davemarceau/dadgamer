@@ -1,9 +1,16 @@
+// generic libraries
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 
+// **********************************************************
+// Simple user profile menu drop down
+// **********************************************************
 const UserMenu = ({menuStatus}) => {
     const { logout } = useAuth0();
 
+    // *****************
+    // Main render
+    // *****************
     if (menuStatus) {
         return (
             <Menu>
@@ -11,11 +18,16 @@ const UserMenu = ({menuStatus}) => {
                 <LoginButton onClick={() => logout({ returnTo: window.location.origin })} >Logout</LoginButton>
             </Menu>
         );
+    
+    // Hides on trigger of state
     } else {
         return null;
     }
 }
 
+// **********************************************************
+// Styled components
+// **********************************************************
 const Menu = styled.div`
     position: absolute;
     display: flex;
@@ -60,6 +72,7 @@ const LoginButton = styled.button`
         background-color: var(--primaryhover);
     }
 `
-
-
+// **********************************************************
+// Default export of component
+// **********************************************************
 export default UserMenu;

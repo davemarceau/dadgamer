@@ -1,6 +1,10 @@
+// generic libraries
 import { BsJoystick } from "react-icons/bs"
 import styled, { keyframes } from "styled-components";
 
+// **********************************************
+// Animated loading icon
+// **********************************************
 const Loading = () => {
     
     return (
@@ -12,6 +16,9 @@ const Loading = () => {
     
 }
 
+// **********************************************
+// Animations data
+// **********************************************
 const pulse = keyframes`
     0% {  height: 75px; width: 75px; }
     50% {  height: 90px; width: 90px; }
@@ -24,7 +31,9 @@ const textPulse = keyframes`
     100% {  font-size: 20px;; }
 `
 
-
+// **********************************************
+// Styled components
+// **********************************************
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -53,4 +62,7 @@ const LoadingText = styled.p`
     animation: ${textPulse} 0.5s linear infinite;
 `
 
+// **********************************************
+// Default export of the component
+// **********************************************
 export default Loading;
