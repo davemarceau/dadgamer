@@ -48,6 +48,9 @@ const CollectionGame = ({ game }) => {
 
         // From collection
         removeGame({ user: details._id, game: game });
+
+        // Close the modal
+        setDeleteGame(false);
     }
 
     // Opens dialog to confirm deletion on click

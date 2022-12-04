@@ -9,7 +9,6 @@ const morgan = require("morgan");
 // **********************************************************
 const { addGame } = require("./handlers/addGame");
 const { removeGame } = require("./handlers/removeGame");
-//const { findInCollection } = require("./handlers/findInCollection");
 const { getCollection } = require("./handlers/getCollection");
 const { checkNewUser } = require("./handlers/checkNewUser");
 const { getUserDetails } = require("./handlers/getUserDetails");
@@ -21,6 +20,7 @@ const { addSession } = require("./handlers/addSession");
 const { removeSession } = require("./handlers/removeSession");
 const { updateSessionDetails } = require("./handlers/updateSessionDetails");
 const { getCalendarWeek } = require("./handlers/getCalendarWeek");
+const { removeGameFromSessions } = require("./handlers/removeGameFromSessions")
 
 // Server port
 const port = 6000;
@@ -39,7 +39,6 @@ app.use(morgan("tiny"));
 // **********************************************************
 app.post("/addgame", addGame);
 app.delete("/removegame", removeGame);
-//app.get("/findincollection", findInCollection);
 app.get("/getcollection/:userid", getCollection);
 app.post("/checknewuser/:userid", checkNewUser);
 app.get("/getuserdetails/:userid", getUserDetails);
@@ -51,6 +50,7 @@ app.post("/addsession", addSession);
 app.delete("/removesession", removeSession);
 app.patch("/updatesessiondetails", updateSessionDetails);
 app.get("/getcalendarweek/:date", getCalendarWeek);
+app.delete("/removegamefromsessions", removeGameFromSessions);
 
 // **********************************************************
 // Port listen

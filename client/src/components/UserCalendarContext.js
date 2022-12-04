@@ -16,14 +16,10 @@ const reducer = (state, action) => {
         // ****************************
         case "addSession":
             
-            console.log(action.session.date);
-            console.log(action.session.game.id);
-            console.log(state.sessions);
             // validates if session already in calendar
             const alreadyinCalendar = state.sessions.findIndex((calendarSession) => {
                 return (calendarSession.date === action.session.date && calendarSession.game.id === action.session.game.id);
             })
-            console.log(alreadyinCalendar);
 
             // if not adds it
             if (alreadyinCalendar === -1) {
@@ -38,7 +34,7 @@ const reducer = (state, action) => {
                 })
                     .then((data) => data.json())
                     .then((data) => {
-                        //console.log(data);
+                        console.log(data.message);
                     })
                     .catch((error) => {
                         console.error("Error:", error);
@@ -70,7 +66,7 @@ const reducer = (state, action) => {
 			})
                 .then((data) => data.json())
 				.then((data) => {
-					console.log(data);
+					console.log(data.message);
 
                     
 				})
@@ -104,7 +100,7 @@ const reducer = (state, action) => {
 				// remove later	
 				.then((data) => data.json())
 				.then((data) => {
-                    console.log(data);
+                    console.log(data.message);
 				})
 				.catch((error) => {
 					console.error("Error:", error);
@@ -125,27 +121,25 @@ const reducer = (state, action) => {
         case "removeGameFromCollection":
 
             // Updates the DB
-            /*fetch("/removesession", {
+            fetch("/removegamefromsessions", {
 				method: "DELETE",
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json"
 				},
-                body: JSON.stringify({user: action.user, session: action.session})
+                body: JSON.stringify({user: action.user, game: action.game})
 			})
                 .then((data) => data.json())
 				.then((data) => {
-					console.log(data);
-
-                    
+					console.log(data.message);
 				})
 				.catch((error) => {
 					console.error("Error:", error);
-				})*/
+				})
 
             // Updates the Context without waiting for the DB for snappier interaction
             let sessionsAfterRemoval = state.sessions.filter((session) => {
-                return session.game.id != action.game.id
+                return session.game.id !== action.game.id
             });
 
             return {...state, sessions: [...sessionsAfterRemoval]};

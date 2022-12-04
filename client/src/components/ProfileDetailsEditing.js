@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { Auth0Context } from "@auth0/auth0-react";
 
-import UploadImage from "./UploadImage";
 import { UserDetailsContext } from "./UserDetailsContext";
 import Loading from "./Loading";
 
@@ -109,10 +108,6 @@ const GenderInput = styled.select`
 
 const DayInput = styled.input`
     width: 67px;
-`
-
-const UploadButton = styled.input`
-    
 `
 
 export default ProfileDetailsEditing;
