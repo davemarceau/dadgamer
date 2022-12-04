@@ -54,7 +54,6 @@ const newGameSearch = async (req, res) => {
         return res.status(200).json({status: 200, data: results.data, message: successMessage});
         
     } catch (error) {
-        console.log(error.response);
         return res.status(500).json({status: 500, message: "An error has occured"});
     }
 }
@@ -62,6 +61,4 @@ const newGameSearch = async (req, res) => {
 // **************************************************
 // Export the module
 // **************************************************
-module.exports = { newGameSearch }
-
-//export default newGameSearch;
+module.exports = { newGameSearch };

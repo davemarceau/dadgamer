@@ -22,8 +22,10 @@ const getSessionsCalendar = async (req, res) => {
     try {
         await client.connect();
 
+        // Validates if the user exists in sessions
         const userSessions = await db.collection("sessionsCalendar").findOne({_id: userId});
 
+        // returns alls his sessions if he does
         if (userSessions) {
             return res.status(200).json({status: 200, data: userSessions.sessions, message: "User sessions calendar recovered"});
         } else {
@@ -31,11 +33,13 @@ const getSessionsCalendar = async (req, res) => {
         }
 
     } catch (e) {
-        console.log(e);
         return res.status(500).json({status: 500, message: "An error has occured"});
     } finally {
         client.close();
     }
 }
 
+// **********************************************
+// Default export of handler
+// **********************************************
 module.exports = { getSessionsCalendar }

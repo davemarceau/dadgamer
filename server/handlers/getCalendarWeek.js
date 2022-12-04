@@ -12,7 +12,7 @@ const options = {
 }
 
 // **********************************************
-// Returns the full game collection of the user
+// Returns the week data based on a date
 // **********************************************
 const getCalendarWeek = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
@@ -22,9 +22,11 @@ const getCalendarWeek = async (req, res) => {
     try {
         await client.connect();
 
+        // Find the week based on the date received
         const calendarWeekIdentified = await db.collection("calendar").findOne({_id: date});
         const week = calendarWeekIdentified.week;
 
+        // If date found in data, returns the week info
         if (calendarWeekIdentified) {
             const calendarWeek = await db.collection("calendar").find({week: week}).toArray();
 
@@ -34,11 +36,13 @@ const getCalendarWeek = async (req, res) => {
         }
 
     } catch (e) {
-        console.log(e);
         return res.status(500).json({status: 500, message: "An error has occured"});
     } finally {
         client.close();
     }
 }
 
+// **********************************************
+// Default export of handler
+// **********************************************
 module.exports = { getCalendarWeek }

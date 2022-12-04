@@ -61,7 +61,6 @@ const removeGame = async (req, res) => {
             return res.status(404).json({status: 404, message: "User not found"});
         }
     } catch (e) {
-        console.log(e);
         return res.status(500).json({status: 500, message: "An error has occured"});
     } finally {
         client.close();
@@ -69,6 +68,6 @@ const removeGame = async (req, res) => {
 }
 
 // **********************************************
-// Exports the module
+// Exports the handler
 // **********************************************
 module.exports = { removeGame }

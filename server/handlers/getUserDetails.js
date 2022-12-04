@@ -11,6 +11,9 @@ const options = {
     useUnifiedTopology: true,
 }
 
+// **********************************************
+// Handler returning the user details
+// **********************************************
 const getUserDetails = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
     const db = client.db("dadgamer");
@@ -18,8 +21,11 @@ const getUserDetails = async (req, res) => {
 
     try {
         await client.connect();
+        
+        // Checks if the user is in the db
         const userDetails = await db.collection("userDetails").findOne({_id: userId});
 
+        // If he is, returns his info
         if (userDetails) {
             return res.status(200).json({status: 200, data: userDetails, message: "UserDetails identified"});
         } else {
@@ -33,4 +39,7 @@ const getUserDetails = async (req, res) => {
     }
 }
 
+// **********************************************
+// Default export of the handler
+// **********************************************
 module.exports = { getUserDetails }

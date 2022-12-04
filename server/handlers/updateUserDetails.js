@@ -40,7 +40,6 @@ const updateUserDetails = async (req, res) => {
         }
 
     } catch (e) {
-        console.log(e);
         return res.status(500).json({status: 500, message: "An error has occured"});
     } finally {
         client.close();
@@ -48,6 +47,6 @@ const updateUserDetails = async (req, res) => {
 }
 
 // **********************************************
-// Export the module
+// Export the handler
 // **********************************************
 module.exports = { updateUserDetails }
