@@ -24,8 +24,13 @@ const NextSessions = () => {
     // sort the sessions by date
     upcomingSessions.sort((a, b) => a.date - b.date);
 
+    // filter our the add or remove availability
+    const upcomingSessionsClean = upcomingSessions.filter((session) => {
+        return session.game.id !== "add" && session.game.id !== "reduce"
+    })
+
     // keep the next 3
-    const next3 = upcomingSessions.slice(0, 3);
+    const next3 = upcomingSessionsClean.slice(0, 3);
 
     // render if calendar has loaded
     if (calendar.hasLoaded) {

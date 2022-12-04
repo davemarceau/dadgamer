@@ -31,7 +31,7 @@ const removeGameFromSessions = async (req, res) => {
         if (foundUser) {
             const currentSessions = foundUser.sessions;
             
-            // then checks if game indeed in collection
+            // keeps only the sessions without hte game to delete
             const calendarWithoutRemovedGame = currentSessions.filter((session) => {
                 return game.id !== session.game.id;
             })
@@ -44,9 +44,9 @@ const removeGameFromSessions = async (req, res) => {
                 
                 return res.status(200).json({status: 200, message: "Game successfully removed from all sessions"});
             
-            // rejects the request if it is not in collection
+            // if not in collection, notify nothing was deleted, but no rejection in game deletion
             } else {
-                return res.status(200).json({status: 400, message: "Completed, but game not in the user calendar"});
+                return res.status(200).json({status: 200, message: "Completed, but game not in the user calendar"});
             }
 
         // if not, reject the request
