@@ -30,7 +30,6 @@ const AddToCalendar = ({addingGame, setAddingGame, whereToAdd, setWhereToAdd, ti
     const handleConfirm = () => {
         addSessionFromModal({user: user, session: {date: whereToAdd, game: gameToAdd, duration: timeToAdd}})
         setTimeToAdd(0);
-        setWhereToAdd(undefined);
         setAddingGame();
     }
 
