@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { Auth0Context } from "@auth0/auth0-react";
 
 // project specific components
-import { UserDetailsContext } from "./UserDetailsContext";
+import { UserDetailsContext } from "./contexts/UserDetailsContext";
 import Loading from "./Loading";
 
 // ***********************************************

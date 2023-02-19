@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useContext, useState } from "react";
 
 // project specific components
-import { UserDetailsContext } from "./UserDetailsContext";
+import { UserDetailsContext } from "./contexts/UserDetailsContext";
 import ProfileDetails from "./ProfileDetails";
 import ProfileDetailsEditing from "./ProfileDetailsEditing";
 import Loading from "./Loading";

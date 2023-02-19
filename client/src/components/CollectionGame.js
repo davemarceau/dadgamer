@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { useContext, useState } from "react";
 
 // project specific components
-import { UserCollectionContext } from "./UserCollectionContext";
-import { UserDetailsContext } from "./UserDetailsContext";
-import { UserCalendarContext } from "./UserCalendarContext";
+import { UserCollectionContext } from "./contexts/UserCollectionContext";
+import { UserDetailsContext } from "./contexts/UserDetailsContext";
+import { UserCalendarContext } from "./contexts/UserCalendarContext";
 import Loading from "./Loading";
 import RemoveFromCollection from "./RemoveFromCollection";
 

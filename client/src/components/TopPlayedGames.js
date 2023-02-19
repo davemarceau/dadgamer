@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useContext } from "react";
 
 // project specific components
-import { UserCalendarContext } from "./UserCalendarContext";
-import { UserCollectionContext } from "./UserCollectionContext";
+import { UserCalendarContext } from "./contexts/UserCalendarContext";
+import { UserCollectionContext } from "./contexts/UserCollectionContext";
 import Loading from "./Loading";
 
 // Generates today'S date in a format compatible with the db

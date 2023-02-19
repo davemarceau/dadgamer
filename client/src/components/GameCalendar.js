@@ -6,10 +6,10 @@ import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 
 // Project specific components
-import { UserCollectionContext } from "./UserCollectionContext";
-import { UserDetailsContext } from "./UserDetailsContext";
+import { UserCollectionContext } from "./contexts/UserCollectionContext";
+import { UserDetailsContext } from "./contexts/UserDetailsContext";
 import AddToCalendar from "./AddToCalendar";
-import { UserCalendarContext } from "./UserCalendarContext";
+import { UserCalendarContext } from "./contexts/UserCalendarContext";
 import EditRemoveInCalendar from "./EditRemoveInCalendar";
 import addAvailabilityImage from "./assets/add.png";
 import reduceAvailabilityImage from "./assets/remove.png";
@@ -44,6 +44,7 @@ const GameCalendar = () => {
             fetch("/getcalendarweek/" + datePicked)
                 .then((data) => data.json())
                 .then((data) => {
+                    data.data.sort((a, b) => (a.weekDay > b.weekDay) ? 1 : ((b.weekDay > a.weekDay) ? -1 : 0));
                     setWeekData(data.data);
                 })
         }

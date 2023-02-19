@@ -2,11 +2,12 @@
 import styled from "styled-components";
 import { FaUserCircle } from "react-icons/fa";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { BsJoystick } from "react-icons/bs"
 
 // project specific components
 import UserMenu from "./UserMenu";
+import { UserDetailsContext } from "./contexts/UserDetailsContext";
 
 // **********************************************************
 // Site header component
@@ -14,6 +15,7 @@ import UserMenu from "./UserMenu";
 const Header = () => {
     const { isAuthenticated } = useAuth0();
     const [menuOpen, setMenuOpen] = useState(false);
+    const { details } = useContext(UserDetailsContext);
 
     // Opens/closes the profile dropdown menu on profile icon click
     const toggleMenu = () => {
@@ -24,9 +26,26 @@ const Header = () => {
     // Main component render
     // **************************
     if (isAuthenticated) {
+        let headerTitle = "";
+        if (details) {
+            switch (details.gender) {
+                case "Male": {
+                    headerTitle = "DadGamer";
+                    break;
+                }
+                case "Female": {
+                    headerTitle = "MomGamer";
+                    break;
+                }
+                default: {
+                    headerTitle = "ParentGamer";
+                }
+            }
+        }
+        
         return (
             <HeaderWrapper>
-                <SiteLogo href="/" ><LogoDiv><Joystick /><SiteTitle>DadGamer</SiteTitle></LogoDiv></SiteLogo>
+                <SiteLogo href="/" ><LogoDiv><Joystick /><SiteTitle>{headerTitle}</SiteTitle></LogoDiv></SiteLogo>
                 <InvisibleButton onClick={toggleMenu} ><ProfileIcon /></InvisibleButton>
                 <UserMenu menuStatus={menuOpen} />
             </HeaderWrapper>
@@ -36,7 +55,7 @@ const Header = () => {
     } else {
         return (
             <HeaderWrapper>
-                <SiteLogo href="/" ><LogoDiv><Joystick /><SiteTitle>DadGamer</SiteTitle></LogoDiv></SiteLogo>
+                <SiteLogo href="/" ><LogoDiv><Joystick /><SiteTitle>ParentGamer</SiteTitle></LogoDiv></SiteLogo>
             </HeaderWrapper>
         );
     }

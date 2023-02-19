@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 
 // Project specific components
-import { UserCalendarContext } from "./UserCalendarContext";
+import { UserCalendarContext } from "./contexts/UserCalendarContext";
 import Loading from "./Loading";
 
 // Generates today's date in a format usable by DB
@@ -50,7 +50,7 @@ const NextSessions = () => {
                     const month = formattedDate.getUTCMonth();
                     
                     return (
-                        <Game key={session.game.id} >
+                        <Game key={session.game.id + session.date} >
                             <Link href={session.game.url} target="_blank" ><Cover src={session.game.cover} /></Link>
                             <GameText>
                                 <Link href={session.game.url} target="_blank" ><Title>{session.game.name}</Title></Link>

@@ -5,8 +5,8 @@ import { useContext } from "react";
 
 // Project specific libraries
 import noImagePlaceholder from "./assets/No-Image-Placeholder.png";
-import { UserCollectionContext } from "./UserCollectionContext";
-import { UserDetailsContext } from "./UserDetailsContext";
+import { UserCollectionContext } from "./contexts/UserCollectionContext";
+import { UserDetailsContext } from "./contexts/UserDetailsContext";
 
 // **********************************************************
 // Seasrch result component

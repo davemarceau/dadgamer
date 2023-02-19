@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 
 // project specific components
-import { UserCollectionContext } from "./UserCollectionContext";
+import { UserCollectionContext } from "./contexts/UserCollectionContext";
 import CollectionGame from "./CollectionGame";
 import Loading from "./Loading";
 

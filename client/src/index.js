@@ -5,9 +5,9 @@ import ReactDOM from 'react-dom/client';
 import App from './components/App';
 
 // Contexts required for the application to work efficiently
-import UserDetailsProvider from "./components/UserDetailsContext";
-import UserCollectionProvider from "./components/UserCollectionContext";
-import UserCalendarProvider from "./components/UserCalendarContext";
+import UserDetailsProvider from "./components/contexts/UserDetailsContext";
+import UserCollectionProvider from "./components/contexts/UserCollectionContext";
+import UserCalendarProvider from "./components/contexts/UserCalendarContext";
 
 // ******************************************************
 // Application render
