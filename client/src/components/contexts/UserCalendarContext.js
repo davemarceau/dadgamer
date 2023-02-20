@@ -200,7 +200,7 @@ const UserCalendarProvider = ({ children }) => {
         })
     }
 
-    // Loads the collection when the user is logged im
+    // Loads the collection when the user is logged in
     useEffect(() => {
         if (isAuthenticated) {
             fetch("/getsessionscalendar/" + user.email)

@@ -1,6 +1,7 @@
 // generic libraries
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom"
 
 // **********************************************************
 // Simple user profile menu drop down
@@ -14,7 +15,7 @@ const UserMenu = ({menuStatus}) => {
     if (menuStatus) {
         return (
             <Menu>
-                <MiniBox><Link href="/profile" >Profile</Link></MiniBox>
+                <MiniBox><FormattedLink to="/profile" >Profile</FormattedLink></MiniBox>
                 <LoginButton onClick={() => logout({ returnTo: window.location.origin })} >Logout</LoginButton>
             </Menu>
         );
@@ -44,7 +45,7 @@ const MiniBox = styled.div`
 `
 
 
-const Link = styled.a`
+const FormattedLink = styled(Link)`
     padding: 5px;
     margin-bottom: 10px;
     color: var(--darktext);

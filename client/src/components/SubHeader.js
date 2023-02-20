@@ -1,5 +1,6 @@
 // generic libraries
 import styled from "styled-components";
+import { Link } from "react-router-dom"
 
 // **********************************************************
 // Subheader menu for simple navigation
@@ -7,9 +8,9 @@ import styled from "styled-components";
 const SubHeader = () => {
     return (
         <Wrapper>
-            <Link href="/" >Homepage</Link>
-            <Link href="/calendar">Calendar</Link>
-            <Link href="/collection" >Collection</Link>
+            <FormattedLink to="/" >Homepage</FormattedLink>
+            <FormattedLink to="/calendar">Calendar</FormattedLink>
+            <FormattedLink to="/collection" >Collection</FormattedLink>
         </Wrapper>
     );
 };
@@ -24,7 +25,7 @@ const Wrapper = styled.div`
     height: 30px;
 `
 
-const Link = styled.a`
+const FormattedLink = styled(Link)`
     margin: auto 20px;
     color: var(--lighttext);
 

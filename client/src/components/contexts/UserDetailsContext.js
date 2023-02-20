@@ -22,7 +22,7 @@ const UserDetailsProvider = ({ children }) => {
                     console.log(data.message);
                 })
         }
-    }, [user, isAuthenticated])
+    }, [user])
     
     // **************
     // Main render

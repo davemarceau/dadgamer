@@ -6,13 +6,7 @@ import { useEffect } from "react";
 // project specific components
 import GlobalStyles from "./GlobalStyles";
 import Header from "./Header";
-import Homepage from "./Homepage";
 import Signin from "./Signin";
-import NotFound from "./NotFound";
-import Profile from "./Profile";
-import Collection from "./Collection";
-import AddNewGame from "./AddNewGame";
-import GameCalendar from "./GameCalendar";
 import SubHeader from "./SubHeader";
 import Loading from "./Loading";
 import MainContent from "./MainContent";
@@ -43,8 +37,31 @@ const App = () => {
 		}
 	}, [user, isAuthenticated]);
 
+	const definedRoute = () => {
+		if (!isLoading) {
+			if (isAuthenticated) {
+				return <Route path="/*" element={<MainContent />} />
+			} else {
+				return <Route path="*" element={<Signin />} />
+			}
+		} else {
+			return <Route path="*" element={<Loading />} />
+		}
+	}
+
+	return (
+		<BrowserRouter>
+			<GlobalStyles />
+			<Header />
+			<SubHeader />
+			<Routes>
+				{definedRoute()}
+			</Routes>
+		</BrowserRouter>
+	)
+
 	// Checks if user is still loading before chossing what routes to apply
-	if (!isLoading) {
+	/*if (!isLoading) {
 		
 		// If user is logged in, it will allow site navigation
 		if (isAuthenticated) {
@@ -83,7 +100,7 @@ const App = () => {
 				<Loading />
 			</BrowserRouter>
 		);
-	}
+	}*/
 }
 
 // *****************************************************************

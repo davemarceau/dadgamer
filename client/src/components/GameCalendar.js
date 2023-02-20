@@ -33,7 +33,7 @@ const GameCalendar = () => {
     const [gameToAdd, setGameToAdd] = useState(null);
     const [sessionToEdit, setSessionToEdit] = useState(null);
     const [datePicked, setDatePicked] = useState(Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
-    const [weekData, setWeekData] = useState(null);
+    const [weekData, setWeekData] = useState([]);
     const [calendarTrigger, setCalendarTrigger] = useState(false);
     const [calendarDate, setCalendarDate] = useState(new Date());
 

@@ -1,7 +1,6 @@
 // generic libraries
 import styled from "styled-components";
 import { FaUserCircle } from "react-icons/fa";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useContext } from "react";
 import { BsJoystick } from "react-icons/bs"
 
@@ -13,7 +12,6 @@ import { UserDetailsContext } from "./contexts/UserDetailsContext";
 // Site header component
 // **********************************************************
 const Header = () => {
-    const { isAuthenticated } = useAuth0();
     const [menuOpen, setMenuOpen] = useState(false);
     const { details } = useContext(UserDetailsContext);
 
@@ -25,21 +23,20 @@ const Header = () => {
     // **************************
     // Main component render
     // **************************
-    if (isAuthenticated) {
+    if (details) {
         let headerTitle = "";
-        if (details) {
-            switch (details.gender) {
-                case "Male": {
-                    headerTitle = "DadGamer";
-                    break;
-                }
-                case "Female": {
-                    headerTitle = "MomGamer";
-                    break;
-                }
-                default: {
-                    headerTitle = "ParentGamer";
-                }
+
+        switch (details.gender) {
+            case "Male": {
+                headerTitle = "DadGamer";
+                break;
+            }
+            case "Female": {
+                headerTitle = "MomGamer";
+                break;
+            }
+            default: {
+                headerTitle = "ParentGamer";
             }
         }
         

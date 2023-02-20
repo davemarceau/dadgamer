@@ -5,6 +5,8 @@
 - Moved context files to their own folder for easier files navigation
 - Moved the main routing to its own "MainContent" component for clearer App
 - Fixed a bug where "Next sessions" of the home page could generate the same key if the same game repeated in the next 3 sessions
+- Significant performance improvement using the React Router Link instead of the standard links
+- Fixed a bug in Calendar where the new performance would make the render error out with data not yet ready to deal with an array
 
 # v0.1: Original project (2022-12-05)
 
