@@ -60,47 +60,6 @@ const App = () => {
 		</BrowserRouter>
 	)
 
-	// Checks if user is still loading before chossing what routes to apply
-	/*if (!isLoading) {
-		
-		// If user is logged in, it will allow site navigation
-		if (isAuthenticated) {
-			return (
-				<BrowserRouter>
-					<GlobalStyles />
-					<Header />
-					<SubHeader />
-					<Routes>
-						<Route path="/*" element={<MainContent />} />
-					</Routes>
-				</BrowserRouter>
-			)
-		
-		// If user is not logged in, it will ask for sign in
-		} else {
-			return (
-				<BrowserRouter>
-					<GlobalStyles />
-					<Header />
-					<SubHeader />
-					<Routes>
-						<Route path="*" element={<Signin />} />
-					</Routes>
-				</BrowserRouter>
-			)
-		}
-
-	// Displays loading if user is still loading
-	} else {
-		return (
-			<BrowserRouter>
-			<GlobalStyles />
-			<Header />
-			<SubHeader />
-				<Loading />
-			</BrowserRouter>
-		);
-	}*/
 }
 
 // *****************************************************************

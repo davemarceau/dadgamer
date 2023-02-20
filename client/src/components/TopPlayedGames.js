@@ -1,6 +1,7 @@
 // generic libraries
 import styled from "styled-components";
 import { useContext } from "react";
+import { Link } from "react-router-dom"
 
 // project specific components
 import { UserCalendarContext } from "./contexts/UserCalendarContext";
@@ -49,15 +50,15 @@ const TopPlayedGames = () => {
                 {top3.map((game) => {
                     return (
                         <Game key={game.id} >
-                            <Link href={game.url} target="_blank" ><Cover src={game.cover} /></Link>
+                            <ExternalLink href={game.url} target="_blank" ><Cover src={game.cover} /></ExternalLink>
                             <GameText>
-                            <Link href={game.url} target="_blank" ><Title>{game.name}</Title></Link>
+                            <ExternalLink href={game.url} target="_blank" ><Title>{game.name}</Title></ExternalLink>
                                 <TotalTime>Total time played: {game.totalTimePlayed}h</TotalTime>
                             </GameText>
                         </Game>
                     )
                 })}
-                <Link href="/collection"><CollectionButton>See more in your collection</CollectionButton></Link>
+                <FormattedLink to="/collection"><CollectionButton>See more in your collection</CollectionButton></FormattedLink>
             </Wrapper>
         )
     // otherwise display loading
@@ -149,7 +150,14 @@ const CollectionButton = styled.button`
     }
 `
 
-const Link = styled.a`
+const FormattedLink = styled(Link)`
+    color: var(--lighttext);
+    &:hover {
+        color: var(--lighthover);
+    }
+`
+
+const ExternalLink = styled.a`
     color: var(--lighttext);
     &:hover {
         color: var(--lighthover);

@@ -1,6 +1,7 @@
 // generic libraries
 import styled from "styled-components";
 import { useContext } from "react";
+import { Link } from "react-router-dom"
 
 // Project specific components
 import { UserCalendarContext } from "./contexts/UserCalendarContext";
@@ -51,9 +52,9 @@ const NextSessions = () => {
                     
                     return (
                         <Game key={session.game.id + session.date} >
-                            <Link href={session.game.url} target="_blank" ><Cover src={session.game.cover} /></Link>
+                            <ExternalLink href={session.game.url} target="_blank" ><Cover src={session.game.cover} /></ExternalLink>
                             <GameText>
-                                <Link href={session.game.url} target="_blank" ><Title>{session.game.name}</Title></Link>
+                                <ExternalLink href={session.game.url} target="_blank" ><Title>{session.game.name}</Title></ExternalLink>
                                 {todaysDate === session.date
                                     ? <SessionTime>Today</SessionTime>
                                     : <SessionTime>{weekDays[weekDay]}, {monthDay} of {monthNames[month]}</SessionTime>
@@ -63,7 +64,7 @@ const NextSessions = () => {
                         </Game>
                     )
                 })}
-                <Link href="/calendar"><CalendarButton>See more in your calendar</CalendarButton></Link>
+                <FormattedLink to="/calendar"><CalendarButton>See more in your calendar</CalendarButton></FormattedLink>
             </Wrapper>
         )
     // otherwise display loading
@@ -159,12 +160,20 @@ const CalendarButton = styled.button`
     }
 `
 
-const Link = styled.a`
+const FormattedLink = styled(Link)`
     color: var(--lighttext);
     &:hover {
         color: var(--lighthover);
     }
 `
+
+const ExternalLink = styled.a`
+    color: var(--lighttext);
+    &:hover {
+        color: var(--lighthover);
+    }
+`
+
 
 
 // **********************************************
