@@ -1,18 +1,21 @@
 // generic libraries
 import styled from "styled-components";
 import { useContext } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 // project specific components
 import { UserCollectionContext } from "./contexts/UserCollectionContext";
 import CollectionGame from "./CollectionGame";
 import Loading from "./Loading";
 
+
 // *****************************************************************
 // Component rendering the collection list
 // *****************************************************************
 const Collection = () => {
     const { collection } = useContext(UserCollectionContext);
+    const [sortedCollection, setSortedCollection] = useState([]);
 
     if (collection.hasLoaded) {
         return (
@@ -21,11 +24,13 @@ const Collection = () => {
                     <PageTitle>Your game collection</PageTitle>
                     <FormattedLink to="/addgame" ><AddGame>Add a game</AddGame></FormattedLink>
                 </HeadWrapper>
-                {
-                    collection.games.map((game) => {
-                        return <CollectionGame game={game} key={game.id} />
-                    })
-                }
+                <TheCollection>
+                    {
+                        collection.games.map((game) => {
+                            return <CollectionGame game={game} key={game.id} />
+                        })
+                    }
+                </TheCollection>
             </Wrapper>
         );
     } else {
@@ -48,6 +53,13 @@ const HeadWrapper = styled.div`
     padding: 10px;
     display: flex;
     flex-direction: row;
+`
+
+const TheCollection = styled.div`
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 `
 
 
@@ -73,15 +85,6 @@ const AddGame = styled.button`
     }
 `
 
-/*const Link = styled.a`
-    margin-top: auto;
-    margin-left: auto;
-
-    &:hover {
-        color: var(--darkhover);
-    }
-`*/
-
 const FormattedLink = styled(Link)`
     margin-top: auto;
     margin-left: auto;
@@ -91,14 +94,6 @@ const FormattedLink = styled(Link)`
     }
 `
 
-const ExternalLink = styled.a`
-    margin-top: auto;
-    margin-left: auto;
-
-    &:hover {
-        color: var(--darkhover);
-    }
-`
 
 // *****************************************************************
 // Default export

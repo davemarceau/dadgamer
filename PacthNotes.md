@@ -1,3 +1,8 @@
+# v0.3: Collection page cleanup (2023-03-02)
+
+- Allowed the games to wrap horizontally on larger displays for easier collection browsing
+- Allowed for small vs extended display for easier navigation
+
 # v0.2: Minor fixes (2023-02-19)
 
 - Fixed an issue where the order of the days in the calendar would not always follow the days of the week

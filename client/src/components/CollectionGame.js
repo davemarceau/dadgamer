@@ -25,6 +25,7 @@ const CollectionGame = ({ game }) => {
     const [evergreenState, setEvergreenState] = useState(evergreen);
     const { calendar, actions: { removeGameFromCollection } } = useContext(UserCalendarContext);
     const [deleteGame, setDeleteGame] = useState(false);
+    const [bigMode, setBigMode] = useState(false);
     
     // Calculates the time played so far for that game
     const sessionsSoFar = calendar.sessions.filter((session) => session.game.id === id && session.date <= todaysDate);
@@ -91,6 +92,11 @@ const CollectionGame = ({ game }) => {
         setEvergreenState(!evergreenState);
     }
 
+    // Updates the display mode
+    const handleDisplayMode = () => {
+        setBigMode(!bigMode);
+    }
+
 
 
     // Fields at the bottom are editable depending on he editMode status
@@ -148,24 +154,49 @@ const CollectionGame = ({ game }) => {
     // Main render of the component
     // ********************
     if (game) {
-        return (
-            <Wrapper>
-                <MainInfo>
-                    <Link href={url} target="_blank" ><CoverArt src={cover} alt="cover" className={active ? "activeImage" : "inactiveImage"} /></Link>
-                    <Details>
-                        <Link href={url} target="_blank" ><GameTitle>{name}</GameTitle></Link>
-                        <SmallerDetails>
-                            <ReleaseDate>Release dates: {releaseDate}</ReleaseDate>
-                            <Platforms>Platforms: {platforms}</Platforms>
-                        </SmallerDetails>
-                    </Details>
+        
+        // large detailed display when enabled
+        if (bigMode) {
+            return (
+                <WrapperLarge>
+                    <MainInfo>
+                        <Link href={url} target="_blank" ><CoverArt src={cover} alt="cover" className={active ? "activeImage" : "inactiveImage"} /></Link>
+                        <DetailsLarge>
+                            <Link href={url} target="_blank" ><GameTitle>{name}</GameTitle></Link>
+                            <SmallerDetails>
+                                <ReleaseDate>Release dates: {releaseDate}</ReleaseDate>
+                                <Platforms>Platforms: {platforms}</Platforms>
+                            </SmallerDetails>
+                        </DetailsLarge>
+                        <SmallToLarge onClick={handleDisplayMode} >Less...</SmallToLarge>
+                    </MainInfo>
                     
-                </MainInfo>
-                <Summary><FieldTitle>Summary: </FieldTitle>{summary}</Summary>
-                {editSection()}
-                <RemoveFromCollection deleteGame={deleteGame} setDeleteGame={() => setDeleteGame(!deleteGame)} game={game} deleteGameConfirmed={deleteGameConfirmed} totalPlayedSoFar={totalPlayedSoFar} />
-            </Wrapper>
-        );
+                    <Summary><FieldTitle>Summary: </FieldTitle>{summary}</Summary>
+                    {editSection()}
+                    <RemoveFromCollection deleteGame={deleteGame} setDeleteGame={() => setDeleteGame(!deleteGame)} game={game} deleteGameConfirmed={deleteGameConfirmed} totalPlayedSoFar={totalPlayedSoFar} />
+                </WrapperLarge>
+            );
+        
+        // smaller display for collection browsing
+        } else {
+            return (
+                <WrapperSmall>
+                    <MainInfo>
+                        <Link href={url} target="_blank" ><CoverArt src={cover} alt="cover" className={active ? "activeImage" : "inactiveImage"} /></Link>
+                        <DetailsSmall>
+                            <Link href={url} target="_blank" ><GameTitle>{name}</GameTitle></Link>
+                            <SmallerDetails>
+                                <ReleaseDate>Release dates: {releaseDate}</ReleaseDate>
+                                <Platforms>Platforms: {platforms}</Platforms>
+                            </SmallerDetails>
+                        </DetailsSmall>
+                        <SmallToLarge onClick={handleDisplayMode} >More...</SmallToLarge>
+                    </MainInfo>
+                    
+                </WrapperSmall>
+            );
+        }
+        
     
     // loading if data not ready
     } else {
@@ -176,14 +207,24 @@ const CollectionGame = ({ game }) => {
 // **********************************************************
 // Styled components
 // **********************************************************
-const Wrapper = styled.div`
+const WrapperLarge = styled.div`
     padding: 10px;
     display: flex;
     flex-direction: column;
     width: 600px;
     margin-left: auto;
     margin-right: auto;
-    border-bottom: 1px solid var(--darkhover);
+    //border-bottom: 1px solid var(--darkhover);
+`;
+
+const WrapperSmall = styled.div`
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+    margin-left: auto;
+    margin-right: auto;
+    //border-bottom: 1px solid var(--darkhover);
 `;
 
 const MainInfo = styled.div`
@@ -211,11 +252,18 @@ const CoverArt = styled.img`
     }
 `
 
-const Details = styled.div`
+const DetailsLarge = styled.div`
     display: flex;
     flex-direction: column;
     padding: 5px;
     width: 400px;
+`
+
+const DetailsSmall = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    width: 200px;
 `
 
 const GameTitle = styled.h2`
@@ -300,6 +348,25 @@ const PlanDetail = styled.div`
 const RemoveFromCollectionButton = styled.button`
     color: var(--primaryblue);
     width: 80px;
+    background-color: transparent;
+    border: none;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--primaryhover);
+    }
+
+    &:disabled {
+        color: var(--darkhover);
+        cursor: not-allowed;
+    }
+`
+
+const SmallToLarge = styled.button`
+    color: var(--primaryblue);
+    width: 50px;
     background-color: transparent;
     border: none;
     margin-top: auto;
