@@ -2,6 +2,8 @@
 
 - Allowed the games to wrap horizontally on larger displays for easier collection browsing
 - Allowed for small vs extended display for easier navigation
+- Added sort option in the collection screen
+- Known issue with the new sort: collection render happens before a sort can be picked and shows blank on first load. To be fixed later.
 
 # v0.2: Minor fixes (2023-02-19)
 
