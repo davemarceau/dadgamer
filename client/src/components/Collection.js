@@ -1,6 +1,7 @@
 // generic libraries
 import styled from "styled-components";
 import { useContext } from "react";
+import { Link } from "react-router-dom"
 
 // project specific components
 import { UserCollectionContext } from "./contexts/UserCollectionContext";
@@ -18,7 +19,7 @@ const Collection = () => {
             <Wrapper>
                 <HeadWrapper>
                     <PageTitle>Your game collection</PageTitle>
-                    <Link href="/addgame" ><AddGame>Add a game</AddGame></Link>
+                    <FormattedLink to="/addgame" ><AddGame>Add a game</AddGame></FormattedLink>
                 </HeadWrapper>
                 {
                     collection.games.map((game) => {
@@ -72,7 +73,25 @@ const AddGame = styled.button`
     }
 `
 
-const Link = styled.a`
+/*const Link = styled.a`
+    margin-top: auto;
+    margin-left: auto;
+
+    &:hover {
+        color: var(--darkhover);
+    }
+`*/
+
+const FormattedLink = styled(Link)`
+    margin-top: auto;
+    margin-left: auto;
+
+    &:hover {
+        color: var(--darkhover);
+    }
+`
+
+const ExternalLink = styled.a`
     margin-top: auto;
     margin-left: auto;
 
