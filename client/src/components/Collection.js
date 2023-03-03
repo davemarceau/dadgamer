@@ -27,7 +27,7 @@ const Collection = () => {
     // Assigns the collection to the sorted array on load
     useEffect(() => {
         setSortedCollection([...collection.games]);
-    }, []);
+    }, [collection]);
 
     // **********************************
     // Function handling the sort change
