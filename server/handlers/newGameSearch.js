@@ -14,7 +14,10 @@ const { IGDB_CLIENT_ID, IGDB_CLIENT_SECRET, TWITCH_AUTHENTICATION } = process.en
 // **************************************************
 const newGameSearch = async (req, res) => {
     const searchString = req.query.searchString;
+    const searchPlatforms = req.query.searchPlatforms;
     let results = [];
+
+    console.log(searchPlatforms);
 
     try {
 
@@ -45,7 +48,7 @@ const newGameSearch = async (req, res) => {
                 'Accept': 'application/json',
                 "Accept-Encoding": "null",
             },
-            data: `fields name, cover.url, id, platforms.name, url, rating, first_release_date, summary; where name ~ "${searchString}"*; limit 50; sort rating desc;`
+            data: `fields name, cover.url, id, platforms.name, url, rating, first_release_date, summary; where name ~ *"${searchString}"*; limit 50; sort rating desc;`
             //data: `fields *; where name ~ "${searchString}"*; limit 50; sort rating desc;`
         })
         

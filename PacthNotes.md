@@ -5,6 +5,7 @@
 - Added sort option in the collection screen
 - Added a search option in the collection screen
 - The collection screen now displays something if either the collection has no games or the search returns no results
+- Fixed the new game search so it allows the search term not to be at the start of the title
 
 # v0.2: Minor fixes (2023-02-19)
 
