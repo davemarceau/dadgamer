@@ -1,4 +1,4 @@
-# Dad gamer
+# Parent gamer
 
 This is a video game planner to avoid overbuying games based on your availability. It lets you build a video game collection and then add play sessions to your calendar, clearly showing you the time you have available each day and how much time is left to play in order to complete games. This will help you identify if you can fit more games in your busy parent schedule.
 

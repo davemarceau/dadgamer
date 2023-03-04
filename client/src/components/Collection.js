@@ -94,8 +94,14 @@ const Collection = () => {
         }
     }
 
+    // Function handling the search change
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
+    }
+
+    // Function handling the search clear
+    const handleClear = (e) => {
+        setSearch("");
     }
 
 
@@ -121,17 +127,18 @@ const Collection = () => {
                         </PickList>
                     </SortPicker>
                     <CollectionSearch placeholder="Search for a game here" value={search} onChange={handleSearchChange} ></CollectionSearch>
+                    <ClearSearch onClick={handleClear} >Clear</ClearSearch>
                 </CollectionSorters>
                 <TheCollection>
                     {
                         sortedCollection.map((game) => {
-                            
+                            // Only returns a game if it matches the search results
                             if (game.name.toLowerCase().includes(search.toLowerCase())) {
                                 totalGames++;
                                 return <CollectionGame game={game} key={game.id} />
+                            } else {
+                                return ""
                             }
-
-                            
                         })
                     }
                     {totalGames ? "" : "No games found"}
@@ -164,6 +171,8 @@ const CollectionSorters = styled.div`
     display: flex;
     flex-direction: row;
     padding: 5px;
+    height: 30px;
+    align-items: center;
 `
 
 const SortPicker = styled.div`
@@ -175,12 +184,36 @@ const SortPicker = styled.div`
 const PickList = styled.select`
     width: 170px;
     margin-left: 5px;
+    padding: 4px;
+    height: 25px;
 `
 
 const CollectionSearch = styled.input`
     width: 300px;
-    height: 10px;
+    height: 12px;
     padding: 5px;
+    margin-left: 5px;
+`
+
+const ClearSearch = styled.button`
+    background-color: var(--primaryblue);
+    width: 42px;
+    height: 24px;
+    //border-radius: 6px;
+    border: none;
+    color: var(--lighttext);
+    position: relative;
+    left: -43px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--primaryhover);
+    }
+
+    &:disabled {
+        background-color: var(--darkhover);
+        cursor: wait;
+    }
 `
 
 const TheCollection = styled.div`
