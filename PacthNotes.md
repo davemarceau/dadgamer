@@ -1,9 +1,10 @@
-# v0.3: Collection page cleanup (2023-03-02)
+# v0.3: Collection page cleanup (2023-03-03)
 
 - Allowed the games to wrap horizontally on larger displays for easier collection browsing
 - Allowed for small vs extended display for easier navigation
 - Added sort option in the collection screen
-- Known issue: default value in the sort drop down
+- Added a search option in the collection screen
+- The collection screen now displays something if either the collection has no games or the search returns no results
 
 # v0.2: Minor fixes (2023-02-19)
 

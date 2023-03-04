@@ -22,7 +22,7 @@ const Collection = () => {
     const { calendar } = useContext(UserCalendarContext);
     const [sortingType, setSortingType] = useState("");
     const [sortedCollection, setSortedCollection] = useState([]);
-    //const [collectionLoaded, setCollectionLoaded] = useState(false);
+    const [search, setSearch] = useState("");
 
     // Assigns the collection to the sorted array on load
     useEffect(() => {
@@ -94,31 +94,47 @@ const Collection = () => {
         }
     }
 
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value);
+    }
+
 
     // *********************************************
     // Component render
     // *********************************************
     if (collection.hasLoaded) {
+        let totalGames = 0;
         return (
             <Wrapper>
                 <HeadWrapper>
                     <PageTitle>Your game collection</PageTitle>
                     <FormattedLink to="/addgame" ><AddGame>Add a game</AddGame></FormattedLink>
                 </HeadWrapper>
-                <SortPicker>
-                    <span>Sort collection by: </span>
-                    <PickList id="sortType" placeholder="Pick sort order" value={sortingType ? sortingType : ""} onChange={handleSortChange}>
-                            <option value="alpha">Alphabetical</option>
-                            <option value="releaseDate">Release Date</option>
-                            <option value="timePlayed">Time Played</option>
-                    </PickList>
-                </SortPicker>
+                <CollectionSorters>
+                    <SortPicker>
+                        <span>Sort collection by: </span>
+                        <PickList id="sortType" placeholder="Pick sort order" value={sortingType ? sortingType : ""} onChange={handleSortChange}>
+                                <option value="" disabled >Pick sort order</option>
+                                <option value="alpha">Alphabetical</option>
+                                <option value="releaseDate">Release Date</option>
+                                <option value="timePlayed">Time Played</option>
+                        </PickList>
+                    </SortPicker>
+                    <CollectionSearch placeholder="Search for a game here" value={search} onChange={handleSearchChange} ></CollectionSearch>
+                </CollectionSorters>
                 <TheCollection>
                     {
                         sortedCollection.map((game) => {
-                            return <CollectionGame game={game} key={game.id} />
+                            
+                            if (game.name.toLowerCase().includes(search.toLowerCase())) {
+                                totalGames++;
+                                return <CollectionGame game={game} key={game.id} />
+                            }
+
+                            
                         })
                     }
+                    {totalGames ? "" : "No games found"}
                 </TheCollection>
             </Wrapper>
         );
@@ -144,6 +160,12 @@ const HeadWrapper = styled.div`
     flex-direction: row;
 `
 
+const CollectionSorters = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+`
+
 const SortPicker = styled.div`
     display: flex;
     flex-direction: row;
@@ -153,6 +175,12 @@ const SortPicker = styled.div`
 const PickList = styled.select`
     width: 170px;
     margin-left: 5px;
+`
+
+const CollectionSearch = styled.input`
+    width: 300px;
+    height: 10px;
+    padding: 5px;
 `
 
 const TheCollection = styled.div`
