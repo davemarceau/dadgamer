@@ -56,5 +56,5 @@ app.delete("/removegamefromsessions", removeGameFromSessions);
 // Port listen
 // **********************************************************
 app.listen(port, () => {
-    console.log(`Dad Gamer Server listening on port ${port}`)
+    console.log(`Parent Gamer Server listening on port ${port}`)
 });

@@ -69,7 +69,13 @@ const NextSessions = () => {
         )
     // otherwise display loading
     } else {
-        <Loading />
+        return (
+            <Wrapper>
+                <SectionTitle>Your next 3 play sessions</SectionTitle>
+                <Loading />
+                <FormattedLink to="/calendar"><CalendarButton>See more in your calendar</CalendarButton></FormattedLink>
+            </Wrapper>
+        )
     }
     
 }
@@ -83,6 +89,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 5px;
+    width: 300px;
 `
 
 const SectionTitle = styled.h1`

@@ -1,3 +1,8 @@
+# v0.4: Homepage behavior (2023-03-08)
+
+- Updated the loading methods to show partial menus as it loads the data
+- Fixed loading status to properly display the loading icon
+
 # v0.3: Collection page cleanup (2023-03-03)
 
 - Allowed the games to wrap horizontally on larger displays for easier collection browsing
