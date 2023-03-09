@@ -89,7 +89,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 5px;
-    width: 300px;
+    width: 400px;
 `
 
 const SectionTitle = styled.h1`

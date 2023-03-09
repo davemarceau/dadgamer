@@ -87,7 +87,7 @@ const Wrapper = styled.div`
     padding: 5px;
     padding-left: 10px;
     border-left: 1px solid var(--lighthover);
-    width: 300px;
+    width: 400px;
 `
 
 const SectionTitle = styled.h1`
