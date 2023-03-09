@@ -7,8 +7,6 @@ import { Link } from "react-router-dom"
 import { UserCalendarContext } from "./contexts/UserCalendarContext";
 import { UserCollectionContext } from "./contexts/UserCollectionContext";
 import Loading from "./Loading";
-//import { useState } from "react";
-//import { useEffect } from "react";
 
 // Generates today'S date in a format compatible with the db
 const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;

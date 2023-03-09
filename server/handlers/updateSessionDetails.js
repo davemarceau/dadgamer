@@ -41,10 +41,6 @@ const updateSessionDetails = async (req, res) => {
             if (inCalendar !== -1) {
                 let updatedSessions = [...foundUser.sessions];
 
-                /*const sessionToUpdate = updatedSessions.findIndex((calendarSession) => {
-                    return calendarSession.date == session.date && calendarSession.game.id == session.game.id;
-                });*/
-
                 updatedSessions[inCalendar] = updatedSession;
 
                 // Sending back the calendar in the DB with the updated values

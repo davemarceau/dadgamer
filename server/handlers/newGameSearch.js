@@ -49,7 +49,6 @@ const newGameSearch = async (req, res) => {
                 "Accept-Encoding": "null",
             },
             data: `fields name, cover.url, id, platforms.name, url, rating, first_release_date, summary; where name ~ *"${searchString}"*; limit 50; sort rating desc;`
-            //data: `fields *; where name ~ "${searchString}"*; limit 50; sort rating desc;`
         })
         
         // Returns the search results
