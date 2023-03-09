@@ -8,22 +8,23 @@ import Loading from './Loading';
 // **********************************************************
 // Add to calendar component
 // **********************************************************
-const EditRemoveInCalendar = ({editingGame, setEditingGame, sessionToEdit, setSessionToEdit, weekData, monthNames, weekDays, user, editSessionFromModal, removeSessionFromModal }) => {
+const EditRemoveInCalendar = ({editingGame, setEditingGame, sessionToEdit, setSessionToEdit, updatedSession, setUpdatedSession, weekData, monthNames, weekDays, user, editSessionFromModal, removeSessionFromModal }) => {
     
     // updates the duration in hours of the session
     const handleSessionLengthChange = (e) => {
-        setSessionToEdit({...sessionToEdit, duration: Number(e.target.value)});
+        setUpdatedSession({...updatedSession, duration: Number(e.target.value)});
     }
 
     // Updates the date of the session
     const handleSessionDateChange = (e) => {
-        setSessionToEdit({...sessionToEdit, date: Number(e.target.value)});
+        setUpdatedSession({...updatedSession, date: Number(e.target.value)});
     }
 
     // Generates the session record upon confirmation
     const handleConfirm = () => {
-        editSessionFromModal({user: user, session: sessionToEdit})
+        editSessionFromModal({user: user, session: sessionToEdit, updatedSession: updatedSession})
         setSessionToEdit(null);
+        setUpdatedSession(null);
         setEditingGame();
     }
 
@@ -43,16 +44,16 @@ const EditRemoveInCalendar = ({editingGame, setEditingGame, sessionToEdit, setSe
                 <FormattedDialog>
                     <PopupTitle>Modifying a play session</PopupTitle>
                     <GameDetails>
-                        <Cover src={sessionToEdit.game.cover}/>
-                        <GameTitle>{sessionToEdit.game.name}</GameTitle>
+                        <Cover src={updatedSession.game.cover}/>
+                        <GameTitle>{updatedSession.game.name}</GameTitle>
                     </GameDetails>
                     <AddDetail>
                         <FieldTitle>Time of the session (in hours): </FieldTitle>
-                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" min="0" max="24" placeholder="hrs" value={sessionToEdit.duration} onChange={handleSessionLengthChange} />
+                        <SessionLengthInput id="sessionLength" name="sessionLength" type="number" min="0" max="24" placeholder="hrs" value={updatedSession.duration} onChange={handleSessionLengthChange} />
                     </AddDetail>
                     <AddDetail>
                         <FieldTitle>Date of play session: </FieldTitle>
-                        <DatePicked id="datepicked" name="datepicked" type="number" placeholder="Choose a date" value={sessionToEdit.date} onChange={handleSessionDateChange} >
+                        <DatePicked id="datepicked" name="datepicked" type="number" placeholder="Choose a date" value={updatedSession.date} onChange={handleSessionDateChange} >
                             {weekData.map((day) => {
                                 return (
                                     <option key={"add" + day._id} value={day._id}>{weekDays[day.weekDay]}, {day.monthDay} of {monthNames[day.month]}, {day.year}</option>

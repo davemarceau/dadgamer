@@ -32,6 +32,7 @@ const GameCalendar = () => {
     const [timeToAdd, setTimeToAdd] = useState(0);
     const [gameToAdd, setGameToAdd] = useState(null);
     const [sessionToEdit, setSessionToEdit] = useState(null);
+    const [updatedSession, setUpdatedSession] = useState(null);
     const [datePicked, setDatePicked] = useState(Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24);
     const [weekData, setWeekData] = useState([]);
     const [calendarTrigger, setCalendarTrigger] = useState(false);
@@ -57,7 +58,7 @@ const GameCalendar = () => {
 
     // Edit a session's details with info received from the modal
     const editSessionFromModal = ({user, session}) => {
-        updatingSession({user: user, session: session});
+        updatingSession({user: user, session: session, updatedSession: updatedSession});
     }
 
     // Deletes a session after confirmation in the modal
@@ -75,6 +76,7 @@ const GameCalendar = () => {
     const handleEditSession = (session) => {
         //removeSession({user: details._id, session: session});
         setSessionToEdit(session);
+        setUpdatedSession(session);
         setEditingGame(true);
     }
 
@@ -199,7 +201,7 @@ const GameCalendar = () => {
                     
                 </Collection>
                 <AddToCalendar addingGame={addingGame} setAddingGame={() => setAddingGame(!addingGame)} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} addSessionFromModal={addSessionFromModal} />
-                <EditRemoveInCalendar editingGame={editingGame} setEditingGame={() => setEditingGame(!editingGame)} sessionToEdit={sessionToEdit} setSessionToEdit={setSessionToEdit} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} editSessionFromModal={editSessionFromModal} removeSessionFromModal={removeSessionFromModal} />
+                <EditRemoveInCalendar editingGame={editingGame} setEditingGame={() => setEditingGame(!editingGame)} sessionToEdit={sessionToEdit} setSessionToEdit={setSessionToEdit} updatedSession={updatedSession} setUpdatedSession={setUpdatedSession} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} editSessionFromModal={editSessionFromModal} removeSessionFromModal={removeSessionFromModal} />
             </Wrapper>
         );
     } else {

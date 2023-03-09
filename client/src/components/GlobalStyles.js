@@ -46,6 +46,8 @@ export default createGlobalStyle`
         box-sizing: border-box;
         font-size: 100%;
         vertical-align: baseline;
+        @import url('https://fonts.googleapis.com/css2?family=Lato');
+        font-family: 'Lato', sans-serif;
     }
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure,

@@ -97,7 +97,7 @@ const reducer = (state, action) => {
 					"Accept": "application/json",
 					"Content-Type": "application/json"
 				},
-                body: JSON.stringify({ user: action.user, session: action.session })
+                body: JSON.stringify({ user: action.user, session: action.session, updatedSession: action.updatedSession })
 			})
 				// remove later	
 				.then((data) => data.json())
@@ -114,7 +114,7 @@ const reducer = (state, action) => {
                 return calendarSession.date === action.session.date && calendarSession.game.id === action.session.game.id;
             });
     
-            updatingSessions[sessionToUpdate] = action.session;
+            updatingSessions[sessionToUpdate] = action.updatedSession;
             return {...state, sessions: [...updatingSessions]};
 
         // ****************************
@@ -187,7 +187,8 @@ const UserCalendarProvider = ({ children }) => {
         dispatch({
             type: "updatingSession",
             user: data.user,
-            session: data.session
+            session: data.session,
+            updatedSession: data.updatedSession
         })
     }
 

@@ -1,7 +1,9 @@
-# v0.4: Homepage behavior (2023-03-08)
+# v0.4: Homepage behavior, Calendar fix (2023-03-08)
 
 - Updated the loading methods to show partial menus as it loads the data
 - Fixed loading status to properly display the loading icon
+- Updated Global font
+- Fixed a bug that would prevent sessions to be moved to another date
 
 # v0.3: Collection page cleanup (2023-03-03)
 
