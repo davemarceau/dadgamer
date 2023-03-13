@@ -1,3 +1,9 @@
+# v0.4: Calendar updates and platforms support (2023-03-08)
+
+- Added filter and sort options to the games available to be added as sessions on the calendar
+- Added a display if no games are found either in the collection or the filter
+- Added the option to filter by platform on game search
+
 # v0.4: Homepage behavior, Calendar fix (2023-03-08)
 
 - Updated the loading methods to show partial menus as it loads the data

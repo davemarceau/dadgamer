@@ -16,6 +16,14 @@ const newGameSearch = async (req, res) => {
     const searchString = req.query.searchString;
     const searchPlatforms = req.query.searchPlatforms;
     let results = [];
+    let fullSearchString = "";
+
+    // updates the search string depending on if platforms are specified
+    if (searchPlatforms) {
+        fullSearchString = `fields name, cover.url, id, platforms.name, url, rating, first_release_date, summary; where name ~ *"${searchString}"* & platforms = (${searchPlatforms}); limit 50; sort first_release_date desc;`
+    } else {
+        fullSearchString = `fields name, cover.url, id, platforms.name, url, rating, first_release_date, summary; where name ~ *"${searchString}"*; limit 50; sort first_release_date desc;`
+    }
 
     console.log(searchPlatforms);
 
@@ -48,7 +56,7 @@ const newGameSearch = async (req, res) => {
                 'Accept': 'application/json',
                 "Accept-Encoding": "null",
             },
-            data: `fields name, cover.url, id, platforms.name, url, rating, first_release_date, summary; where name ~ *"${searchString}"*; limit 50; sort rating desc;`
+            data: fullSearchString
         })
         
         // Returns the search results

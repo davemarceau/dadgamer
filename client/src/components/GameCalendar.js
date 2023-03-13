@@ -18,6 +18,7 @@ import Loading from "./Loading";
 // Display information to properly convert the week days and months into text
 const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const todaysDate = Math.floor(Date.now() / 1000 / 60 / 60 / 24) * 1000 * 60 * 60 * 24;
 
 // **********************************************************
 // Calendar component
@@ -37,6 +38,9 @@ const GameCalendar = () => {
     const [weekData, setWeekData] = useState([]);
     const [calendarTrigger, setCalendarTrigger] = useState(false);
     const [calendarDate, setCalendarDate] = useState(new Date());
+    const [sortingType, setSortingType] = useState("alpha");
+    const [sortedCollection, setSortedCollection] = useState([]);
+    const [search, setSearch] = useState("");
 
     // Loads the calendar based on week picked
     useEffect(() => {
@@ -50,6 +54,14 @@ const GameCalendar = () => {
                 })
         }
     }, [datePicked]);
+
+    // Assigns the collection to the sorted array on load
+    useEffect(() => {
+        let tempCollection = [ ...collection.games ];
+        tempCollection.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        setSortedCollection([...tempCollection]);
+        //setSortedCollection([...collection.games]);
+    }, [collection]);
 
     // Add a new session with info received from the modal
     const addSessionFromModal = ({user, session}) => {
@@ -102,10 +114,86 @@ const GameCalendar = () => {
         handlePickDate();
     }
 
+    // **********************************
+    // Function handling the sort change
+    const handleSortChange = (e) => {
+        let tempCollection = [ ...collection.games ];
+        switch (e.target.value) {
+            // Alphabetical sorting picked
+            case "alpha":
+                setSortingType("alpha");
+
+                tempCollection.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+                setSortedCollection([...tempCollection]);
+                break;
+            
+            // Release date sorting picked, going descending
+            case "releaseDate":
+                setSortingType("releaseDate");
+                const collectionWithDates = tempCollection.map((game) => {
+                    let dateParts = game.releaseDate.split(" ");
+                    
+                    // allows for single digit dates to be in the right sort order
+                    if (dateParts[0].length === 1) {
+                        dateParts[0] = "0" + dateParts[0];
+                    }
+
+                    const sortableDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+                    return {...game, releaseDateSortable: sortableDate};
+                });
+
+                collectionWithDates.sort((a,b) => (a.releaseDateSortable < b.releaseDateSortable) ? 1 : ((b.releaseDateSortable < a.releaseDateSortable) ? -1 : 0));
+                setSortedCollection([...collectionWithDates]);
+                break;
+            
+            // Time played sorting picked
+            case "timePlayed":
+                setSortingType("timePlayed");
+
+                // identifies all past sessions
+                const pastSessions = calendar.sessions.filter((session) => {
+                    return session.date < todaysDate;
+                })
+
+                // compile the duration of sessions played for each game in the collection 
+                const eachGameCompiled = tempCollection.map((game) => {
+                    game = {...game, totalTimePlayed: 0};
+                    pastSessions.forEach((session) => {
+                        if (session.game.id === game.id) {
+                            game.totalTimePlayed = game.totalTimePlayed + Number(session.duration);
+                        }
+                    })
+                    return game;
+                });
+
+                // sort them in descending order
+                eachGameCompiled.sort((a, b) => {
+                    return b.totalTimePlayed - a.totalTimePlayed;
+                });
+
+                setSortedCollection([...eachGameCompiled]);
+                break;
+            default: {
+                setSortedCollection(tempCollection);
+            }
+        }
+    }
+
+    // Function handling the search change
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value);
+    }
+
+    // Function handling the search clear
+    const handleClear = (e) => {
+        setSearch("");
+    }
+
     // **************************
     // Main component render
     // **************************
     if (details && weekData.length > 0 && collection.hasLoaded && calendar.hasLoaded) {
+        let totalGames = 0;
         return (
             <Wrapper>
                 <WeekPicker>
@@ -159,6 +247,22 @@ const GameCalendar = () => {
                         )
                     })}
                 </Week>
+
+
+                <CollectionSorters>
+                    <SortPicker>
+                        <span>Sort collection by: </span>
+                        <PickList id="sortType" placeholder="Pick sort order" value={sortingType ? sortingType : ""} onChange={handleSortChange}>
+                                <option value="" disabled >Pick sort order</option>
+                                <option value="alpha">Alphabetical</option>
+                                <option value="releaseDate">Release Date</option>
+                                <option value="timePlayed">Time Played</option>
+                        </PickList>
+                    </SortPicker>
+                    <CollectionSearch placeholder="Search for a game here" value={search} onChange={handleSearchChange} ></CollectionSearch>
+                    <ClearSearch onClick={handleClear} >Clear</ClearSearch>
+                </CollectionSorters>
+
                 <Collection>
                     <Game key="addAvailability" onClick={() => handleAddGame({id: "add", name: "Add availability", cover: addAvailabilityImage, platforms: "none", releaseDate: "2022-12-05", summary: "Only exists to add availability", timeToBeat: "0", active: true, evergreen: true, url: "/calendar"})} >
                         <Cover src={addAvailabilityImage} />
@@ -173,7 +277,7 @@ const GameCalendar = () => {
                         </GameText>
                     </Game>
                     
-                    {collection.games.map((game) => {
+                    {sortedCollection.map((game) => {
                         // Calculates time played so far for the game
                         const sessionsSoFar = calendar.sessions.filter((session) => session.game.id === game.id && session.date <= weekData[6]._id);
                         let totalPlayedSoFar = 0;
@@ -182,7 +286,8 @@ const GameCalendar = () => {
                         });
                         const timeLeftToPlay = game.timeToBeat - totalPlayedSoFar;
                         
-                        if (game.active) {
+                        if (game.active && game.name.toLowerCase().includes(search.toLowerCase())) {
+                            totalGames++;
                             return (
                                 <Game key={game.id} onClick={() => handleAddGame(game)} >
                                     <Cover src={game.cover} />
@@ -195,9 +300,12 @@ const GameCalendar = () => {
                                     </GameText>
                                     
                                 </Game>
-                            )
+                            );
+                        } else {
+                            return "";
                         }
                     })}
+                    {totalGames ? "" : "No games found"}
                     
                 </Collection>
                 <AddToCalendar addingGame={addingGame} setAddingGame={() => setAddingGame(!addingGame)} whereToAdd={whereToAdd} setWhereToAdd={setWhereToAdd} timeToAdd={timeToAdd} setTimeToAdd={setTimeToAdd} gameToAdd={gameToAdd} weekData={weekData} monthNames={monthNames} weekDays={weekDays} user={details._id} addSessionFromModal={addSessionFromModal} />
@@ -261,13 +369,63 @@ const Day = styled.div`
     background-color: var(--darkbackground);
 `
 
+const CollectionSorters = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    height: 30px;
+    align-items: center;
+    margin-top: 15px;
+`
+
+const SortPicker = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+`
+
+const PickList = styled.select`
+    width: 170px;
+    margin-left: 5px;
+    padding: 4px;
+    height: 25px;
+`
+
+const CollectionSearch = styled.input`
+    width: 300px;
+    height: 12px;
+    padding: 5px;
+    margin-left: 5px;
+`
+
+const ClearSearch = styled.button`
+    background-color: var(--primaryblue);
+    width: 42px;
+    height: 24px;
+    //border-radius: 6px;
+    border: none;
+    color: var(--lighttext);
+    position: relative;
+    left: -43px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--primaryhover);
+    }
+
+    &:disabled {
+        background-color: var(--darkhover);
+        cursor: wait;
+    }
+`
+
 const Collection = styled.div`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 15px;
+    margin-top: 5px;
 `
 
 const Game = styled.button`
