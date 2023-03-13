@@ -25,8 +25,6 @@ const newGameSearch = async (req, res) => {
         fullSearchString = `fields name, cover.url, id, platforms.name, url, rating, first_release_date, summary; where name ~ *"${searchString}"*; limit 50; sort first_release_date desc;`
     }
 
-    console.log(searchPlatforms);
-
     try {
 
         // Returns an error if the search is blank

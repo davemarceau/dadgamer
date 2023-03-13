@@ -35,10 +35,7 @@ const AddNewGame = () => {
             })
         }
 
-        console.log(platforms);
-        console.log(includedPlatforms);
-
-
+        // fetch the results
         fetch("/newgamesearch?searchString=" + searchTerms + platforms, {
             headers: {
                 "Accept": "application/json",
@@ -78,7 +75,7 @@ const AddNewGame = () => {
             
             tempPlatforms.push(e.target.value);
             setIncludedPlatforms(tempPlatforms);
-            
+
         // if unchecked removes it from the values array
         } else {
             const platformToRemove = tempPlatforms.findIndex((platform) => {
