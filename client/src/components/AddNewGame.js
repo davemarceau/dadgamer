@@ -12,6 +12,8 @@ import NewGameSearchResult from "./NewGameSearchResult";
 const AddNewGame = () => {
     const [searchTerms, setSearchTerms] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+    const [numberOfResults, setNumberOfResults] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
     const [searching, setSearching] = useState(false);
     const [includedPlatforms, setIncludedPlatforms] = useState([]);
 
@@ -43,8 +45,23 @@ const AddNewGame = () => {
         })
             .then((data) => data.json())
             .then((data) => {
-                if (data.status = 200) {
-                    setSearchResults(data.data);
+                if (data.status === 200) {
+                    let pagedResults = [];
+                    let pageItem = 0;
+                    let page = 0;
+                    data.data.forEach((result) => {
+                        if (!pagedResults[page]) {
+                            pagedResults[page] = [];
+                        }
+                        pagedResults[page][pageItem] = result;
+                        pageItem++;
+                        if (pageItem > 9) {
+                            page++;
+                            pageItem = 0;
+                        }
+                    })
+                    setNumberOfResults(data.data.length);
+                    setSearchResults(pagedResults);
                     setSearching(false);
                 }
             })
@@ -87,14 +104,76 @@ const AddNewGame = () => {
         }
     }
 
+    // Handles page selection in search results
+    const handlePageClick = (e) => {
+        switch(e.target.id) {
+            case "prev":
+                setCurrentPage(currentPage - 1);
+                break;
+            case "next":
+                setCurrentPage(currentPage + 1);
+                break;
+            default:
+                setCurrentPage(Number(e.target.id));
+        }
+    }
+
     // Renders the results depending on what is found. Called in the main render
     const giveResults = () => {
         if (searchResults.length > 0) {
+            //const numberOfPages = searchResults.length;
+            
+            // define the pages to display
+            let pages = null;
+            if (searchResults.length > 5) {
+                if (currentPage < 3) {
+                    pages = ([0, 1, 2, 3, 4]);
+                } else if ((currentPage + 2) >= searchResults.length) {
+                    pages = ([(searchResults.length - 5), (searchResults.length - 4), (searchResults.length - 3), (searchResults.length - 2), (searchResults.length - 1)]);
+                } else {
+                    pages = ([(currentPage - 2), (currentPage - 1), currentPage, (currentPage + 1), (currentPage + 2)]);
+                }
+            } else {
+                let pageArray = [];
+                searchResults.forEach((result, index) => {
+                    pageArray.push(index);
+                })
+                pages = [...pageArray];
+            }
+
+            // Generate the results display
             return (
                 <>
-                    {searchResults.map((result) => {
+                    <ResultsHeader>
+                        {currentPage === 0 ? <PageSelector id="prev" key="prev" disabled >{"<"}</PageSelector> : <PageSelector id="prev" key="prev" onClick={handlePageClick} >{"<"}</PageSelector>}
+                        {pages.map((page) => {
+                            if (page === currentPage) {
+                                return <PageSelector id={page} key={page} disabled >{page + 1}</PageSelector>
+                            } else {
+                                return <PageSelector id={page} key={page} onClick={handlePageClick} >{page + 1}</PageSelector>
+                            }
+                            
+                        })}
+                        {currentPage === (searchResults.length - 1) ? <PageSelector id="next" key="next" disabled >{">"}</PageSelector> : <PageSelector id="next" key="next" onClick={handlePageClick} >{">"}</PageSelector>}
+                        <NumberOfResults>{numberOfResults} games found.</NumberOfResults>
+                    </ResultsHeader>
+                    
+                    {searchResults[currentPage].map((result) => {
                         return <NewGameSearchResult key={result.id} name={result.name} cover={result.cover} id={result.id} platforms={result.platforms} url={result.url} rating={result.rating} releaseDate={result.first_release_date} summary={result.summary} />
                     })}
+
+                    <ResultsHeader>
+                        {currentPage === 0 ? <PageSelector id="prev" key="prev" disabled >{"<"}</PageSelector> : <PageSelector id="prev" key="prev" onClick={handlePageClick} >{"<"}</PageSelector>}
+                        {pages.map((page) => {
+                            if (page === currentPage) {
+                                return <PageSelector id={page} key={page} disabled >{page + 1}</PageSelector>
+                            } else {
+                                return <PageSelector id={page} key={page} onClick={handlePageClick} >{page + 1}</PageSelector>
+                            }
+                            
+                        })}
+                        {currentPage === (searchResults.length - 1) ? <PageSelector id="next" key="next" disabled >{">"}</PageSelector> : <PageSelector id="next" key="next" onClick={handlePageClick} >{">"}</PageSelector>}
+                    </ResultsHeader>
                 </>
             )
         } else {
@@ -217,17 +296,6 @@ const SearchButton = styled.button`
     }
 `
 
-const Link = styled.a`
-    padding: 5px;
-    margin-bottom: 10px;
-    color: var(--darktext);
-    background-color: var(--lightbackground);
-
-    &:hover {
-        color: var(--darkhover);
-    }
-`
-
 const Platforms = styled.div`
     display: flex;
     flex-direction: row;
@@ -253,6 +321,42 @@ const ResultsSection = styled.div`
     display: flex;
     flex-direction: column;
     padding: 20px;
+    width: 650px;
+    align-self: center;
+`
+
+const NumberOfResults = styled.p`
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+`
+
+const ResultsHeader = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+`
+
+const PageSelector = styled.button`
+background-color: var(--primaryblue);
+width: 37px;
+height: 37px;
+border-radius: 8px;
+border: none;
+color: var(--lighttext);
+margin-top: auto;
+margin-bottom: auto;
+margin-right: 5px;
+cursor: pointer;
+
+&:hover {
+    background-color: var(--primaryhover);
+}
+
+&:disabled {
+    background-color: var(--darkhover);
+    cursor: not-allowed;
+}
 `
 
 // **********************************************************

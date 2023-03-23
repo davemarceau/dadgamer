@@ -1,3 +1,9 @@
+# 0.5: Pages added to new game search results (2023-03-22)
+
+- Added the support for multiple pages of search results for easier navigation
+- The new pages display allowed to update the maximum search results from 50 to 500
+- Updated the profile menu to close on click both on options and outside the menu
+
 # v0.4: Calendar updates and platforms support (2023-03-08)
 
 - Added filter and sort options to the games available to be added as sessions on the calendar

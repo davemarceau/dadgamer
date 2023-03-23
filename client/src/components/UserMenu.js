@@ -2,21 +2,52 @@
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom"
+import { useRef, useEffect } from "react";
 
 // **********************************************************
 // Simple user profile menu drop down
 // **********************************************************
-const UserMenu = ({menuStatus}) => {
+const UserMenu = ({menuStatus, menuStatusUpdate}) => {
     const { logout } = useAuth0();
+    const ref = useRef(null);
+
+    // Handles clicking outside of the menu
+    useEffect(() => {
+        // Handles the click
+        const handleClickOutside = (event) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                menuStatusUpdate(false);
+            }
+        };
+
+        // Adds the document listener
+        document.addEventListener('click', handleClickOutside, true);
+        
+        // Cleans up on unmount
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    }, [menuStatusUpdate]);
+
+    // Handles profile clicked
+    const handleMenuClick = () => {
+        menuStatusUpdate(false);
+    }
+
+    // Handles logout clicked
+    const handleLogout = () => {
+        menuStatusUpdate(false);
+        logout({ returnTo: window.location.origin });
+    }
 
     // *****************
     // Main render
     // *****************
     if (menuStatus) {
         return (
-            <Menu>
-                <MiniBox><FormattedLink to="/profile" >Profile</FormattedLink></MiniBox>
-                <LoginButton onClick={() => logout({ returnTo: window.location.origin })} >Logout</LoginButton>
+            <Menu ref={ref} >
+                <MiniBox><FormattedLink to="/profile" onClick={handleMenuClick} >Profile</FormattedLink></MiniBox>
+                <LoginButton onClick={handleLogout} >Logout</LoginButton>
             </Menu>
         );
     

@@ -44,7 +44,7 @@ const Header = () => {
             <HeaderWrapper>
                 <SiteLogo href="/" ><LogoDiv><Joystick /><SiteTitle>{headerTitle}</SiteTitle></LogoDiv></SiteLogo>
                 <InvisibleButton onClick={toggleMenu} ><ProfileIcon /></InvisibleButton>
-                <UserMenu menuStatus={menuOpen} />
+                <UserMenu menuStatus={menuOpen} menuStatusUpdate={setMenuOpen} />
             </HeaderWrapper>
         );
 
